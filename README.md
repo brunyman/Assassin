@@ -1,4 +1,4 @@
-[![Assassin][Project Logo]][GitHub]
+[![Assassin][Project Logo]][GitHub][Banner]
 What is Assassin?
 ----------------
 !!! WIP !!!
@@ -24,6 +24,7 @@ Who made this?
 
 Download here: -not released-
 
+[Banner]: https://dl.dropbox.com/u/29178507/Spout/Assassin.png
 [Project Logo]: https://dl.dropbox.com/u/29178507/Spout/Assassin%20logo.png
 [BukkitDev]: http://dev.bukkit.org/server-mods/Assassin/
 [GitHub]: https://github.com/TfT-02/Assassin

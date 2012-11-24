@@ -2,13 +2,13 @@ package me.TfT02.Assassin;
 
 import java.io.IOException;
 import java.util.logging.Level;
-
 import me.TfT02.Assassin.Listeners.BlockListener;
 import me.TfT02.Assassin.Listeners.EntityListener;
 import me.TfT02.Assassin.Listeners.PlayerListener;
-
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Assassin extends JavaPlugin {
@@ -17,6 +17,8 @@ public class Assassin extends JavaPlugin {
 	private final BlockListener blockListener = new BlockListener(this);
 	public boolean spoutEnabled;
 	public boolean debug_mode = false;
+	
+    public static Economy econ = null;
 
 	/**
 	 * Run things on enable.
@@ -24,8 +26,10 @@ public class Assassin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		final PluginManager pm = getServer().getPluginManager();
-		if (pm.getPlugin("Spout") != null) spoutEnabled = true;
-		else spoutEnabled = false;
+		if (pm.getPlugin("Spout") != null)
+			spoutEnabled = true;
+		else
+			spoutEnabled = false;
 
 		if (getConfig().getBoolean("General.debug_mode_enabled")) {
 			this.getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
@@ -45,6 +49,11 @@ public class Assassin extends JavaPlugin {
 				System.out.println("Failed to submit stats.");
 			}
 		}
+		  if (!setupEconomy() ) {
+			  this.getLogger().log(Level.WARNING,"Disabled due to no Vault dependency found!");
+	            getServer().getPluginManager().disablePlugin(this);
+	            return;
+	        }
 	}
 
 	private void setupConfiguration() {
@@ -55,12 +64,23 @@ public class Assassin extends JavaPlugin {
 		config.options().copyDefaults(true);
 		saveConfig();
 	}
-
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
 	/**
 	 * Register all the command and set Executor.
 	 */
 	private void registerCommands() {
 		getCommand("assassin").setExecutor(new Commands(this));
+		getCommand("activate").setExecutor(new Commands(this));
 	}
 
 	/**

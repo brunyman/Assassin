@@ -4,11 +4,15 @@ main: me.TfT02.Assassin.Assassin
 description: A whole new concept on PVP!
 dev-url: http://dev.bukkit.org/server-mods/Assassin/
 version: 0.1
-softdepend: [Spout]
+softdepend: [Spout, Vault]
 commands:
    Assassin:
       description: Get information about the plugin.
       permission: Assassin.assassin
+      permission-message: You don't have <permission>
+   Activate:
+      description: activate it
+      permission: Assassin.activate
       permission-message: You don't have <permission>
 permissions:
     Assassin.*:
