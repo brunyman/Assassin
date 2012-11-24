@@ -1,4 +1,4 @@
-[![Assassin][Project Logo]][GitHub][!Banner[Banner]]
+[![Assassin][Project Logo]][GitHub][![Assassin][Banner]][GitHub]
 What is Assassin?
 ----------------
 !!! WIP !!!
