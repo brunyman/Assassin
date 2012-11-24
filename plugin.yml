@@ -1,0 +1,22 @@
+name: Assassin
+author: TfT_02
+main: me.TfT02.Assassin.Assassin
+description: A whole new concept on PVP!
+dev-url: http://dev.bukkit.org/server-mods/Assassin/
+version: 0.1
+softdepend: [Spout]
+commands:
+   Assassin:
+      description: Get information about the plugin.
+      permission: Assassin.assassin
+      permission-message: You don't have <permission>
+permissions:
+    Assassin.*:
+        description: Gives access to all commands
+        children:
+            Assassin.assassin: true
+    Assassin.defaults:
+        description: Gives access to default commands
+        default: true
+        children:
+            Assassin.assassin: true

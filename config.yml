@@ -1,0 +1,5 @@
+# 
+#  Assassin configuration
+General:
+  debug_mode_enabled: false
+  stats_tracking_enabled: true
