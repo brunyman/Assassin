@@ -22,7 +22,7 @@ Who made this?
 ----------------   
 [![TfT_02](http://www.gravatar.com/avatar/b8914f9970e1f6ffd5281ce4770e20a7.png)](http://dev.bukkit.org/profiles/TfT_02/) 
 
-Download here: -not released-
+Download here: [BukkitDev]
 
 [Banner]: https://dl.dropbox.com/u/29178507/Spout/Assassin.png
 [Project Logo]: https://dl.dropbox.com/u/29178507/Spout/Assassin%20logo.png
