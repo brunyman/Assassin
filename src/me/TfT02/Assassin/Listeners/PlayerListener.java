@@ -22,6 +22,9 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	private void onPlayerJoin(PlayerJoinEvent event){
 		Player player = event.getPlayer();
+		if (!data.isAssassin(player)){
+			data.setNeutral(player);
+			}
 		String status = data.getStatus(player);
 		player.sendMessage("Current status: " + status);
 	}
