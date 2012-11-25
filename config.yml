@@ -3,3 +3,12 @@
 General:
   debug_mode_enabled: false
   stats_tracking_enabled: true
+Assassin:
+  active_time: 120
+  cooldown_time: 600
+  max_allowed: 5
+  activation_cost: 100
+  hide_neutral_names: false
+  warn_others_on_activation: true
+  warn_others_when_near: true
+  particle_effects: true

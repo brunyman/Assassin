@@ -4,7 +4,7 @@ main: me.TfT02.Assassin.Assassin
 description: A whole new concept on PVP!
 dev-url: http://dev.bukkit.org/server-mods/Assassin/
 version: 0.1
-softdepend: [Spout, Vault]
+softdepend: [Vault, TagAPI]
 commands:
    Assassin:
       description: Get information about the plugin.
