@@ -1,13 +1,9 @@
 package me.TfT02.Assassin;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-
 import org.bukkit.command.CommandExecutor;
 import org.kitteh.tag.TagAPI;
 
@@ -17,6 +13,9 @@ public class Commands implements CommandExecutor {
 	public Commands(final Assassin instance) {
 		plugin = instance;
 	}
+
+	private final AssassinMode assassin = new AssassinMode(plugin);
+	private final PlayerData data = new PlayerData(plugin);
 
 	@Override
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
@@ -41,25 +40,31 @@ public class Commands implements CommandExecutor {
 							if (inHandID != 35) {
 								player.sendMessage(ChatColor.RED + "You need to have black wool in your hand to use this.");
 							}
-							if (inHandID == 35) {
-								player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
-								player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]");
-								TagAPI.refreshPlayer(player);
-								PlayerInventory inventory = player.getInventory();
-								ItemStack blackWool = new ItemStack(Material.WOOL, 5, (short) 0, (byte) 15);
-								inventory.removeItem(new ItemStack[] { blackWool });
-								inventory.setHelmet(blackWool);
+							if (data.isAssassin(player)){
+								player.sendMessage(ChatColor.RED + "You already are an Assassin.");
+							}
+							if (inHandID == 35 || !data.isAssassin(player)) {
+								assassin.activateAssassin(player);
 							}
 						}
 						if (args[0].equalsIgnoreCase("deactivate")) {
-								player.sendMessage(ChatColor.GRAY + "DEACTIVATED");
-								player.setDisplayName(player.getName());
-								TagAPI.refreshPlayer(player);
-								PlayerInventory inventory = player.getInventory();
-								ItemStack itemHead = inventory.getHelmet();
-								if (itemHead.getTypeId() != 0) {
-									inventory.setItemInHand(itemHead);
-								}
+							if (data.isAssassin(player)){
+								assassin.deactivateAssassin(player);
+							}
+						}
+						if (args[0].equalsIgnoreCase("info")) {
+							String playername = player.getName();
+							boolean checkStatus1 = data.isAssassin(player);
+							player.sendMessage(ChatColor.YELLOW + "Is " + ChatColor.RED + playername + ChatColor.YELLOW + " an Assassin? " + ChatColor.RED + checkStatus1);
+
+							boolean checkStatus2 = data.isNeutral(player);
+							player.sendMessage(ChatColor.YELLOW + "Is " + ChatColor.RED + playername + ChatColor.YELLOW + " Neutral? " + ChatColor.RED + checkStatus2);
+
+							String status = data.getStatus(player);
+							player.sendMessage(ChatColor.YELLOW + "Status = " + ChatColor.RED + status);
+						}
+						if (args[0].equalsIgnoreCase("refresh")) {
+							TagAPI.refreshPlayer(player);
 						}
 						return true;
 					}
