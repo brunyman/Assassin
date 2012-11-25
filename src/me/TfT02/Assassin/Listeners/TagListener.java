@@ -1,6 +1,7 @@
 package me.TfT02.Assassin.Listeners;
 
 import me.TfT02.Assassin.Assassin;
+import me.TfT02.Assassin.PlayerData;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,12 +19,18 @@ implements Listener {
 	public TagListener(Assassin instance) {
 		plugin = instance;
 	}
-
+	private final PlayerData data = new PlayerData(plugin);
+	
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onNameTag(PlayerReceiveNameTagEvent event) {
 		Player player = event.getPlayer();
-		if (event.getNamedPlayer().getName().equals(player)) {
-			event.setTag(ChatColor.DARK_RED + player.getDisplayName());
+		if (data.isAssassin(player)){
+			event.setTag(ChatColor.DARK_RED + "[ASSASSIN]");
+			System.out.println("Changed player tag to [ASSASSIN] for " +player.getName());
+		}
+		else {
+			event.setTag(ChatColor.WHITE + player.getDisplayName());
+			System.out.println("Reset player tag for " +player.getName());
 		}
 //		for(Player p : getServer().getOnlinePlayers()){
 //		if (event.getPlayer().getName().equals(player)) {
