@@ -10,4 +10,6 @@ public class BlockListener implements Listener {
 	public BlockListener(final Assassin instance) {
 		plugin = instance;
 	}
+	//TODO Perhaps prevent block breaks from Assassins?
+	// This might be a simple way to prevent griefers to become anonymous and destroying stuff
 }

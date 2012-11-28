@@ -1,0 +1,14 @@
+Changelog:
+
+Key:
+  + Addition
+  = Fix
+  ! Change
+  - Removal
+
+Version 0.1
+ + Added masks. Assassins get a mask which they can't take off
+ + Added warning messages when a nearby player puts on his mask
+ + Added data saving. Logging in/out will not change your status
+ + Added Metrics
+ + Added PVP handling, Neutral players can't attack each other
