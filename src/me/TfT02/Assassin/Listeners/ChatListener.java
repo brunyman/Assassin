@@ -1,7 +1,9 @@
 package me.TfT02.Assassin.Listeners;
 
 import me.TfT02.Assassin.Assassin;
+import me.TfT02.Assassin.util.PlayerData;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,9 +16,10 @@ public class ChatListener implements Listener {
 	public ChatListener(final Assassin instance) {
 		plugin = instance;
 	}
-	@EventHandler(priority = EventPriority.LOWEST)
+	private final PlayerData data = new PlayerData(plugin);
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		if (event.isCancelled()){
+		if (event.isCancelled()) {
 			return;
 		}
 		Player player = event.getPlayer();
@@ -24,15 +27,17 @@ public class ChatListener implements Listener {
 
 		if (msg == null)
 			return;
-double chatDistance = 25;
-		// Chat Distance Stuff
-		if (chatDistance > 0)
-			for (Player players : plugin.getServer().getOnlinePlayers()) {
-				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
-					event.getRecipients().remove(players);
-				}
-			}
-
-//		event.setFormat(eventFormat);
+		
+		if (data.isAssassin(player)){
+			event.setFormat(ChatColor.DARK_RED + "[ASSASSIN] " +  ChatColor.RESET + msg);
+		}
+//		double chatDistance = 250;
+//		// Chat Distance Stuff
+//		if (chatDistance > 0)
+//			for (Player players : plugin.getServer().getOnlinePlayers()) {
+//				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
+//					event.getRecipients().remove(players);
+//				}
+//			}
 	}
 }
