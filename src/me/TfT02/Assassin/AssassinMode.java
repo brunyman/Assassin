@@ -1,12 +1,15 @@
 package me.TfT02.Assassin;
 
+import me.TfT02.Assassin.Listeners.ChatListener;
 import me.TfT02.Assassin.util.PlayerData;
 import me.TfT02.Assassin.util.itemNamer;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -21,18 +24,20 @@ public class AssassinMode {
 	}
 
 	private final PlayerData data = new PlayerData(plugin);
+	private final ChatListener chat = new ChatListener(plugin);
 
 	public void activateAssassin(final Player player) {
 		//add player to data file
 		data.addAssassin(player);
+		data.addTimestamp(player);
 
 		//send message to player who activated with how long he is stuck in assassin mode
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
 			@Override
 			public void run() {
 				player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
-				int time = 120;
-				player.sendMessage(ChatColor.DARK_RED + "Time left: " + time + "mins");
+				long time = data.cooldown;
+				player.sendMessage(ChatColor.DARK_RED + "Time left: " + time + "seconds");
 			}
 		}, 20 * 2);
 
@@ -56,17 +61,28 @@ public class AssassinMode {
 		}
 
 		//change name tag + display name
-		player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+//		player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+		changeName(player);
 		TagAPI.refreshPlayer(player);
 		applyMask(player);
 	}
 
+//    private void performAction(CommandSender sender, String[] args) {
+	private void changeName(Player player) {
+		String playername = player.getName();
+		String newName = "[ASSASSIN]";
+
+		chat.overridenNames.put(playername, newName);
+	}
+
 	public void deactivateAssassin(Player player) {
+		String playername = player.getName();
 		data.setNeutral(player);
 		player.sendMessage(ChatColor.GRAY + "DEACTIVATED");
 		player.setDisplayName(player.getName());
 		TagAPI.refreshPlayer(player);
 		removeMask(player);
+		chat.overridenNames.remove(playername);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -78,13 +94,15 @@ public class AssassinMode {
 		ItemStack mask1 = itemNamer.addLore(mask, ChatColor.GRAY + "Allows PVP");
 		//Sets hand item to air, can only activate assassin mode if you are holding a mask
 		//This will remove a whole stack of masks...
-		inventory.setItemInHand(new ItemStack(0));
-		inventory.setHelmet(mask1);
-		
+
 		//give back helmet if player was wearing one
 		ItemStack itemHead = inventory.getHelmet();
 		if (itemHead != null)
 			inventory.setItemInHand(itemHead);
+		else 
+			inventory.setItemInHand(new ItemStack(Material.AIR));
+
+		inventory.setHelmet(mask1);
 		player.updateInventory();   // Needed until replacement available
 	}
 
@@ -97,7 +115,8 @@ public class AssassinMode {
 //		spawnMask(player);//Gives back the mask
 		player.updateInventory();   // Needed until replacement available
 	}
-	public void spawnMask(Player player){
+
+	public void spawnMask(Player player) {
 		PlayerInventory inventory = player.getInventory();
 		ItemStack blackWool = new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15);
 		ItemStack mask = itemNamer.setName(blackWool, ChatColor.DARK_RED + "Assassin Mask");
