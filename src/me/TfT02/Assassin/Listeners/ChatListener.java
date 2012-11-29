@@ -1,7 +1,9 @@
 package me.TfT02.Assassin.Listeners;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,6 +18,21 @@ public class ChatListener implements Listener {
 	public ChatListener(final Assassin instance) {
 		plugin = instance;
 	}
+
+	// Or you could use synchronization
+	public Map<String, String> overridenNames = new ConcurrentHashMap<String, String>();
+
+	// Only use MONITOR if you absolutely must in order to override the Plugin
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
+	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		String overriden = overridenNames.get(player.getName());
+
+		if (overriden != null) {
+			event.getPlayer().setDisplayName(ChatColor.DARK_RED + overriden + ChatColor.RESET);
+		}
+	}
+	/*
 	private final PlayerData data = new PlayerData(plugin);
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -31,13 +48,14 @@ public class ChatListener implements Listener {
 		if (data.isAssassin(player)){
 			event.setFormat(ChatColor.DARK_RED + "[ASSASSIN] " +  ChatColor.RESET + msg);
 		}
-//		double chatDistance = 250;
-//		// Chat Distance Stuff
-//		if (chatDistance > 0)
-//			for (Player players : plugin.getServer().getOnlinePlayers()) {
-//				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
-//					event.getRecipients().remove(players);
-//				}
-//			}
+	//		double chatDistance = 250;
+	//		// Chat Distance Stuff
+	//		if (chatDistance > 0)
+	//			for (Player players : plugin.getServer().getOnlinePlayers()) {
+	//				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
+	//					event.getRecipients().remove(players);
+	//				}
+	//			}
 	}
+	*/
 }
