@@ -41,27 +41,6 @@ public class Commands implements CommandExecutor {
 						player.sendMessage(ChatColor.RED + "Correct usage /assassin [activate/deactivate/info/refresh]");
 						return true;
 					case 1:
-						if (args[0].equalsIgnoreCase("activate")) {
-							int inHandID = player.getItemInHand().getTypeId();
-							if (inHandID == 35) {
-								if (data.isAssassin(player)) {
-									player.sendMessage(ChatColor.RED + "You already are an Assassin.");
-								} else {
-									ItemStack itemHand = player.getInventory().getItemInHand();
-									String item = itemNamer.getName(itemHand);
-									String mask = ChatColor.DARK_RED + "Assassin Mask";
-									if (item == null || !item.equalsIgnoreCase(mask)){
-										player.sendMessage(ChatColor.RED + "Not a mask.");
-									}
-									else {
-										assassin.activateAssassin(player);
-									}
-								}
-							} else {
-								player.sendMessage(ChatColor.RED + "You need to have black wool in your hand to use this.");
-							}
-							return true;
-						}
 						if (args[0].equalsIgnoreCase("deactivate")) {
 							if (data.isAssassin(player)) {
 								assassin.deactivateAssassin(player);
@@ -74,8 +53,10 @@ public class Commands implements CommandExecutor {
 							player.sendMessage(ChatColor.YELLOW + "Your status = " + ChatColor.RED + status);
 
 							player.sendMessage(ChatColor.YELLOW + "Cooldown done = " + ChatColor.RED + data.isReady(player));
-							
-							range.checkIfAssassinNear(player);
+
+							long cooldowntime = data.getCooldownTime(player);
+							player.sendMessage(ChatColor.YELLOW + "Cooldown time = " + ChatColor.RED + cooldowntime);
+//							range.checkIfAssassinNear(player);
 							return true;
 						}
 						if (args[0].equalsIgnoreCase("refresh")) {
