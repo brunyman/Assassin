@@ -69,6 +69,7 @@ public class Data {
 			}
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
 			oos.writeObject(PlayerData.playerData);
+			oos.writeObject(PlayerData.playerCooldown);
 			oos.flush();
 			oos.close();
 			Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
@@ -86,6 +87,7 @@ public class Data {
 			try {
 				@SuppressWarnings("resource") ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
 				PlayerData.playerData = (HashMap<String, String>) ois.readObject();
+				PlayerData.playerCooldown = (HashMap<String, Long>) ois.readObject();
 				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
 				Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");

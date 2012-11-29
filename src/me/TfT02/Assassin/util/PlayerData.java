@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import me.TfT02.Assassin.Assassin;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
@@ -18,6 +19,9 @@ public class PlayerData {
 //	private boolean loaded;
 //	private boolean assassin;
 
+	public long cooldown = 30L; //30 sec
+	public long currenttime = System.currentTimeMillis() / 1000L;
+
 	public static HashMap<String, String> playerData = new HashMap<String, String>();
 	public static HashMap<String, Long> playerCooldown = new HashMap<String, Long>();
 
@@ -29,29 +33,41 @@ public class PlayerData {
 		playerData.put(player.getName(), "Neutral");
 	}
 
+	public void addCurrentTimestamp(Player player) {
+		long timestamp = currenttime;
+		playerCooldown.put(player.getName(), timestamp);
+	}
+
 	public void addTimestamp(Player player) {
-		long timestamp = System.currentTimeMillis() / 1000L;
+		long timestamp = currenttime + cooldown;
 		playerCooldown.put(player.getName(), timestamp);
 	}
 
 	public long getTimestamp(Player player) {
 		long timestamp = 0;
 		if (playerData.containsKey(player.getName())) {
-			if (playerData.get(player.getName()) == null) {
-				timestamp = 0;
-			} else 
-				timestamp = playerCooldown.get(player.getName());
+			timestamp = playerCooldown.get(player.getName());
+		} else {
+
 		}
 		return timestamp;
 	}
-	public boolean isReady(Player player){
+
+	public boolean isReady(Player player) {
 		long timestamp = getTimestamp(player);
-		long cooldown = 600; //10 min
-		long currenttime =  System.currentTimeMillis() / 1000L;
-		if ((timestamp + cooldown) < currenttime){
+		if (timestamp < currenttime) {
 			return true;
 		}
 		return false;
+	}
+
+	public long getCooldownTime(Player player) {
+		long timestamp = getTimestamp(player);
+		long cooldownleft = 0;
+		if (!isReady(player)) {
+			cooldownleft = timestamp - currenttime;
+		}
+		return cooldownleft;
 	}
 
 	public boolean isAssassin(Player player) {
@@ -106,10 +122,16 @@ public class PlayerData {
 		boolean statusfirst = isNeutral(firstPlayer);
 		boolean statussecond = isNeutral(secondPlayer);
 
-		if (statusfirst == statussecond) {
+		if (statusfirst && statussecond) {
 			return true;
 		}
 		return false;
+	}
+
+	public String[] getOnlineAssassins() {
+		String[] assassins = new String[playerData.size()];
+		assassins = (String[]) (playerData.keySet().toArray(assassins));
+		return assassins;
 	}
 
 }
