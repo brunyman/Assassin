@@ -13,11 +13,12 @@ import java.util.logging.Level;
 import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 public class Data {
 	static Assassin plugin;
 
-	public Data(final Assassin instance) {
+	public Data(Assassin instance) {
 		plugin = instance;
 	}
 
@@ -70,6 +71,7 @@ public class Data {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
 			oos.writeObject(PlayerData.playerData);
 			oos.writeObject(PlayerData.playerCooldown);
+			oos.writeObject(PlayerData.playerLocation);
 			oos.flush();
 			oos.close();
 			Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
@@ -88,6 +90,7 @@ public class Data {
 				@SuppressWarnings("resource") ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
 				PlayerData.playerData = (HashMap<String, String>) ois.readObject();
 				PlayerData.playerCooldown = (HashMap<String, Long>) ois.readObject();
+				PlayerData.playerLocation = (HashMap<String, Location>) ois.readObject();
 				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
 				Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");
