@@ -15,7 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 public class ChatListener implements Listener {
 	Assassin plugin;
 
-	public ChatListener(final Assassin instance) {
+	public ChatListener(Assassin instance) {
 		plugin = instance;
 	}
 
@@ -33,7 +33,7 @@ public class ChatListener implements Listener {
 		}
 	}
 	/*
-	private final PlayerData data = new PlayerData(plugin);
+	private  PlayerData data = new PlayerData(plugin);
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		if (event.isCancelled()) {

@@ -8,8 +8,6 @@ import me.TfT02.Assassin.Listeners.ChatListener;
 import me.TfT02.Assassin.Listeners.EntityListener;
 import me.TfT02.Assassin.Listeners.PlayerListener;
 import me.TfT02.Assassin.Listeners.TagListener;
-import me.TfT02.Assassin.runnables.AssassinRangeTimer;
-import me.TfT02.Assassin.runnables.CooldownTimer;
 import me.TfT02.Assassin.util.Data;
 import me.TfT02.Assassin.util.Metrics;
 import net.milkbowl.vault.economy.Economy;
@@ -21,11 +19,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 public class Assassin extends JavaPlugin {
 	public static Assassin instance;
-	private final TagListener tagListener = new TagListener(this);
-	private final EntityListener entityListener = new EntityListener(this);
-	private final PlayerListener playerListener = new PlayerListener(this);
-	private final ChatListener chatListener = new ChatListener(this);
-	private final BlockListener blockListener = new BlockListener(this);
+	private TagListener tagListener = new TagListener(this);
+	private EntityListener entityListener = new EntityListener(this);
+	private PlayerListener playerListener = new PlayerListener(this);
+	private ChatListener chatListener = new ChatListener(this);
+	private BlockListener blockListener = new BlockListener(this);
 	public boolean spoutEnabled;
 	public boolean debug_mode = false;
 
@@ -41,7 +39,7 @@ public class Assassin extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		final PluginManager pm = getServer().getPluginManager();
+		PluginManager pm = getServer().getPluginManager();
 //		if (pm.getPlugin("Spout") != null)
 //			spoutEnabled = true;
 //		else
@@ -72,9 +70,9 @@ public class Assassin extends JavaPlugin {
 		Data.loadData();
 		if (getConfig().getBoolean("General.stats_tracking_enabled")) {
 			try {
-				final Metrics metrics = new Metrics(this);
+				Metrics metrics = new Metrics(this);
 				metrics.start();
-			} catch (final IOException e) {
+			} catch (IOException e) {
 				System.out.println("Failed to submit stats.");
 			}
 		}
@@ -84,9 +82,9 @@ public class Assassin extends JavaPlugin {
 //			return;
 //		}
 		try {
-			final Metrics metrics = new Metrics(this);
+			Metrics metrics = new Metrics(this);
 			metrics.start();
-		} catch (final IOException e) {
+		} catch (IOException e) {
 			System.out.println("Failed to submit stats.");
 		}
 		BukkitScheduler scheduler = getServer().getScheduler();
@@ -96,9 +94,19 @@ public class Assassin extends JavaPlugin {
 	}
 
 	private void setupConfiguration() {
-		final FileConfiguration config = this.getConfig();
+		FileConfiguration config = this.getConfig();
 		config.addDefault("General.debug_mode_enabled", false);
 		config.addDefault("General.stats_tracking_enabled", true);
+		config.addDefault("Assassin.active_length", 30);
+		config.addDefault("Assassin.cooldown_length", 30);
+		config.addDefault("Assassin.messages_distance", 250);
+
+//		config.addDefault("Assassin.max_allowed", 5);
+//		config.addDefault("Assassin.activation_cost", 100);
+//		config.addDefault("Assassin.hide_neutral_names", false);
+//		config.addDefault("Assassin.warn_others_on_activation", true);
+//		config.addDefault("Assassin.warn_others_when_near", true);
+//		config.addDefault("Assassin.particle_effects", true);
 
 		config.options().copyDefaults(true);
 		saveConfig();
@@ -130,6 +138,6 @@ public class Assassin extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		Data.saveData();
-//		this.getServer().getScheduler().cancelTasks(this);
+		this.getServer().getScheduler().cancelTasks(this);
 	}
 }

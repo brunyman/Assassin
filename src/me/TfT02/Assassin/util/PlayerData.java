@@ -1,17 +1,18 @@
 package me.TfT02.Assassin.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import me.TfT02.Assassin.Assassin;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
 
 	Assassin plugin;
 
-	public PlayerData(final Assassin instance) {
+	public PlayerData(Assassin instance) {
 		plugin = instance;
 	}
 
@@ -19,11 +20,14 @@ public class PlayerData {
 //	private boolean loaded;
 //	private boolean assassin;
 
+//	public long cooldown = plugin.getConfig().getLong("Assassin.cooldown_length"); //30 sec
 	public long cooldown = 30L; //30 sec
 	public long currenttime = System.currentTimeMillis() / 1000L;
 
 	public static HashMap<String, String> playerData = new HashMap<String, String>();
 	public static HashMap<String, Long> playerCooldown = new HashMap<String, Long>();
+	public static HashMap<String, Location> playerLocation = new HashMap<String, Location>();
+	public ArrayList<String> assassins = new ArrayList<String>();
 
 	public void addAssassin(Player player) {
 		playerData.put(player.getName(), "Assassin");
@@ -104,8 +108,7 @@ public class PlayerData {
 			} else {
 				if (playerData.get(playername).equalsIgnoreCase("Neutral"))
 					status = "Neutral";
-				else if (playerData.get(playername).equalsIgnoreCase("Assassin"))
-					status = "Assassin";
+				else if (playerData.get(playername).equalsIgnoreCase("Assassin")) status = "Assassin";
 			}
 		}
 		return status;
@@ -130,7 +133,7 @@ public class PlayerData {
 
 	public String[] getOnlineAssassins() {
 		String[] assassins = new String[playerData.size()];
-		assassins = (String[]) (playerData.keySet().toArray(assassins));
+		assassins = (playerData.keySet().toArray(assassins));
 		return assassins;
 	}
 

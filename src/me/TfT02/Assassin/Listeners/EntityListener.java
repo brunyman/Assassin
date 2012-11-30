@@ -1,5 +1,8 @@
 package me.TfT02.Assassin.Listeners;
 
+import me.TfT02.Assassin.Assassin;
+import me.TfT02.Assassin.util.PlayerData;
+
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -9,19 +12,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.PlayerData;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class EntityListener implements Listener {
 
 	Assassin plugin;
 
-	public EntityListener(final Assassin instance) {
+	public EntityListener(Assassin instance) {
 		plugin = instance;
 	}
 
-	private final PlayerData data = new PlayerData(plugin);
+	private PlayerData data = new PlayerData(plugin);
 
 	/**
 	 * Monitor EntityDamageByEntity events.
@@ -33,14 +35,12 @@ public class EntityListener implements Listener {
 //        if (event instanceof FakeEntityDamageByEntityEvent)
 //            return;
 
-		if (event.getDamage() <= 0)
-			return;
+		if (event.getDamage() <= 0) return;
 
 		Entity attacker = event.getDamager();
 		Entity defender = event.getEntity();
 
-		if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC"))
-			return; // Check if either players is are Citizens NPCs
+		if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
 
 		if (attacker instanceof Projectile) {
 			attacker = ((Projectile) attacker).getShooter();

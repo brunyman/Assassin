@@ -2,29 +2,27 @@ package me.TfT02.Assassin;
 
 import me.TfT02.Assassin.runnables.AssassinRangeTimer;
 import me.TfT02.Assassin.util.PlayerData;
-import me.TfT02.Assassin.util.itemNamer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.command.CommandExecutor;
 import org.kitteh.tag.TagAPI;
 
 public class Commands implements CommandExecutor {
 	Assassin plugin;
 
-	public Commands(final Assassin instance) {
+	public Commands(Assassin instance) {
 		plugin = instance;
 	}
 
-	private final AssassinMode assassin = new AssassinMode(plugin);
-	private final PlayerData data = new PlayerData(plugin);
-	private final AssassinRangeTimer range = new AssassinRangeTimer(plugin);
+	private AssassinMode assassin = new AssassinMode(plugin);
+	private PlayerData data = new PlayerData(plugin);
+	private AssassinRangeTimer range = new AssassinRangeTimer(plugin);
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final Command cmd, final String label, final String[] args) {
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = null;
 
 		if (sender instanceof Player) {

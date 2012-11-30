@@ -28,12 +28,12 @@ import org.bukkit.inventory.ItemStack;
 public class PlayerListener implements Listener {
 	Assassin plugin;
 
-	public PlayerListener(final Assassin instance) {
+	public PlayerListener(Assassin instance) {
 		plugin = instance;
 	}
 
-	private final AssassinMode assassin = new AssassinMode(plugin);
-	private final PlayerData data = new PlayerData(plugin);
+	private AssassinMode assassin = new AssassinMode(plugin);
+	private PlayerData data = new PlayerData(plugin);
 
 	@EventHandler
 	private void onPlayerJoin(PlayerJoinEvent event) {
@@ -113,11 +113,11 @@ public class PlayerListener implements Listener {
 	 */
 	@SuppressWarnings({ "unused" })
 	@EventHandler(priority = EventPriority.LOW)
-	public void onPlayerInteract(final PlayerInteractEvent event) {
-		final Player player = event.getPlayer();
-		final Action action = event.getAction();
-		final Block block = event.getClickedBlock();
-		final ItemStack inHand = player.getItemInHand();
+	public void onPlayerInteract(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		Action action = event.getAction();
+		Block block = event.getClickedBlock();
+		ItemStack inHand = player.getItemInHand();
 		Material material;
 
 		/* Fix for NPE on interacting with air */

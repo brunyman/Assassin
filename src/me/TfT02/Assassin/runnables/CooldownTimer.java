@@ -1,21 +1,21 @@
 package me.TfT02.Assassin.runnables;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.AssassinMode;
 import me.TfT02.Assassin.util.PlayerData;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 public class CooldownTimer implements Runnable {
 	Assassin plugin;
 
-	public CooldownTimer(final Assassin instance) {
+	public CooldownTimer(Assassin instance) {
 		plugin = instance;
 	}
 
-	private final PlayerData data = new PlayerData(plugin);
-	private final AssassinMode assassin = new AssassinMode(plugin);
+	private PlayerData data = new PlayerData(plugin);
+	private AssassinMode assassin = new AssassinMode(plugin);
 
 	@Override
 	public void run() {
