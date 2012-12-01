@@ -23,13 +23,13 @@ public class AssassinMode {
 	private PlayerData data = new PlayerData(plugin);
 //	private LocationData locationutil = new LocationData(null);
 //	private ChatListener chat = new ChatListener(plugin);
-	
-    /**
-     * Applies all the Assassin traits,
-     * such as a different display name, nametag and helmet item.
-     * 
-     * @param player Player whom will be given the traits.
-     */
+
+	/**
+	 * Applies all the Assassin traits,
+	 * such as a different display name, nametag and helmet item.
+	 * 
+	 * @param player Player whom will be given the traits.
+	 */
 	public void applyTraits(final Player player){
 		data.addLoginTime(player);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
@@ -46,12 +46,12 @@ public class AssassinMode {
 		TagAPI.refreshPlayer(player);
 		applyMask(player);
 	}
-	
-    /**
-     * Activate Assassin mode.
-     * 
-     * @param player Player who's mode will be changed.
-     */
+
+	/**
+	 * Activate Assassin mode.
+	 * 
+	 * @param player Player who's mode will be changed.
+	 */
 	public void activateAssassin(Player player) {
 		data.addAssassin(player);
 		applyTraits(player);
@@ -80,12 +80,12 @@ public class AssassinMode {
 //
 //		chat.overridenNames.put(playername, newName);
 //	}
-	
-    /**
-     * Deactivate Assassin mode.
-     * 
-     * @param player Player who's mode will be changed.
-     */
+
+	/**
+	 * Deactivate Assassin mode.
+	 * 
+	 * @param player Player who's mode will be changed.
+	 */
 	public void deactivateAssassin(Player player) {
 		String playername = player.getName();
 		data.setNeutral(player);
@@ -99,40 +99,44 @@ public class AssassinMode {
 //		Location previousloc = PlayerData.playerLocation.get(playername);
 //		player.teleport(previousloc);
 	}
-	
-    /**
-     * Applies a mask on the players head.
-     * Also gives back the helmet the player was wearing, if any.
-     * 
-     * @param player Player who will get a mask.
-     */
+
+	/**
+	 * Applies a mask on the players head.
+	 * Also gives back the helmet the player was wearing, if any.
+	 * 
+	 * @param player Player who will get a mask.
+	 */
 	@SuppressWarnings("deprecation")
 	public void applyMask(Player player) {
-		//put block on head
 		PlayerInventory inventory = player.getInventory();
 		ItemStack blackWool = new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15);
 		ItemStack mask = itemNamer.setName(blackWool, ChatColor.DARK_RED + "Assassin Mask");
 		ItemStack mask1 = itemNamer.addLore(mask, ChatColor.GRAY + "Allows PVP");
+
 		//Sets hand item to air, can only activate assassin mode if you are holding a mask
 		//This will remove a whole stack of masks...
 
 		//give back helmet if player was wearing one
 		ItemStack itemHead = inventory.getHelmet();
+		int maskindex = inventory.first(mask1);
+
+		int emptySlot = inventory.firstEmpty();
 		if (itemHead != null)
-			inventory.setItemInHand(itemHead);
+			inventory.setItem(emptySlot, itemHead);
 		else
-			inventory.setItemInHand(new ItemStack(Material.AIR));
+			inventory.setItem(maskindex, new ItemStack(Material.AIR));
+//			inventory.setItemInHand(new ItemStack(Material.AIR));
 
 		inventory.setHelmet(mask1);
 		player.updateInventory();   // Needed until replacement available
 	}
-	
-    /**
-     * Removes a mask on the players head.
-     * Also puts back the helmet on the player, if any.
-     * 
-     * @param player Player who will lose a mask.
-     */
+
+	/**
+	 * Removes a mask on the players head.
+	 * Also puts back the helmet on the player, if any.
+	 * 
+	 * @param player Player who will lose a mask.
+	 */
 	@SuppressWarnings("deprecation")
 	public void removeMask(Player player) {
 		PlayerInventory inventory = player.getInventory();
@@ -158,12 +162,12 @@ public class AssassinMode {
 		}
 		player.updateInventory();   // Needed until replacement available
 	}
-	
-    /**
-     * Spawns a mask in inventory.
-     * 
-     * @param player Player who will receive a mask.
-     */
+
+	/**
+	 * Spawns a mask in inventory.
+	 * 
+	 * @param player Player who will receive a mask.
+	 */
 	@SuppressWarnings("deprecation")
 	public void spawnMask(Player player) {
 		PlayerInventory inventory = player.getInventory();

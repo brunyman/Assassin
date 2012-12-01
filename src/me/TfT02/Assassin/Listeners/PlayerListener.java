@@ -44,7 +44,7 @@ public class PlayerListener implements Listener {
 		}
 		else if (data.isAssassin(player)){
 			assassin.applyTraits(player);
-			data.addLoginTime(player);
+//			data.addLoginTime(player);
 		}
 		String status = data.getStatus(player);
 		player.sendMessage(ChatColor.YELLOW + "Your status = " + ChatColor.RED + status);
