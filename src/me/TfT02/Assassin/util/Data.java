@@ -8,12 +8,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 
 public class Data {
 	static Assassin plugin;
@@ -21,7 +21,6 @@ public class Data {
 	public Data(Assassin instance) {
 		plugin = instance;
 	}
-
 	/*
 	 * Credits to BlahBerrys
 	 */
@@ -62,7 +61,7 @@ public class Data {
 	}
 
 	public static void saveData() {
-		File f = new File(Assassin.getInstance().getDataFolder(), "data.bin");
+		File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
 		try {
 			if (!f.exists()) {
 				Assassin.getInstance().getDataFolder().mkdirs();
@@ -71,7 +70,10 @@ public class Data {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
 			oos.writeObject(PlayerData.playerData);
 			oos.writeObject(PlayerData.playerCooldown);
-			oos.writeObject(PlayerData.playerLocation);
+			oos.writeObject(PlayerData.playerLoginTime);
+			oos.writeObject(PlayerData.playerLogoutTime);
+			oos.writeObject(PlayerData.playerActiveTime);
+//			oos.writeObject(PlayerData.playerLocationData);
 			oos.flush();
 			oos.close();
 			Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
@@ -84,13 +86,16 @@ public class Data {
 
 	@SuppressWarnings({ "unchecked" })
 	public static void loadData() {
-		File f = new File(Assassin.getInstance().getDataFolder(), "data.bin");
+		File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
 		if (f.exists()) {
 			try {
 				@SuppressWarnings("resource") ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
 				PlayerData.playerData = (HashMap<String, String>) ois.readObject();
-				PlayerData.playerCooldown = (HashMap<String, Long>) ois.readObject();
-				PlayerData.playerLocation = (HashMap<String, Location>) ois.readObject();
+				PlayerData.playerCooldown = (HashSet<String>) ois.readObject();
+				PlayerData.playerLoginTime = (HashMap<String, Long>) ois.readObject();
+				PlayerData.playerLogoutTime = (HashMap<String, Long>) ois.readObject();
+				PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
+//				PlayerData.playerLocationData = (HashMap<String, LocationData>) ois.readObject();
 				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
 				Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");

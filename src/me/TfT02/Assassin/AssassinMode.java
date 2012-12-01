@@ -1,8 +1,8 @@
 package me.TfT02.Assassin;
 
-import java.util.HashMap;
-
 import me.TfT02.Assassin.Listeners.ChatListener;
+import me.TfT02.Assassin.runnables.EndCooldownTimer;
+import me.TfT02.Assassin.util.LocationData;
 import me.TfT02.Assassin.util.PlayerData;
 import me.TfT02.Assassin.util.itemNamer;
 
@@ -24,12 +24,13 @@ public class AssassinMode {
 	}
 
 	private PlayerData data = new PlayerData(plugin);
+//	private LocationData locationutil = new LocationData(null);
 	private ChatListener chat = new ChatListener(plugin);
 
 	public void activateAssassin(final Player player) {
 		//add player to data file
 		data.addAssassin(player);
-		data.addTimestamp(player);
+		data.addLoginTime(player);
 		Location location = player.getLocation();
 		PlayerData.playerLocation.put(player.getName(), location);
 		//send message to player who activated with how long he is stuck in assassin mode
@@ -37,8 +38,8 @@ public class AssassinMode {
 			@Override
 			public void run() {
 				player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
-				long time = data.cooldown;
-				player.sendMessage(ChatColor.DARK_RED + "Time left: " + time + "seconds");
+				long time = 60;
+				player.sendMessage(ChatColor.DARK_RED + "Time left: " + time + " seconds");
 			}
 		}, 20 * 2);
 
@@ -57,16 +58,16 @@ public class AssassinMode {
 					players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
 					players.sendMessage(ChatColor.YELLOW + "[DEBUG] RANGE = " + messageDistance);
 				} else {
-
 				}
 			}
 		}
 
 		//change name tag + display name
-//		player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+		player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 		changeName(player);
 		TagAPI.refreshPlayer(player);
 		applyMask(player);
+		data.addCooldownTimer(player);
 	}
 
 	private void changeName(Player player) {
@@ -84,10 +85,10 @@ public class AssassinMode {
 		player.setDisplayName(player.getName());
 		TagAPI.refreshPlayer(player);
 		removeMask(player);
-		chat.overridenNames.remove(playername);
+//		chat.overridenNames.remove(playername);
 
-		Location previousloc = PlayerData.playerLocation.get(playername);
-		player.teleport(previousloc);
+//		Location previousloc = PlayerData.playerLocation.get(playername);
+//		player.teleport(previousloc);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -127,7 +128,8 @@ public class AssassinMode {
 			helmetindex = inventory.first(Material.IRON_HELMET);
 		else if (inventory.contains(Material.GOLD_HELMET))
 			helmetindex = inventory.first(Material.GOLD_HELMET);
-		else if (inventory.contains(Material.LEATHER_HELMET)) helmetindex = inventory.first(Material.LEATHER_HELMET);
+		else if (inventory.contains(Material.LEATHER_HELMET))
+			helmetindex = inventory.first(Material.LEATHER_HELMET);
 		if (helmetindex >= 0) {
 			ItemStack helmet = inventory.getItem(helmetindex);
 			inventory.setItem(helmetindex, new ItemStack(0));

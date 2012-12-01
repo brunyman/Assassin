@@ -2,6 +2,8 @@ package me.TfT02.Assassin.Listeners;
 
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.AssassinMode;
+import me.TfT02.Assassin.runnables.EndCooldownTimer;
+import me.TfT02.Assassin.util.BlockChecks;
 import me.TfT02.Assassin.util.PlayerData;
 import me.TfT02.Assassin.util.itemNamer;
 
@@ -11,18 +13,17 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
@@ -41,9 +42,20 @@ public class PlayerListener implements Listener {
 		if (!data.isAssassin(player)) {
 			data.setNeutral(player);
 		}
-		data.addCurrentTimestamp(player);
+		else if (data.isAssassin(player)){
+			data.addLoginTime(player);
+		}
 		String status = data.getStatus(player);
 		player.sendMessage(ChatColor.YELLOW + "Your status = " + ChatColor.RED + status);
+	}
+
+	@EventHandler
+	private void onPlayerQuit(PlayerQuitEvent event){
+		Player player = event.getPlayer();
+		if (data.isAssassin(player)){
+			data.addLogoutTime(player);
+			data.saveActiveTime(player);
+		}
 	}
 
 	@EventHandler
@@ -51,8 +63,10 @@ public class PlayerListener implements Listener {
 		HumanEntity player = event.getWhoClicked();
 		if (data.isAssassin((Player) player)) {
 			ItemStack currentitem = event.getCurrentItem();
-			int id = currentitem.getTypeId();
-			if (id == 35) {
+			int id = currentitem.getTypeId();//TODO NPE in creativemode
+			if (id != 35) {
+			}
+			else {
 				String item = itemNamer.getName(currentitem);
 				String mask = ChatColor.DARK_RED + "Assassin Mask";
 				if (item == null) {
@@ -73,35 +87,18 @@ public class PlayerListener implements Listener {
 		if (de instanceof EntityDamageByEntityEvent) {
 			isEntityInvolved = true;
 		}
-		DamageCause cause = de.getCause();
 		if (isEntityInvolved) {
 			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
 			Entity damager = edbe.getDamager();
-			Projectile projectile = (Projectile) damager;
-
-			boolean isAssassinInvolved = false;
 			if (!data.bothNeutral(player, (Player) damager)) {
-				isAssassinInvolved = true;
-			}
-			if (isAssassinInvolved) {
-
 				String deathmessage = event.getDeathMessage();
 				String damagername = ((Player) damager).getDisplayName();
 				if (deathmessage.contains(damagername)) {
 					damagername = ChatColor.DARK_RED + "[ASSASSIN]";
 				}
-
-//				if (cause == DamageCause.ENTITY_ATTACK && damager instanceof Player) {
-////					event.setDeathMessage("Player " + name + " killed by" + damager);
-//					event.setDeathMessage(damager + " Assassin has killed" + name);
-//				}
-//				else if (cause == DamageCause.PROJECTILE && projectile instanceof Arrow) {
-//					if (projectile.getShooter() instanceof Player) {
-//						Player shooter = (Player) projectile.getShooter();
-////						event.setDeathMessage("Player " + name + " got shot by " + other.getDisplayName());
-//						event.setDeathMessage(shooter.getDisplayName() + " Assassin has killed" + name);
-//					}
-//				}
+				if (deathmessage.contains(name)) {
+					name = ChatColor.DARK_RED + "[ASSASSIN]";
+				}
 			}
 		}
 	}
@@ -111,7 +108,6 @@ public class PlayerListener implements Listener {
 	 * 
 	 * @param event The event to watch
 	 */
-	@SuppressWarnings({ "unused" })
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -123,29 +119,37 @@ public class PlayerListener implements Listener {
 		/* Fix for NPE on interacting with air */
 		if (block == null) {
 			material = Material.AIR;
-		} else {
+		}
+		else {
 			material = block.getType();
 		}
 
 		switch (action) {
-		case LEFT_CLICK_AIR:
-		case LEFT_CLICK_BLOCK:
-			break;
 		case RIGHT_CLICK_BLOCK:
 		case RIGHT_CLICK_AIR:
-			int inHandID = player.getItemInHand().getTypeId();
-			if (inHandID == 35) {
+			int inHandID = inHand.getTypeId();
+			if ((inHandID == 35) && BlockChecks.abilityBlockCheck(block)) {
 				ItemStack itemHand = player.getInventory().getItemInHand();
 				String item = itemNamer.getName(itemHand);
 				String mask = ChatColor.DARK_RED + "Assassin Mask";
 				if (item == null) {
 				} else if (item.equalsIgnoreCase(mask)) {
-					if (data.isAssassin(player)) {
-						player.sendMessage(ChatColor.RED + "You already are an Assassin.");
-					} else {
-						assassin.activateAssassin(player);
+
+					if(!data.cooledDown(player)){
+						player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
+					}
+					else {
+						if (data.isAssassin(player)) {
+							player.sendMessage(ChatColor.RED + "You already are an Assassin.");
+						} else {
+							System.out.println("Activating assassin");
+							assassin.activateAssassin(player);
+							long cooldowntime = 2400L;
+							plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+						}
 					}
 				}
+
 			}
 			break;
 		default:

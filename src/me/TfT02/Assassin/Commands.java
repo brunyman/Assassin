@@ -50,29 +50,23 @@ public class Commands implements CommandExecutor {
 							String status = data.getStatus(player);
 							player.sendMessage(ChatColor.YELLOW + "Your status = " + ChatColor.RED + status);
 
-							player.sendMessage(ChatColor.YELLOW + "Cooldown done = " + ChatColor.RED + data.isReady(player));
-
-							long cooldowntime = data.getCooldownTime(player);
-							player.sendMessage(ChatColor.YELLOW + "Cooldown time = " + ChatColor.RED + cooldowntime);
+							player.sendMessage(ChatColor.YELLOW + "Cooldown done = " + ChatColor.RED + data.cooledDown(player));
 //							range.checkIfAssassinNear(player);
 							return true;
 						}
 						if (args[0].equalsIgnoreCase("refresh")) {
 							TagAPI.refreshPlayer(player);
+							data.removeCooldown(player);
 							return true;
 						}
 						if (args[0].equalsIgnoreCase("mask")) {
 							assassin.spawnMask(player);
 							return true;
 						}
-						if (args[0].equalsIgnoreCase("setstamp")) {
-							data.addTimestamp(player);
-							player.sendMessage(ChatColor.YELLOW + "Timestamp " + ChatColor.RED + "set");
-							return true;
-						}
-						if (args[0].equalsIgnoreCase("readstamp")) {
-							long timestamp = data.getTimestamp(player);
-							player.sendMessage(ChatColor.YELLOW + "Timestamp = " + ChatColor.RED + timestamp);
+						if (args[0].equalsIgnoreCase("activetime")) {
+							long activetime = 0;
+							if (PlayerData.playerActiveTime.containsKey(player.getName())) activetime = PlayerData.playerActiveTime.get(player.getName());
+							player.sendMessage(ChatColor.YELLOW + "Active time " + ChatColor.RED + activetime);
 							return true;
 						}
 						return true;

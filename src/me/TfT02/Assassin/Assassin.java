@@ -8,6 +8,7 @@ import me.TfT02.Assassin.Listeners.ChatListener;
 import me.TfT02.Assassin.Listeners.EntityListener;
 import me.TfT02.Assassin.Listeners.PlayerListener;
 import me.TfT02.Assassin.Listeners.TagListener;
+import me.TfT02.Assassin.runnables.ActiveTimer;
 import me.TfT02.Assassin.util.Data;
 import me.TfT02.Assassin.util.Metrics;
 import net.milkbowl.vault.economy.Economy;
@@ -89,8 +90,8 @@ public class Assassin extends JavaPlugin {
 		}
 		BukkitScheduler scheduler = getServer().getScheduler();
 //        scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
-		//Cooldown timer (Runs every two seconds)
-//        scheduler.scheduleSyncRepeatingTask(this, new CooldownTimer(this), 0, 40);
+		//Active check timer (Runs every two seconds)
+		scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 40);
 	}
 
 	private void setupConfiguration() {
