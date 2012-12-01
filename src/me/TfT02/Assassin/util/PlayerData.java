@@ -6,7 +6,6 @@ import java.util.HashSet;
 
 import me.TfT02.Assassin.Assassin;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -133,11 +132,11 @@ public class PlayerData {
 	}
 
 	/**
-	 * Check if two players are in the same party.
+	 * Check if two players are both Neutral.
 	 * 
 	 * @param firstPlayer The first player
 	 * @param secondPlayer The second player
-	 * @return true if they are in the same party, false otherwise
+	 * @return true if they are both Neutral, false otherwise
 	 */
 	public boolean bothNeutral(Player firstPlayer, Player secondPlayer) {
 		boolean statusfirst = isNeutral(firstPlayer);

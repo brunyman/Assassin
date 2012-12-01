@@ -1,6 +1,5 @@
 package me.TfT02.Assassin;
 
-import me.TfT02.Assassin.runnables.AssassinRangeTimer;
 import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.ChatColor;
@@ -19,7 +18,7 @@ public class Commands implements CommandExecutor {
 
 	private AssassinMode assassin = new AssassinMode(plugin);
 	private PlayerData data = new PlayerData(plugin);
-	private AssassinRangeTimer range = new AssassinRangeTimer(plugin);
+//	private AssassinRangeTimer range = new AssassinRangeTimer(plugin);
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
