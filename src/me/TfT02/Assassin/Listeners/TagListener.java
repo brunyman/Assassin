@@ -22,7 +22,7 @@ public class TagListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onNameTag(PlayerReceiveNameTagEvent event) {
-		Player player = event.getPlayer();
+//		Player player = event.getPlayer();
 		Player namedPlayer = event.getNamedPlayer();
 		if (data.isAssassin(namedPlayer)) {
 			event.setTag(ChatColor.DARK_RED + "[ASSASSIN]");

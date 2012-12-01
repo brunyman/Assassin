@@ -38,5 +38,9 @@ public class AssassinRangeTimer implements Runnable {
 				}
 			}
 		}
-	}
+	}/*
+	SPAM PREVENTION IDEA
+	timer to check if in range => if yes set a hashmap boolean to true
+	if not set a hashmap boolean to false
+	if (!boolean hashmap) send message*/
 }
