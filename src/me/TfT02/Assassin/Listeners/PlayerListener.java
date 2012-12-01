@@ -43,6 +43,7 @@ public class PlayerListener implements Listener {
 			data.setNeutral(player);
 		}
 		else if (data.isAssassin(player)){
+			assassin.applyTraits(player);
 			data.addLoginTime(player);
 		}
 		String status = data.getStatus(player);
