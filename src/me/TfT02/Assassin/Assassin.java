@@ -9,6 +9,7 @@ import me.TfT02.Assassin.Listeners.EntityListener;
 import me.TfT02.Assassin.Listeners.PlayerListener;
 import me.TfT02.Assassin.Listeners.TagListener;
 import me.TfT02.Assassin.runnables.ActiveTimer;
+import me.TfT02.Assassin.runnables.AssassinRangeTimer;
 import me.TfT02.Assassin.util.Data;
 import me.TfT02.Assassin.util.Metrics;
 import net.milkbowl.vault.economy.Economy;
@@ -89,7 +90,7 @@ public class Assassin extends JavaPlugin {
 			System.out.println("Failed to submit stats.");
 		}
 		BukkitScheduler scheduler = getServer().getScheduler();
-//        scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
+        scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
 		//Active check timer (Runs every two seconds)
 		scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 40);
 	}
@@ -130,7 +131,6 @@ public class Assassin extends JavaPlugin {
 	 */
 	private void registerCommands() {
 		getCommand("assassin").setExecutor(new Commands(this));
-		getCommand("activate").setExecutor(new Commands(this));
 	}
 
 	/**

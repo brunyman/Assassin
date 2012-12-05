@@ -22,7 +22,7 @@ public class AssassinRangeTimer implements Runnable {
 	}
 
 	public void checkIfAssassinNear() {
-		double distance = plugin.getConfig().getDouble("Assassin.messages_distance");
+		double distance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
 		for (Player players : Bukkit.getServer().getOnlinePlayers()) {
 			for (String assassins : data.getOnlineAssassins()) {
 				if (players.getName().equals(assassins)) {
@@ -31,9 +31,26 @@ public class AssassinRangeTimer implements Runnable {
 
 					System.out.println("players " + players);
 					System.out.println("assassins " + assassins);
-					System.out.println("assassin " + assassin);
-					if (distance > 0) if (players.getWorld().equals(assassin.getWorld()) || players.getLocation().distance(assassin.getLocation()) > distance) {
-						players.sendMessage(ChatColor.DARK_RED + "ASSASSIN SIGHTED!");
+					System.out.println("==========");
+					if (distance > 0) {
+						if (players.getWorld().equals(assassin.getWorld()) || players.getLocation().distance(assassin.getLocation()) > distance) {
+							System.out.println("data.isAssassin(players) " + data.isAssassin(players));
+							System.out.println("data.firstTimeNear(players) " + data.firstTimeNear(players));
+							if(!data.isAssassin(players) && data.firstTimeNear(players)){
+								players.sendMessage(ChatColor.DARK_RED + "ASSASSIN SIGHTED!");
+								data.addNearSent(players);
+							}
+							else {
+								//Message already been sent, dont send it again.
+							}
+						} if (players.getWorld().equals(assassin.getWorld()) || players.getLocation().distance(assassin.getLocation()) < distance) {
+							if(!data.isAssassin(players) && !data.firstTimeNear(players)){
+								data.removeNearSent(players);
+							}
+							else {
+								
+							}
+						}
 					}
 				}
 			}
