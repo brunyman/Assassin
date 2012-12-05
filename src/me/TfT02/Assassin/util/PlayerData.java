@@ -1,6 +1,5 @@
 package me.TfT02.Assassin.util;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -25,23 +24,26 @@ public class PlayerData {
 	public long cooldown = 30L; //30 sec
 
 	public static HashMap<String, String> playerData = new HashMap<String, String>();
-//	public static HashMap<String, Long> playerCooldown = new HashMap<String, Long>();
 	public static HashSet<String> playerCooldown = new HashSet<String>();
-	public static HashMap<String, Location> playerLocation = new HashMap<String, Location>();
-	public static HashMap<String, LocationData> playerLocationData = new HashMap<String, LocationData>();
-
 	public static HashMap<String, Long> playerLoginTime = new HashMap<String, Long>();
 	public static HashMap<String, Long> playerLogoutTime = new HashMap<String, Long>();
 	public static HashMap<String, Long> playerActiveTime = new HashMap<String, Long>();
 
-	public ArrayList<String> assassins = new ArrayList<String>();
+	public static HashSet<String> assassinSet = new HashSet<String>();
+	public static HashSet<String> playerNear = new HashSet<String>();
+	public static HashMap<String, Location> playerLocation = new HashMap<String, Location>();
+	public static HashMap<String, LocationData> playerLocationData = new HashMap<String, LocationData>();
+
+//	public ArrayList<String> assassinsList = new ArrayList<String>();
 
 	public void addAssassin(Player player) {
 		playerData.put(player.getName(), "Assassin");
+		assassinSet.add(player.getName());
 	}
 
 	public void setNeutral(Player player) {
 		playerData.put(player.getName(), "Neutral");
+		assassinSet.remove(player.getName());
 	}
 
 	public void addLoginTime(Player player) {
@@ -73,7 +75,14 @@ public class PlayerData {
 		if (PlayerData.playerActiveTime.containsKey(player.getName())) activetime = PlayerData.playerActiveTime.get(player.getName());
 		return activetime;
 	}
-
+	
+	public Long getActiveTimeLeft(Player player) {
+		long activetime = getActiveTime(player);
+		long maxactive = 60;
+		long activetimeleft = maxactive - activetime;
+		return activetimeleft;
+	}
+	
 	public void resetActiveTime(Player player) {
 		long activetime = 0;
 		PlayerData.playerActiveTime.put(player.getName(), activetime);
@@ -91,6 +100,18 @@ public class PlayerData {
 		return true;
 	}
 
+	public void addNearSent(Player player){
+		playerNear.add(player.getName());
+	}
+	public void removeNearSent(Player player){
+		playerNear.remove(player.getName());
+	}
+	public boolean firstTimeNear(Player player){
+		if(playerNear.contains(player.getName())) {
+			return false;
+		}
+		return true;
+	}
 	public boolean isAssassin(Player player) {
 		if (playerData.containsKey(player.getName())) {
 			if (playerData.get(player.getName()) == null) {
@@ -148,10 +169,14 @@ public class PlayerData {
 		return false;
 	}
 
+//	public String[] getOnlineAssassins() {
+//		String[] assassins = new String[assassinsList.size()];
+//		assassins = (assassinsList.toArray(assassins));
+//		return assassins;
+//	}
 	public String[] getOnlineAssassins() {
-		String[] assassins = new String[playerData.size()];
-		assassins = (playerData.keySet().toArray(assassins));
+		String[] assassins = new String[assassinSet.size()];
+		assassins = (assassinSet.toArray(assassins));
 		return assassins;
 	}
-
 }

@@ -73,6 +73,7 @@ public class Data {
 			oos.writeObject(PlayerData.playerLoginTime);
 			oos.writeObject(PlayerData.playerLogoutTime);
 			oos.writeObject(PlayerData.playerActiveTime);
+			oos.writeObject(PlayerData.assassinSet);
 //			oos.writeObject(PlayerData.playerLocationData);
 			oos.flush();
 			oos.close();
@@ -95,6 +96,7 @@ public class Data {
 				PlayerData.playerLoginTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.playerLogoutTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
+				PlayerData.assassinSet = (HashSet<String>) ois.readObject();
 //				PlayerData.playerLocationData = (HashMap<String, LocationData>) ois.readObject();
 				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
