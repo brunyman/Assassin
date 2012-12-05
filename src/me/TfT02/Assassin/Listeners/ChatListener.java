@@ -1,15 +1,19 @@
 package me.TfT02.Assassin.Listeners;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import me.TfT02.Assassin.Assassin;
+import me.TfT02.Assassin.util.MessageScrambler;
+import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
@@ -19,35 +23,56 @@ public class ChatListener implements Listener {
 		plugin = instance;
 	}
 
-	// Or you could use synchronization
-	public Map<String, String> overridenNames = new ConcurrentHashMap<String, String>();
+	private PlayerData data = new PlayerData(plugin);
+	private MessageScrambler message = new MessageScrambler(plugin);
 
-	// Only use MONITOR if you absolutely must in order to override the Plugin
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
-		String overriden = overridenNames.get(player.getName());
-
-		if (overriden != null) {
-			event.getPlayer().setDisplayName(ChatColor.DARK_RED + overriden + ChatColor.RESET);
-		}
-	}
-	/*
-	private  PlayerData data = new PlayerData(plugin);
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		Player player = event.getPlayer();
+		String pName = ChatColor.DARK_RED + "[ASSASSIN]: " + ChatColor.RESET;
 		String msg = event.getMessage();
 
 		if (msg == null)
 			return;
-		
+
 		if (data.isAssassin(player)){
-			event.setFormat(ChatColor.DARK_RED + "[ASSASSIN] " +  ChatColor.RESET + msg);
+			String scrambled = message.Scrambled(msg);
+			event.setFormat(pName + scrambled);
+//			event.setFormat(pName + msg);
 		}
+	}
+	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	public void onDeath(PlayerDeathEvent event) {
+		Player player = event.getEntity();
+		String name = player.getName();
+		EntityDamageEvent de = player.getLastDamageCause();
+		
+		boolean isEntityInvolved = false;
+		if (de instanceof EntityDamageByEntityEvent) {
+			isEntityInvolved = true;
+		}
+		if (isEntityInvolved) {
+			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
+			Entity damager = edbe.getDamager();
+			if (data.isAssassin(player)){
+				String deathmessage = event.getDeathMessage();
+				String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET );
+				event.setDeathMessage(newmsg);
+			}
+			if (data.isAssassin((Player) damager)){
+				String damagername = ((HumanEntity) damager).getName();
+				String deathmessage = event.getDeathMessage();
+				String newmsg = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET );
+				event.setDeathMessage(newmsg);
+			}			
+		}
+		else if (data.isAssassin(player)){
+			String deathmessage = event.getDeathMessage();
+			String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET );
+			event.setDeathMessage(newmsg);
+		}
+	}
+
 	//		double chatDistance = 250;
 	//		// Chat Distance Stuff
 	//		if (chatDistance > 0)
@@ -56,6 +81,4 @@ public class ChatListener implements Listener {
 	//					event.getRecipients().remove(players);
 	//				}
 	//			}
-	}
-	*/
 }
