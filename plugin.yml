@@ -6,21 +6,38 @@ dev-url: http://dev.bukkit.org/server-mods/Assassin/
 version: 0.1
 softdepend: [ThisPluginDoesNotExist]
 commands:
-   Assassin:
-      description: Get information about the plugin.
-      permission: Assassin.assassin
-      permission-message: You don't have <permission>
-   Activate:
-      description: activate it
-      permission: Assassin.activate
+   assassin:
+      description: Usage /assassin help.
+      permission: assassin.assassin
       permission-message: You don't have <permission>
 permissions:
-    Assassin.*:
+    assassin.*:
         description: Gives access to all commands
+        default: op
         children:
-            Assassin.assassin: true
-    Assassin.defaults:
+            assassin.assassin: true
+            assassin.info: true
+            assassin.spawnmask: true
+            assassin.refresh: true
+            assassin.deactivate: true
+    assassin.defaults:
         description: Gives access to default commands
         default: true
         children:
             Assassin.assassin: true
+            Assassin.info: true
+    assassin.assassin:
+        description: Allows players to activate Assassin Mode.
+        default: true
+    assassin.info:
+        description: Check your status and see how long you're in Assassin Mode.
+        default: true
+    assassin.spawnmask:
+        description: Spawn Assassin masks.
+        default: false
+    assassin.refresh:
+        description: Refresh the cooldown of a certain player.
+        default: false
+    assassin.deactivate:
+        description: Deactivates Assasssin Mode of a certain player.
+        default: false
