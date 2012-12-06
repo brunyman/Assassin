@@ -29,6 +29,8 @@ public class Assassin extends JavaPlugin {
 	public boolean debug_mode = false;
 
 	public static Economy econ = null;
+	
+	private Data dataUtil = new Data(this);
 
 	/**
 	 * Run things on enable.
@@ -63,7 +65,7 @@ public class Assassin extends JavaPlugin {
 //			e.printStackTrace();
 //		}
 
-		Data.loadData();
+		dataUtil.loadData();
 		if (getConfig().getBoolean("General.stats_tracking_enabled")) {
 			try {
 				Metrics metrics = new Metrics(this);
@@ -132,7 +134,7 @@ public class Assassin extends JavaPlugin {
 	 */
 	@Override
 	public void onDisable() {
-		Data.saveData();
+		dataUtil.saveData();
 		this.getServer().getScheduler().cancelTasks(this);
 	}
 }

@@ -16,7 +16,7 @@ import me.TfT02.Assassin.Assassin;
 import org.bukkit.Bukkit;
 
 public class Data {
-	static Assassin plugin;
+	Assassin plugin;
 
 	public Data(Assassin instance) {
 		plugin = instance;
@@ -25,7 +25,7 @@ public class Data {
 	 * Credits to BlahBerrys
 	 */
 
-	private static void copy(InputStream in, File file) {
+	private void copy(InputStream in, File file) {
 		try {
 			OutputStream out = new FileOutputStream(file);
 			byte[] buf = new byte[1024];
@@ -40,7 +40,7 @@ public class Data {
 		}
 	}
 
-	public static void deleteDir(File dir) {
+	public void deleteDir(File dir) {
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
 			for (int i = 0; i < children.length; i++) {
@@ -50,7 +50,7 @@ public class Data {
 		dir.delete();
 	}
 
-	public static void createFiles() throws Exception {
+	public void createFiles() throws Exception {
 		File configFile = new File(plugin.getDataFolder(), "config.yml");
 
 		if (!configFile.exists()) {
@@ -60,7 +60,7 @@ public class Data {
 		}
 	}
 
-	public static void saveData() {
+	public void saveData() {
 		File f = new File(plugin.getDataFolder(), "data.dat");
 		try {
 			if (!f.exists()) {
@@ -86,7 +86,7 @@ public class Data {
 	}
 
 	@SuppressWarnings({ "unchecked" })
-	public static void loadData() {
+	public void loadData() {
 		File f = new File(plugin.getDataFolder(), "data.dat");
 		if (f.exists()) {
 			try {
