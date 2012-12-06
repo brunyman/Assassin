@@ -30,7 +30,7 @@ public class AssassinMode {
 	 */
 	public void applyTraits(final Player player){
 		data.addLoginTime(player);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
 			@Override
 			public void run() {
 				player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
@@ -56,7 +56,7 @@ public class AssassinMode {
 		Location loc = player.getLocation();
 		loc.setY(player.getWorld().getMaxHeight() + 30D);
 		player.getWorld().strikeLightningEffect(loc);
-		double messageDistance = plugin.getConfig().getDouble("Assassin.messages_distance");
+		double messageDistance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
 		for (Player players : player.getWorld().getPlayers()) {
 			if (messageDistance > 0) {
 				if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
@@ -142,7 +142,7 @@ public class AssassinMode {
 		ItemStack itemHead = inventory.getHelmet();
 		if (itemHead.getTypeId() != 0) inventory.setHelmet(new ItemStack(0));
 		//Gives back the mask if config says so
-		if (plugin.getConfig().getBoolean("Assassin.return_mask")) spawnMask(player, 1);
+		if (Assassin.getInstance().getConfig().getBoolean("Assassin.return_mask")) spawnMask(player, 1);
 
 		//If the player was wearing a helmet, put it back on
 		int helmetindex = -1;

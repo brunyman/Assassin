@@ -51,20 +51,20 @@ public class Data {
 	}
 
 	public static void createFiles() throws Exception {
-		File configFile = new File(plugin.getDataFolder(), "config.yml");
+		File configFile = new File(Assassin.getInstance().getDataFolder(), "config.yml");
 
 		if (!configFile.exists()) {
 			configFile.getParentFile().mkdirs();
-			copy(plugin.getResource("config.yml"), configFile);
-			plugin.getLogger().log(Level.INFO, "'config.yml' didn't exist. Created it.");
+			copy(Assassin.getInstance().getResource("config.yml"), configFile);
+			Assassin.getInstance().getLogger().log(Level.INFO, "'config.yml' didn't exist. Created it.");
 		}
 	}
 
 	public static void saveData() {
-		File f = new File(plugin.getDataFolder(), "data.dat");
+		File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
 		try {
 			if (!f.exists()) {
-				plugin.getDataFolder().mkdirs();
+				Assassin.getInstance().getDataFolder().mkdirs();
 				f.createNewFile();
 			}
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
@@ -77,9 +77,9 @@ public class Data {
 			oos.writeObject(PlayerData.playerLocationData);
 			oos.flush();
 			oos.close();
-			plugin.getLogger().log(Level.INFO, "Saved data successfully.");
+			Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
 		} catch (Exception e) {
-			plugin.getLogger().log(Level.INFO, "Failed to save data.");
+			Assassin.getInstance().getLogger().log(Level.INFO, "Failed to save data.");
 			e.printStackTrace();
 			return;
 		}
@@ -87,7 +87,7 @@ public class Data {
 
 	@SuppressWarnings({ "unchecked" })
 	public static void loadData() {
-		File f = new File(plugin.getDataFolder(), "data.dat");
+		File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
 		if (f.exists()) {
 			try {
 				@SuppressWarnings("resource") ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
@@ -98,11 +98,11 @@ public class Data {
 				PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.assassinSet = (HashSet<String>) ois.readObject();
 				PlayerData.playerLocationData = (HashMap<String, LocationData>) ois.readObject();
-				plugin.getLogger().log(Level.INFO, "Loaded data successfully.");
+				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
-				plugin.getLogger().log(Level.INFO, "Failed to load data.");
+				Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");
 				e.printStackTrace();
-				Bukkit.getServer().getPluginManager().disablePlugin(plugin);
+				Bukkit.getServer().getPluginManager().disablePlugin(Assassin.getInstance());
 				return;
 			}
 		}

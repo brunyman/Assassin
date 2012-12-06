@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
 public class Assassin extends JavaPlugin {
+	public static Assassin instance;
 	private TagListener tagListener = new TagListener(this);
 	private EntityListener entityListener = new EntityListener(this);
 	private PlayerListener playerListener = new PlayerListener(this);
@@ -30,11 +31,16 @@ public class Assassin extends JavaPlugin {
 
 	public static Economy econ = null;
 
+	public static Assassin getInstance() {
+		return instance;
+	}
+
 	/**
 	 * Run things on enable.
 	 */
 	@Override
 	public void onEnable() {
+		instance = this;
 		PluginManager pm = getServer().getPluginManager();
 //		if (pm.getPlugin("Spout") != null)
 //			spoutEnabled = true;
