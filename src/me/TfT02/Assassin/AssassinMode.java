@@ -1,6 +1,5 @@
 package me.TfT02.Assassin;
 
-import me.TfT02.Assassin.util.LocationData;
 import me.TfT02.Assassin.util.NamedItemStack;
 import me.TfT02.Assassin.util.PlayerData;
 import org.bukkit.Bukkit;
@@ -61,7 +60,6 @@ public class AssassinMode {
 			if (messageDistance > 0) {
 				if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
 					players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
-					players.sendMessage(ChatColor.YELLOW + "[DEBUG] RANGE = " + messageDistance);
 				} else {
 				}
 			}

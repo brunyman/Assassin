@@ -197,7 +197,7 @@ public class PlayerData {
     }
 
     public List<Player> getOnlineAssassins() {
-        Player[] onlinePlayers = plugin.getServer().getOnlinePlayers();
+        Player[] onlinePlayers = Assassin.getInstance().getServer().getOnlinePlayers();
         List<Player> onlineAssassins = new ArrayList<Player>();
 
         for (Player onlinePlayer : onlinePlayers) {

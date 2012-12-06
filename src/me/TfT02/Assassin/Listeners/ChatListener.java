@@ -39,10 +39,10 @@ public class ChatListener implements Listener {
 			return;
 
 		if (data.getAssassinChatMode(player)) {
+//			String number = data.getAssassinNumber(player);
+			String number = "1";
+			String prefix = ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + number + ChatColor.DARK_GRAY + ") " + ChatColor.RESET;
 			for (Player assassin : data.getOnlineAssassins()) {
-//				String number = data.getAssassinNumber(player);
-				String number = "1";
-				String prefix = ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + number + ChatColor.DARK_GRAY + ") ";
 				assassin.sendMessage(prefix + msg);
 			}
 			float diceroll = random.nextInt(100);
@@ -50,21 +50,23 @@ public class ChatListener implements Listener {
 			double chatDistance = 250;
 			if (chance > 0 && chance < diceroll){
 				if (chatDistance > 0){
-					for (Player players : plugin.getServer().getOnlinePlayers()) {
+					for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
 						if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
 							event.getRecipients().remove(players);
 						}
 						else {
-							//Show scrambled chat messages
-							String scrambled = message.Scrambled(msg);
-							event.setFormat(pName + scrambled);
+							if(!data.isAssassin(players)){
+								//Show scrambled chat messages
+								String scrambled = message.Scrambled(msg);
+								event.setFormat(pName + scrambled);
+							}
 						}
 					}
 				}
 			}
 		}
 		else {
-			//Do nothing with chat
+			event.setFormat(pName + msg);
 		}
 	}
 

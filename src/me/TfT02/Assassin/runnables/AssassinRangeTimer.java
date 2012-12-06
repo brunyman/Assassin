@@ -23,7 +23,7 @@ public class AssassinRangeTimer implements Runnable {
 
 	public void checkIfAssassinNear() {
 		double distance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
-		for (Player players : plugin.getServer().getOnlinePlayers()){
+		for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()){
 			for (Player assassin : data.getOnlineAssassins()) {
 				System.out.println("Checking if Assassin near.");
 				System.out.println("assassins " + assassin);
