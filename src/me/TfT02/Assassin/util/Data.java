@@ -74,7 +74,7 @@ public class Data {
 			oos.writeObject(PlayerData.playerLogoutTime);
 			oos.writeObject(PlayerData.playerActiveTime);
 			oos.writeObject(PlayerData.assassinSet);
-//			oos.writeObject(PlayerData.playerLocationData);
+			oos.writeObject(PlayerData.playerLocationData);
 			oos.flush();
 			oos.close();
 			Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
@@ -97,7 +97,7 @@ public class Data {
 				PlayerData.playerLogoutTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.assassinSet = (HashSet<String>) ois.readObject();
-//				PlayerData.playerLocationData = (HashMap<String, LocationData>) ois.readObject();
+				PlayerData.playerLocationData = (HashMap<String, LocationData>) ois.readObject();
 				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
 				Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");

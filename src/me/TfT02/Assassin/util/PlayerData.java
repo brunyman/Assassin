@@ -1,7 +1,9 @@
 package me.TfT02.Assassin.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import me.TfT02.Assassin.Assassin;
 
@@ -16,12 +18,8 @@ public class PlayerData {
 		plugin = instance;
 	}
 
-//	/* Toggles */
-//	private boolean loaded;
-//	private boolean assassin;
-
 //	public long cooldown = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length"); //30 sec
-	public long cooldown = 30L; //30 sec
+	public long cooldown = 30L; //30 sec //TODO Config
 
 	public static HashMap<String, String> playerData = new HashMap<String, String>();
 	public static HashSet<String> playerCooldown = new HashSet<String>();
@@ -29,7 +27,9 @@ public class PlayerData {
 	public static HashMap<String, Long> playerLogoutTime = new HashMap<String, Long>();
 	public static HashMap<String, Long> playerActiveTime = new HashMap<String, Long>();
 
-	public static HashSet<String> assassinSet = new HashSet<String>();
+	public static List<String> assassins = new ArrayList<String>();
+	public static HashSet<String> assassinSet = new HashSet<String>();	
+	public static HashSet<String> assassinChatSet = new HashSet<String>();
 	public static HashSet<String> playerNear = new HashSet<String>();
 	public static HashMap<String, Location> playerLocation = new HashMap<String, Location>();
 	public static HashMap<String, LocationData> playerLocationData = new HashMap<String, LocationData>();
@@ -75,14 +75,14 @@ public class PlayerData {
 		if (PlayerData.playerActiveTime.containsKey(player.getName())) activetime = PlayerData.playerActiveTime.get(player.getName());
 		return activetime;
 	}
-	
+
 	public Long getActiveTimeLeft(Player player) {
 		long activetime = getActiveTime(player);
-		long maxactive = 60;
+		long maxactive = 60;//TODO Config
 		long activetimeleft = maxactive - activetime;
 		return activetimeleft;
 	}
-	
+
 	public void resetActiveTime(Player player) {
 		long activetime = 0;
 		PlayerData.playerActiveTime.put(player.getName(), activetime);
@@ -98,6 +98,18 @@ public class PlayerData {
 			return false;
 		}
 		return true;
+	}
+
+	public void addLocation(Player player, Location location){
+		playerLocationData.put(player.getName(), new LocationData(location));
+//		playerLocationData.put(player.getName(), new LocationData(location).toString());
+//		playerLocation.put(player.getName(), location);
+	}
+
+	public Location getLocation(Player player){
+		LocationData locationdata = playerLocationData.get(player.getName());
+		Location location = locationdata.getLocation();
+		return location;
 	}
 
 	public void addNearSent(Player player){
@@ -174,9 +186,43 @@ public class PlayerData {
 //		assassins = (assassinsList.toArray(assassins));
 //		return assassins;
 //	}
-	public String[] getOnlineAssassins() {
+	public String[] getOnlineAssassins1() {
 		String[] assassins = new String[assassinSet.size()];
 		assassins = (assassinSet.toArray(assassins));
 		return assassins;
+	}
+	
+    public List<String> getAssassins() {
+        return assassins;
+    }
+
+    public List<Player> getOnlineAssassins() {
+        Player[] onlinePlayers = plugin.getServer().getOnlinePlayers();
+        List<Player> onlineAssassins = new ArrayList<Player>();
+
+        for (Player onlinePlayer : onlinePlayers) {
+            if (assassins.contains(onlinePlayer.getName())) {
+            	onlineAssassins.add(onlinePlayer);
+            }
+        }
+
+        return onlineAssassins;
+    }
+	
+	
+	
+	public void enterAssassinChat(Player player) {
+		assassinChatSet.add(player.getName());
+	}
+
+	public void leaveAssassinChat(Player player) {
+		assassinChatSet.remove(player.getName());
+	}
+
+	public boolean getAssassinChatMode(Player player) {
+		if (assassinChatSet.contains(player.getName())){
+			return true;
+		}
+		return false;
 	}
 }

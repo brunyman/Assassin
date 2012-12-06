@@ -22,7 +22,9 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class PlayerListener implements Listener {
 	Assassin plugin;
@@ -47,11 +49,18 @@ public class PlayerListener implements Listener {
 //			data.addLoginTime(player);
 		}
 		if (!data.cooledDown(player)) {
-			long cooldowntime = 1200L;
+			long cooldowntime = 1200L;//TODO Config
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 		}
 		String status = data.getStatus(player);
 		player.sendMessage(ChatColor.YELLOW + "Your status = " + ChatColor.RED + status);
+	}	@EventHandler
+	
+	private void onPlayerRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
+		if (data.isAssassin(player)){
+			assassin.applyMaskForce(player);
+		}
 	}
 
 	@EventHandler
@@ -60,39 +69,16 @@ public class PlayerListener implements Listener {
 		if (data.isAssassin(player)){
 			data.addLogoutTime(player);
 			data.saveActiveTime(player);
+			data.leaveAssassinChat(player);
 		}
 	}
 
 	@EventHandler
 	void onInventoryClick(InventoryClickEvent event) {
-		/*
 		HumanEntity player = event.getWhoClicked();
+		ItemStack itemstack = event.getCurrentItem();
+		SlotType slotType = event.getSlotType();
 		if (data.isAssassin((Player) player)) {
-			ItemStack currentitem = event.getCurrentItem();
-			int id = currentitem.getTypeId();
-			if (id == 35) {
-				SlotType slotType = event.getSlotType();
-				switch (slotType) {
-				case ARMOR:
-//					String item = itemNamer.getName(currentitem);
-					String item = new NamedItemStack(new ItemStack(currentitem)).getName();
-					String mask = ChatColor.DARK_RED + "Assassin Mask";
-					if (item == null) {
-					} else if (item.equalsIgnoreCase(mask)) {
-						event.setCancelled(true);
-					}
-				default:
-					break;
-				}
-			}
-			else {
-				//NOTHING HERE
-			}
-		}*/
-		HumanEntity player = event.getWhoClicked();
-		if (data.isAssassin((Player) player)) {
-			ItemStack itemstack = event.getCurrentItem();
-			SlotType slotType = event.getSlotType();
 			switch (slotType) {
 			case ARMOR:
 				if (itemcheck.isMask(itemstack)) {
@@ -103,8 +89,15 @@ public class PlayerListener implements Listener {
 			}
 		}
 		else {
-			//NOT AN ASSASSIN
-			//TODO Perhaps if neutral and clicked on mask in armor slot, delete this mask
+			switch (slotType) {
+			case ARMOR:
+				if (itemcheck.isMask(itemstack)) {
+					PlayerInventory inventory = player.getInventory();
+					inventory.setHelmet(new ItemStack(Material.AIR));
+				}
+			default:
+				break;
+			}
 		}
 	}
 
@@ -143,20 +136,20 @@ public class PlayerListener implements Listener {
 					if (!player.hasPermission("assassin.assassin")) {
 						player.sendMessage(ChatColor.RED + "You haven't got permission.");
 					}
-				else{
-					if(!data.cooledDown(player)){
-						player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
-					}
-					else {
-						if (data.isAssassin(player)) {
-							player.sendMessage(ChatColor.RED + "You already are an Assassin.");
-						} else {
-							System.out.println("Activating assassin");
-							assassin.activateAssassin(player);
-							long cooldowntime = 2400L;
-							plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+					else{
+						if(!data.cooledDown(player)){
+							player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
 						}
-					}
+						else {
+							if (data.isAssassin(player)) {
+								player.sendMessage(ChatColor.RED + "You already are an Assassin.");
+							} else {
+								System.out.println("Activating assassin");
+								assassin.activateAssassin(player);
+								long cooldowntime = 2400L;//TODO Config
+								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+							}
+						}
 					}
 				}
 			}

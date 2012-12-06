@@ -1,6 +1,11 @@
 package me.TfT02.Assassin.util;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 
@@ -53,7 +58,7 @@ public class MessageScrambler {
 		boolean replaceAllX = random.nextBoolean();
 		boolean replaceAllY = random.nextBoolean();
 		boolean replaceAllZ = random.nextBoolean();
-		
+
 		String scrambled = msg;
 		if (replaceAllA) scrambled = msg.replaceAll("a", ChatColor.MAGIC + "a" + ChatColor.RESET) ;
 		if (replaceAllB) scrambled = msg.replaceAll("b", ChatColor.MAGIC + "b" + ChatColor.RESET) ;
@@ -83,17 +88,55 @@ public class MessageScrambler {
 		if (replaceAllZ) scrambled = msg.replaceAll("z", ChatColor.MAGIC + "z" + ChatColor.RESET) ;
 		return scrambled;
 	}
+
 	public String Scrambled(String msg) {
-		boolean replaceAllA = random.nextBoolean();
-		boolean replaceAllB = random.nextBoolean();
-		boolean replaceAllC = random.nextBoolean();
-		boolean replaceAllD = random.nextBoolean();
+		String scrambled;
+//		List<String> elements = Arrays.asList("ax", "bx", "dx", "c", "acc");
+//		final String patternStr = join(elements, "|"); //build string "ax|bx|dx|c|acc" 
+//		Pattern p = Pattern.compile(patternStr);
 		
-		String scrambled = msg;
-		if (replaceAllA) scrambled = msg.replaceAll("a", ChatColor.MAGIC + "a" + ChatColor.RESET).replaceAll("k", ChatColor.MAGIC + "k" + ChatColor.RESET).replaceAll("r", ChatColor.MAGIC + "r" + ChatColor.RESET).replaceAll("x", ChatColor.MAGIC + "x" + ChatColor.RESET).replaceAll("h", ChatColor.MAGIC + "h" + ChatColor.RESET).replaceAll("j", ChatColor.MAGIC + "j" + ChatColor.RESET).replaceAll("q", ChatColor.MAGIC + "q" + ChatColor.RESET);
-		if (replaceAllB) scrambled = msg.replaceAll("b", ChatColor.MAGIC + "b" + ChatColor.RESET).replaceAll("y", ChatColor.MAGIC + "y" + ChatColor.RESET).replaceAll("e", ChatColor.MAGIC + "e" + ChatColor.RESET).replaceAll("t", ChatColor.MAGIC + "t" + ChatColor.RESET).replaceAll("g", ChatColor.MAGIC + "g" + ChatColor.RESET).replaceAll("l", ChatColor.MAGIC + "l" + ChatColor.RESET).replaceAll("n", ChatColor.MAGIC + "n" + ChatColor.RESET);
-		if (replaceAllC) scrambled = msg.replaceAll("c", ChatColor.MAGIC + "c" + ChatColor.RESET).replaceAll("p", ChatColor.MAGIC + "p" + ChatColor.RESET).replaceAll("i", ChatColor.MAGIC + "i" + ChatColor.RESET).replaceAll("o", ChatColor.MAGIC + "o" + ChatColor.RESET).replaceAll("s", ChatColor.MAGIC + "s" + ChatColor.RESET).replaceAll("u", ChatColor.MAGIC + "u" + ChatColor.RESET);
-		if (replaceAllD) scrambled = msg.replaceAll("d", ChatColor.MAGIC + "d" + ChatColor.RESET).replaceAll("w", ChatColor.MAGIC + "w" + ChatColor.RESET).replaceAll("m", ChatColor.MAGIC + "m" + ChatColor.RESET).replaceAll("f", ChatColor.MAGIC + "f" + ChatColor.RESET).replaceAll("z", ChatColor.MAGIC + "z" + ChatColor.RESET).replaceAll("v", ChatColor.MAGIC + "v" + ChatColor.RESET);
+		List<String> abc = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+		final String patternStr = join(abc, "|"); //build string "ax|bx|dx|c|acc" 
+		Pattern p = Pattern.compile(patternStr);
+		
+		Matcher m = p.matcher(msg);
+		StringBuffer sb = new StringBuffer();
+		Random rand = new Random();
+		while (m.find()){
+			String randomSymbol = abc.get(rand.nextInt(abc.size()));
+			m.appendReplacement(sb,randomSymbol);
+		}
+		m.appendTail(sb);
+
+		scrambled = sb.toString();
 		return scrambled;
+	}
+/*
+ * Some funky way to replace strings and stuffs
+	public static void main(String[] args) {
+		List<String> elements = Arrays.asList("ax", "bx", "dx", "c", "acc");
+		final String patternStr = join(elements, "|"); //build string "ax|bx|dx|c|acc" 
+		Pattern p = Pattern.compile(patternStr);
+		Matcher m = p.matcher("ax 5 5 dx 3 acc c ax bx");
+		StringBuffer sb = new StringBuffer();
+		Random rand = new Random();
+		while (m.find()){
+			String randomSymbol = elements.get(rand.nextInt(elements.size()));
+			m.appendReplacement(sb,randomSymbol);
+		}
+		m.appendTail(sb);
+		System.out.println(sb);
+	}
+*/
+	/**
+	 * this method is only needed to generate the string ax|bx|dx|c|acc in a clean way....
+	 * @see org.apache.commons.lang.StringUtils.join    for a more common alternative...
+	 */
+	public static String join(List<String> s, String delimiter) {
+		if (s.isEmpty()) return "";
+		Iterator<String> iter = s.iterator();
+		StringBuffer buffer = new StringBuffer(iter.next());
+		while (iter.hasNext()) buffer.append(delimiter).append(iter.next());
+		return buffer.toString();
 	}
 }

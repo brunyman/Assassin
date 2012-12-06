@@ -1,5 +1,6 @@
 package me.TfT02.Assassin;
 
+import me.TfT02.Assassin.util.LocationData;
 import me.TfT02.Assassin.util.NamedItemStack;
 import me.TfT02.Assassin.util.PlayerData;
 import org.bukkit.Bukkit;
@@ -20,8 +21,6 @@ public class AssassinMode {
 	}
 
 	private PlayerData data = new PlayerData(plugin);
-//	private LocationData locationutil = new LocationData(null);
-//	private ChatListener chat = new ChatListener(plugin);
 
 	/**
 	 * Applies all the Assassin traits,
@@ -41,7 +40,6 @@ public class AssassinMode {
 		}, 20 * 1);
 
 		player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-//		changeName(player); Doesnt work properly
 		TagAPI.refreshPlayer(player);
 	}
 
@@ -54,11 +52,10 @@ public class AssassinMode {
 		data.addAssassin(player);
 		applyTraits(player);
 		Location location = player.getLocation();
-		PlayerData.playerLocation.put(player.getName(), location);
+		data.addLocation(player, location);
 		Location loc = player.getLocation();
 		loc.setY(player.getWorld().getMaxHeight() + 30D);
 		player.getWorld().strikeLightningEffect(loc);
-//		double messageDistance = 250;
 		double messageDistance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
 		for (Player players : player.getWorld().getPlayers()) {
 			if (messageDistance > 0) {
@@ -72,13 +69,6 @@ public class AssassinMode {
 		applyMask(player);
 		data.addCooldownTimer(player);
 	}
-//
-//	private void changeName(Player player) {
-//		String playername = player.getName();
-//		String newName = "[ASSASSIN]";
-//
-//		chat.overridenNames.put(playername, newName);
-//	}
 
 	/**
 	 * Deactivate Assassin mode.
@@ -93,10 +83,8 @@ public class AssassinMode {
 		player.setDisplayName(playername);
 		TagAPI.refreshPlayer(player);
 		removeMask(player);
-//		chat.overridenNames.remove(playername);
-
-//		Location previousloc = PlayerData.playerLocation.get(playername);
-//		player.teleport(previousloc);
+		Location previousLocation = data.getLocation(player);
+		player.teleport(previousLocation);
 	}
 
 	/**
@@ -111,7 +99,7 @@ public class AssassinMode {
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
 		
 		//Sets hand item to air, can only activate assassin mode if you are holding a mask
-		//This will remove a whole stack of masks...
+		//TODO FIX: This will remove a whole stack of masks...
 
 		//give back helmet if player was wearing one
 		ItemStack itemHead = inventory.getHelmet();
@@ -186,7 +174,6 @@ public class AssassinMode {
 		
 		int emptySlot = inventory.firstEmpty();
 		inventory.setItem(emptySlot, assassinMask);
-//		inventory.setItem(emptySlot, mask1);
 		player.updateInventory();
 	}
 }

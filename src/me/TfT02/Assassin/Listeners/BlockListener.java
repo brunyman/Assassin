@@ -1,9 +1,7 @@
 package me.TfT02.Assassin.Listeners;
 
 import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.itemNamer;
-
-import org.bukkit.ChatColor;
+import me.TfT02.Assassin.util.ItemChecks;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,13 +16,13 @@ public class BlockListener implements Listener {
 		plugin = instance;
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	private ItemChecks itemcheck = new ItemChecks(plugin);
+	
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onBlockPlace(BlockPlaceEvent event) {
 		ItemStack itemHand = event.getItemInHand();
 		if (itemHand.getType().equals(Material.WOOL)) {
-			String item = itemNamer.getName(itemHand);
-			String mask = ChatColor.DARK_RED + "Assassin Mask";
-			if (item != null && item.equalsIgnoreCase(mask)) {
+			if (itemcheck.isMask(itemHand)) {
 				event.setCancelled(true);
 			}
 		}

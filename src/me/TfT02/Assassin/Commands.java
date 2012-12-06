@@ -70,10 +70,18 @@ public class Commands implements CommandExecutor {
 							}
 							return true;
 						}
-						if (args[0].equalsIgnoreCase("activetime")) {
-							long activetime = 0;
-							if (PlayerData.playerActiveTime.containsKey(player.getName())) activetime = PlayerData.playerActiveTime.get(player.getName());
-							player.sendMessage(ChatColor.YELLOW + "Active time " + ChatColor.RED + activetime);
+						if (args[0].equalsIgnoreCase("chat")) {
+							if (data.isAssassin(player)) {
+								if (!data.getAssassinChatMode(player)){
+									data.enterAssassinChat(player);
+									player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
+								}
+								else{
+									data.leaveAssassinChat(player);
+									player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
+								}
+							}
+							else player.sendMessage(ChatColor.RED + "You must be an Assassin to use this.");
 							return true;
 						}
 					case 2:

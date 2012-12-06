@@ -1,5 +1,7 @@
 package me.TfT02.Assassin.Listeners;
 
+import java.util.Random;
+
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.util.MessageScrambler;
 import me.TfT02.Assassin.util.PlayerData;
@@ -25,6 +27,7 @@ public class ChatListener implements Listener {
 
 	private PlayerData data = new PlayerData(plugin);
 	private MessageScrambler message = new MessageScrambler(plugin);
+	private final Random random = new Random();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
@@ -35,18 +38,77 @@ public class ChatListener implements Listener {
 		if (msg == null)
 			return;
 
-		if (data.isAssassin(player)){
-			String scrambled = message.Scrambled(msg);
-			event.setFormat(pName + scrambled);
-//			event.setFormat(pName + msg);
+		if (data.getAssassinChatMode(player)) {
+			for (Player assassin : data.getOnlineAssassins()) {
+//				String number = data.getAssassinNumber(player);
+				String number = "1";
+				String prefix = ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + number + ChatColor.DARK_GRAY + ") ";
+				assassin.sendMessage(prefix + msg);
+			}
+			float diceroll = random.nextInt(100);
+			int chance = 10; //TODO Config
+			double chatDistance = 250;
+			if (chance > 0 && chance < diceroll){
+				if (chatDistance > 0){
+					for (Player players : plugin.getServer().getOnlinePlayers()) {
+						if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
+							event.getRecipients().remove(players);
+						}
+						else {
+							//Show scrambled chat messages
+							String scrambled = message.Scrambled(msg);
+							event.setFormat(pName + scrambled);
+						}
+					}
+				}
+			}
+		}
+		else {
+			//Do nothing with chat
 		}
 	}
+
+
+
+//		else
+//			event.setFormat(pName + msg);
+//	}
+//		if (data.isAssassin(player)){
+//			if (data.getAssassinChatMode(player)){
+//				float diceroll = random.nextInt(100);
+//				int chance = 10; //TODO Config
+//				double chatDistance = 250;
+//				for (Player players : plugin.getServer().getOnlinePlayers()) {
+//					if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
+//						if (chance < diceroll){
+//							event.getRecipients().remove(players);
+//						}
+//					}
+//				}
+//				for (Player assassin : data.getOnlineAssassins()) {
+//					event.setFormat(pName + msg);
+//				}
+//				String scrambled = message.Scrambled(msg);
+//				event.setFormat(pName + scrambled);
+//				//TODO Assassin must understand it properly without range and shit
+//			}
+
+
+//		double chatDistance = 250;
+//		// Chat Distance Stuff
+//		if (chatDistance > 0)
+//			for (Player players : plugin.getServer().getOnlinePlayers()) {
+//				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
+//					event.getRecipients().remove(players);
+//				}
+//			}
+
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		String name = player.getName();
 		EntityDamageEvent de = player.getLastDamageCause();
-		
+
 		boolean isEntityInvolved = false;
 		if (de instanceof EntityDamageByEntityEvent) {
 			isEntityInvolved = true;
@@ -72,13 +134,4 @@ public class ChatListener implements Listener {
 			event.setDeathMessage(newmsg);
 		}
 	}
-
-	//		double chatDistance = 250;
-	//		// Chat Distance Stuff
-	//		if (chatDistance > 0)
-	//			for (Player players : plugin.getServer().getOnlinePlayers()) {
-	//				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
-	//					event.getRecipients().remove(players);
-	//				}
-	//			}
 }

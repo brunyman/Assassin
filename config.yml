@@ -2,6 +2,6 @@ General:
   debug_mode_enabled: false
   stats_tracking_enabled: true
 Assassin:
-  active_length: 30
-  cooldown_length: 30
+  active_length: 3600
+  cooldown_length: 7200
   messages_distance: 250
