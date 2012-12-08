@@ -2,18 +2,18 @@ package me.TfT02.Assassin.util;
 
 import java.util.ArrayList;
 
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.NBTTagList;
-import net.minecraft.server.NBTTagString;
+import net.minecraft.server.v1_4_5.NBTTagCompound;
+import net.minecraft.server.v1_4_5.NBTTagList;
+import net.minecraft.server.v1_4_5.NBTTagString;
 
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_4_5.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 //Credits to stirante
 public class itemNamer {
 
 	private static CraftItemStack craftStack;
-	private static net.minecraft.server.ItemStack itemStack;
+	private static net.minecraft.server.v1_4_5.ItemStack	itemStack;
 
 	public static ItemStack setName(ItemStack item, String name) {
 		if (item instanceof CraftItemStack) {
