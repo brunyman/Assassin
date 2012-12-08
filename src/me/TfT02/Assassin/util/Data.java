@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -73,8 +74,8 @@ public class Data {
 			oos.writeObject(PlayerData.playerLoginTime);
 			oos.writeObject(PlayerData.playerLogoutTime);
 			oos.writeObject(PlayerData.playerActiveTime);
-			oos.writeObject(PlayerData.assassinSet);
-//			oos.writeObject(PlayerData.playerLocationData);
+			oos.writeObject(PlayerData.assassins);
+			oos.writeObject(PlayerData.playerLocationData);
 			oos.flush();
 			oos.close();
 			Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
@@ -96,8 +97,8 @@ public class Data {
 				PlayerData.playerLoginTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.playerLogoutTime = (HashMap<String, Long>) ois.readObject();
 				PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
-				PlayerData.assassinSet = (HashSet<String>) ois.readObject();
-//				PlayerData.playerLocationData = (HashMap<String, LocationData>) ois.readObject();
+				PlayerData.assassins = (ArrayList<String>) ois.readObject();
+				PlayerData.playerLocationData = (HashMap<String, String>) ois.readObject();
 				Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
 			} catch (Exception e) {
 				Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");

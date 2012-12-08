@@ -28,22 +28,21 @@ public class PlayerData {
 	public static HashMap<String, Long> playerActiveTime = new HashMap<String, Long>();
 
 	public static List<String> assassins = new ArrayList<String>();
-	public static HashSet<String> assassinSet = new HashSet<String>();	
 	public static HashSet<String> assassinChatSet = new HashSet<String>();
 	public static HashSet<String> playerNear = new HashSet<String>();
 	public static HashMap<String, Location> playerLocation = new HashMap<String, Location>();
-	public static HashMap<String, LocationData> playerLocationData = new HashMap<String, LocationData>();
+	public static HashMap<String, String> playerLocationData = new HashMap<String, String>();
 
 //	public ArrayList<String> assassinsList = new ArrayList<String>();
 
 	public void addAssassin(Player player) {
 		playerData.put(player.getName(), "Assassin");
-		assassinSet.add(player.getName());
+		assassins.add(player.getName());
 	}
 
 	public void setNeutral(Player player) {
 		playerData.put(player.getName(), "Neutral");
-		assassinSet.remove(player.getName());
+		assassins.remove(player.getName());
 	}
 
 	public void addLoginTime(Player player) {
@@ -101,15 +100,20 @@ public class PlayerData {
 	}
 
 	public void addLocation(Player player, Location location){
-		playerLocationData.put(player.getName(), new LocationData(location));
-//		playerLocationData.put(player.getName(), new LocationData(location).toString());
-//		playerLocation.put(player.getName(), location);
+		playerLocationData.put(player.getName(), new LocationData(location).convertToString());
 	}
 
 	public Location getLocation(Player player){
-		LocationData locationdata = playerLocationData.get(player.getName());
-		Location location = locationdata.getLocation();
+		if (playerLocationData.containsKey(player.getName())){
+		String locationdata = playerLocationData.get(player.getName());
+		Location location = LocationData.convertFromString(locationdata).getLocation();
 		return location;
+		}
+		else {
+			System.out.println("No location data found for " + player + "!");
+			System.out.println("Perhaps 'Assassin/data.dat' has been deleted?");
+			return null;
+		}
 	}
 
 	public void addNearSent(Player player){
@@ -179,17 +183,6 @@ public class PlayerData {
 			return true;
 		}
 		return false;
-	}
-
-//	public String[] getOnlineAssassins() {
-//		String[] assassins = new String[assassinsList.size()];
-//		assassins = (assassinsList.toArray(assassins));
-//		return assassins;
-//	}
-	public String[] getOnlineAssassins1() {
-		String[] assassins = new String[assassinSet.size()];
-		assassins = (assassinSet.toArray(assassins));
-		return assassins;
 	}
 	
     public List<String> getAssassins() {
