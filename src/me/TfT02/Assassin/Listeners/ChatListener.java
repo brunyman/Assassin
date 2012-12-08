@@ -37,18 +37,23 @@ public class ChatListener implements Listener {
 
 		if (msg == null)
 			return;
-
-		if (data.getAssassinChatMode(player)) {
+		if (data.isAssassin(player)){
+			if (data.getAssassinChatMode(player)) {
 //			String number = data.getAssassinNumber(player);
-			String number = "1";
-			String prefix = ChatColor.DARK_GRAY + "(" + ChatColor.DARK_RED + number + ChatColor.DARK_GRAY + ") " + ChatColor.RESET;
-			for (Player assassin : data.getOnlineAssassins()) {
-				assassin.sendMessage(prefix + msg);
-			}
-			float diceroll = random.nextInt(100);
-			int chance = 10; //TODO Config
-			double chatDistance = 250;
-			if (chance > 0 && chance < diceroll){
+				String number = "?";
+				String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "Assassin #" + number + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
+				for (Player assassin : data.getOnlineAssassins()) {
+					assassin.sendMessage(prefix + msg);
+					event.setCancelled(true);
+				}
+
+
+				//When in chatting in Assassin chat, other players who are near can hear scrambled chat.
+
+//				float diceroll = random.nextInt(100);
+//				int chance = 10; //TODO Config
+//				if (chance > 0 && chance < diceroll){
+				double chatDistance = 250;
 				if (chatDistance > 0){
 					for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
 						if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
@@ -56,22 +61,25 @@ public class ChatListener implements Listener {
 						}
 						else {
 							if(!data.isAssassin(players)){
+								//Assassins have already received unscrambled message
+								for (Player assassin : data.getOnlineAssassins()) {
+									event.getRecipients().remove(assassin);
+								}
 								//Show scrambled chat messages
 								String scrambled = message.Scrambled(msg);
 								event.setFormat(pName + scrambled);
 							}
 						}
 					}
+
 				}
+				//If an Assassin chats, but not in Assassin chat, show normal message with pName formatting
+			}
+			else {
+				event.setFormat(pName + msg);
 			}
 		}
-		else {
-			event.setFormat(pName + msg);
-		}
 	}
-
-
-
 //		else
 //			event.setFormat(pName + msg);
 //	}
@@ -93,16 +101,6 @@ public class ChatListener implements Listener {
 //				String scrambled = message.Scrambled(msg);
 //				event.setFormat(pName + scrambled);
 //				//TODO Assassin must understand it properly without range and shit
-//			}
-
-
-//		double chatDistance = 250;
-//		// Chat Distance Stuff
-//		if (chatDistance > 0)
-//			for (Player players : plugin.getServer().getOnlinePlayers()) {
-//				if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
-//					event.getRecipients().remove(players);
-//				}
 //			}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

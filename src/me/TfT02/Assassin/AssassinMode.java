@@ -1,6 +1,7 @@
 package me.TfT02.Assassin;
 
 import me.TfT02.Assassin.util.NamedItemStack;
+import me.TfT02.Assassin.util.Namer;
 import me.TfT02.Assassin.util.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -75,6 +76,7 @@ public class AssassinMode {
 	 */
 	public void deactivateAssassin(Player player) {
 		String playername = player.getName();
+		data.leaveAssassinChat(player);
 		data.setNeutral(player);
 		player.sendMessage(ChatColor.GRAY + "DEACTIVATED");
 
