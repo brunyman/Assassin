@@ -27,7 +27,7 @@ public class ItemChecks {
 	public boolean isMask1(ItemStack itemstack){
 		int id = itemstack.getTypeId();
 		if (id == 35) {
-			String item = new NamedItemStack(itemstack).getName();
+			String item = Namer.getName(itemstack);
 			String mask = ChatColor.DARK_RED + "Assassin Mask";
 			if (item == null) {
 			} else if (item.equalsIgnoreCase(mask)) {
