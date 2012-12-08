@@ -20,7 +20,7 @@ public class TagListener implements Listener {
 
 	private PlayerData data = new PlayerData(plugin);
 
-	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onNameTag(PlayerReceiveNameTagEvent event) {
 //		Player player = event.getPlayer();
 		Player namedPlayer = event.getNamedPlayer();

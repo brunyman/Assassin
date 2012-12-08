@@ -15,7 +15,7 @@ public class DependencyDownload {
 	 * Credits: VoidWhisperer
 	 * http://forums.bukkit.org/threads/dependency-download-enable.98955/
 	 */
-	static String uri = "http://dev.bukkit.org/media/files/641/61/TagAPI.jar";
+	static String uri = "http://dev.bukkit.org/media/files/654/607/TagAPI.jar";
 	static String pluginName = "plugins/TagAPI.jar";
 	static String pluginActualName = "TagAPI";
 	static String pluginOutputTag = "[Assassin]";
