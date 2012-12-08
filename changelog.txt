@@ -6,6 +6,13 @@ Key:
   ! Change
   - Removal
 
+Version 1.1 | Tested on CB 1.4.5-R0.2
+ ! Now uses TapAPI v1.8
+ + Added time formatting. Time left is now displayed in hours/mins/secs
+ + Added Assassin chat channel, Assassins can talk with each other. Neutral players will see messages scrambled.
+ - Removed status message when joining the game
+
+
 Version 1.0 | Tested on CB 1.4.5-R0.2
  + Added masks. Assassins get a mask which they can't take off
  + Added warning messages when a nearby player puts on his mask

@@ -81,6 +81,7 @@ public class ChatListener implements Listener {
 		Player player = event.getEntity();
 		String name = player.getName();
 		EntityDamageEvent de = player.getLastDamageCause();
+		String deathmessage = event.getDeathMessage();
 
 		boolean isEntityInvolved = false;
 		if (de instanceof EntityDamageByEntityEvent) {
@@ -90,18 +91,15 @@ public class ChatListener implements Listener {
 			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
 			Entity damager = edbe.getDamager();
 			if (data.isAssassin(player)) {
-				String deathmessage = event.getDeathMessage();
 				String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 				event.setDeathMessage(newmsg);
 			}
 			if (data.isAssassin((Player) damager)) {
 				String damagername = ((HumanEntity) damager).getName();
-				String deathmessage = event.getDeathMessage();
 				String newmsg = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 				event.setDeathMessage(newmsg);
 			}
 		} else if (data.isAssassin(player)) {
-			String deathmessage = event.getDeathMessage();
 			String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 			event.setDeathMessage(newmsg);
 		}

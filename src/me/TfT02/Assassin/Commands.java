@@ -53,16 +53,18 @@ public class Commands implements CommandExecutor {
 							return true;
 						}
 						if (args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c")) {
-							if (data.isAssassin(player)) {
-								if (!data.getAssassinChatMode(player)) {
-									data.enterAssassinChat(player);
-									player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
-								} else {
-									data.leaveAssassinChat(player);
-									player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
-								}
-							} else
-								player.sendMessage(ChatColor.RED + "You must be an Assassin to use this.");
+							if (player.hasPermission("assassin.assassin")) {
+								if (data.isAssassin(player)) {
+									if (!data.getAssassinChatMode(player)) {
+										data.enterAssassinChat(player);
+										player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
+									} else {
+										data.leaveAssassinChat(player);
+										player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
+									}
+								} else
+									player.sendMessage(ChatColor.RED + "You must be an Assassin to use this.");
+							}
 							return true;
 						}
 					case 2:

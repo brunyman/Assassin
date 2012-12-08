@@ -3,7 +3,7 @@ author: TfT_02
 main: me.TfT02.Assassin.Assassin
 description: A whole new concept on PVP!
 dev-url: http://dev.bukkit.org/server-mods/Assassin/
-version: 1.0
+version: 1.1-dev
 softdepend: [ThisPluginDoesNotExist]
 commands:
    assassin:
@@ -20,12 +20,14 @@ permissions:
             assassin.spawnmask: true
             assassin.refresh: true
             assassin.deactivate: true
+            assassin.chat: true
     assassin.defaults:
         description: Gives access to default commands
         default: true
         children:
-            Assassin.assassin: true
-            Assassin.info: true
+            assassin.assassin: true
+            assassin.info: true
+            assassin.chat: true
     assassin.assassin:
         description: Allows players to activate Assassin Mode.
         default: true
@@ -41,3 +43,6 @@ permissions:
     assassin.deactivate:
         description: Deactivates Assasssin Mode of a certain player.
         default: false
+    assassin.chat:
+        description: Allows Assassins to chat with other Assassins.
+        default: true

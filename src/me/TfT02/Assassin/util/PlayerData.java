@@ -27,7 +27,6 @@ public class PlayerData {
 	public static List<String> assassins = new ArrayList<String>();
 	public static HashSet<String> assassinChatSet = new HashSet<String>();
 	public static HashSet<String> playerNear = new HashSet<String>();
-	public static HashMap<String, Location> playerLocation = new HashMap<String, Location>();
 	public static HashMap<String, String> playerLocationData = new HashMap<String, String>();
 
 //	public ArrayList<String> assassinsList = new ArrayList<String>();
@@ -86,8 +85,6 @@ public class PlayerData {
 		int mins = remainder / 60;
 		remainder = remainder - mins * 60;
 		int secs = remainder;
-
-		int[] ints = { hours, mins, secs };
 		return hours + "h " + mins + "m " + secs + "s";
 	}
 
@@ -145,11 +142,9 @@ public class PlayerData {
 	public boolean isAssassin(Player player) {
 		if (playerData.containsKey(player.getName())) {
 			if (playerData.get(player.getName()) == null) {
-				//Null and stuff
 			} else if (playerData.get(player.getName()).equalsIgnoreCase("Assassin")) {
 				return true;
 			}
-			//no data here
 		}
 		return false;
 	}
@@ -158,18 +153,16 @@ public class PlayerData {
 		String playername = player.getName();
 		if (playerData.containsKey(playername)) {
 			if (playerData.get(playername) == null) {
-				//Null and stuff
 			} else if (playerData.get(playername).equalsIgnoreCase("Neutral")) {
 				return true;
 			}
-			//no data here
 		}
 		return false;
 	}
 
 	public String getStatus(Player player) {
 		String playername = player.getName();
-		String status = "IDK";
+		String status = "null";
 		if (playerData.containsKey(playername)) {
 			if (playerData.get(playername) == null) {
 				status = "null";
@@ -212,7 +205,6 @@ public class PlayerData {
 				onlineAssassins.add(onlinePlayer);
 			}
 		}
-
 		return onlineAssassins;
 	}
 
