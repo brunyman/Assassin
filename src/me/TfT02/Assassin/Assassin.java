@@ -3,7 +3,6 @@ package me.TfT02.Assassin;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import me.TfT02.Assassin.Listeners.BlockListener;
 import me.TfT02.Assassin.Listeners.ChatListener;
 import me.TfT02.Assassin.Listeners.EntityListener;
 import me.TfT02.Assassin.Listeners.PlayerListener;
@@ -26,7 +25,6 @@ public class Assassin extends JavaPlugin {
 	private EntityListener entityListener = new EntityListener(this);
 	private PlayerListener playerListener = new PlayerListener(this);
 	private ChatListener chatListener = new ChatListener(this);
-	private BlockListener blockListener = new BlockListener(this);
 	public boolean spoutEnabled;
 	public boolean debug_mode = false;
 
@@ -104,8 +102,8 @@ public class Assassin extends JavaPlugin {
 		FileConfiguration config = this.getConfig();
 		config.addDefault("General.debug_mode_enabled", false);
 		config.addDefault("General.stats_tracking_enabled", true);
-		config.addDefault("Assassin.active_length", 30);
-		config.addDefault("Assassin.cooldown_length", 30);
+		config.addDefault("Assassin.active_length", 3600);
+		config.addDefault("Assassin.cooldown_length", 600);
 		config.addDefault("Assassin.messages_distance", 250);
 
 //		config.addDefault("Assassin.max_allowed", 5);

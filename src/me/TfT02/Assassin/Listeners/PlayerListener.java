@@ -37,6 +37,8 @@ public class PlayerListener implements Listener {
 	private PlayerData data = new PlayerData(plugin);
 	private ItemChecks itemcheck = new ItemChecks(plugin);
 
+	long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+	
 	@EventHandler
 	private void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
@@ -48,7 +50,6 @@ public class PlayerListener implements Listener {
 			assassin.applyMaskForce(player);
 		}
 		if (!data.cooledDown(player)) {
-			long cooldowntime = 1200L;//TODO Config
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 		}
 		String status = data.getStatus(player);
@@ -145,7 +146,6 @@ public class PlayerListener implements Listener {
 							} else {
 								System.out.println("Activating assassin");
 								assassin.activateAssassin(player);
-								long cooldowntime = 2400L;//TODO Config
 								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 								event.setCancelled(true);
 							}

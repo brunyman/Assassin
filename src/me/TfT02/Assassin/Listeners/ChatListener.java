@@ -1,7 +1,5 @@
 package me.TfT02.Assassin.Listeners;
 
-import java.util.Random;
-
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.util.MessageScrambler;
 import me.TfT02.Assassin.util.PlayerData;
@@ -27,7 +25,9 @@ public class ChatListener implements Listener {
 
 	private PlayerData data = new PlayerData(plugin);
 	private MessageScrambler message = new MessageScrambler(plugin);
-	private final Random random = new Random();
+//	private final Random random = new Random();
+
+	int chance =  Assassin.getInstance().getConfig().getInt("Assassin.messages_chance");
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
@@ -51,7 +51,6 @@ public class ChatListener implements Listener {
 				//When in chatting in Assassin chat, other players who are near can hear scrambled chat.
 
 //				float diceroll = random.nextInt(100);
-//				int chance = 10; //TODO Config
 //				if (chance > 0 && chance < diceroll){
 				double chatDistance = 250;
 				if (chatDistance > 0){
@@ -80,28 +79,6 @@ public class ChatListener implements Listener {
 			}
 		}
 	}
-//		else
-//			event.setFormat(pName + msg);
-//	}
-//		if (data.isAssassin(player)){
-//			if (data.getAssassinChatMode(player)){
-//				float diceroll = random.nextInt(100);
-//				int chance = 10; //TODO Config
-//				double chatDistance = 250;
-//				for (Player players : plugin.getServer().getOnlinePlayers()) {
-//					if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
-//						if (chance < diceroll){
-//							event.getRecipients().remove(players);
-//						}
-//					}
-//				}
-//				for (Player assassin : data.getOnlineAssassins()) {
-//					event.setFormat(pName + msg);
-//				}
-//				String scrambled = message.Scrambled(msg);
-//				event.setFormat(pName + scrambled);
-//				//TODO Assassin must understand it properly without range and shit
-//			}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onDeath(PlayerDeathEvent event) {

@@ -18,8 +18,7 @@ public class PlayerData {
 		plugin = instance;
 	}
 
-//	public long cooldown = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length"); //30 sec
-	public long cooldown = 30L; //30 sec //TODO Config
+	public long cooldown = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 
 	public static HashMap<String, String> playerData = new HashMap<String, String>();
 	public static HashSet<String> playerCooldown = new HashSet<String>();
@@ -77,7 +76,7 @@ public class PlayerData {
 
 	public Long getActiveTimeLeft(Player player) {
 		long activetime = getActiveTime(player);
-		long maxactive = 60;//TODO Config
+		long maxactive = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
 		long activetimeleft = maxactive - activetime;
 		return activetimeleft;
 	}

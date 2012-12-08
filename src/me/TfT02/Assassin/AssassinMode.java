@@ -1,7 +1,6 @@
 package me.TfT02.Assassin;
 
 import me.TfT02.Assassin.util.NamedItemStack;
-import me.TfT02.Assassin.util.Namer;
 import me.TfT02.Assassin.util.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
