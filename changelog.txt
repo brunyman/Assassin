@@ -6,14 +6,16 @@ Key:
   ! Change
   - Removal
 
-Version 0.1
+Version 1.0 | Tested on CB 1.4.5-R0.2
  + Added masks. Assassins get a mask which they can't take off
  + Added warning messages when a nearby player puts on his mask
  + Added data saving. Logging in/out will not change your status
  + Added Metrics
  + Added PVP handling, Neutral players can't attack each other
  + Added chat and death-message functionality, Assassins' names will be hidden
+ + Added location saving. Assassins will get teleported to the location where they put on their mask.
  + Added command to check if you're an Assassin and for how long
  + Added command to spawn mask(s)
  + Added command to refresh cooldown time
  + Added command to deactivate assassin mode
+ + Added download dependency. Assassin automatically downloads TagAPI if not found.

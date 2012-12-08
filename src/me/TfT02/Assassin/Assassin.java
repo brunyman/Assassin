@@ -11,6 +11,7 @@ import me.TfT02.Assassin.Listeners.TagListener;
 import me.TfT02.Assassin.runnables.ActiveTimer;
 import me.TfT02.Assassin.runnables.AssassinRangeTimer;
 import me.TfT02.Assassin.util.Data;
+import me.TfT02.Assassin.util.DependencyDownload;
 import me.TfT02.Assassin.util.Metrics;
 import net.milkbowl.vault.economy.Economy;
 
@@ -47,8 +48,9 @@ public class Assassin extends JavaPlugin {
 //		else
 //			spoutEnabled = false;
 		if (pm.getPlugin("TagAPI") == null) {
-			this.getLogger().log(Level.WARNING, "Disabled due to no TagAPI dependency found!");
-			getServer().getPluginManager().disablePlugin(this);
+			this.getLogger().log(Level.WARNING, "No TagAPI dependency found!");
+			this.getLogger().log(Level.WARNING, "Downloading TagAPI now, to get [Assassin] up and running.");
+			DependencyDownload.download();
 			return;
 		}
 		if (getConfig().getBoolean("General.debug_mode_enabled")) {

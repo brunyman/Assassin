@@ -46,7 +46,6 @@ public class PlayerListener implements Listener {
 		else if (data.isAssassin(player)){
 			assassin.applyTraits(player);
 			assassin.applyMaskForce(player);
-//			data.addLoginTime(player);
 		}
 		if (!data.cooledDown(player)) {
 			long cooldowntime = 1200L;//TODO Config
