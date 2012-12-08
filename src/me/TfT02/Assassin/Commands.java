@@ -150,7 +150,7 @@ public class Commands implements CommandExecutor {
 			player.sendMessage(ChatColor.RED + "This page does not exist." + ChatColor.GOLD + " /help [0-" + maxPages + "]");
 		}
 		else {
-			String dot = ChatColor.DARK_RED + "- ";
+			String dot = ChatColor.DARK_RED + "* ";
 			player.sendMessage(ChatColor.GOLD + "-----[ " + ChatColor.DARK_RED + "Assassin Help" + ChatColor.GOLD + " ]----- Page " + page +"/" + maxPages);
 			if (page == 1){
 				player.sendMessage(ChatColor.GOLD + "How does it work?");
@@ -175,7 +175,7 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(dot + ChatColor.GREEN + "/assassin [deactivate] <player>" + ChatColor.GRAY + " Deactivate Assassin mode for <player>");
 				}
 			}
-			if (nextPage >= maxPages) player.sendMessage(ChatColor.GOLD + "Type /help " + nextPage +" for more");
+			if (nextPage <= maxPages) player.sendMessage(ChatColor.GOLD + "Type /assassin help " + nextPage +" for more");
 		}
 	}
 }
