@@ -3,10 +3,10 @@ package me.TfT02.Assassin.runnables;
 import me.TfT02.Assassin.util.PlayerData;
 
 public class EndCooldownTimer implements Runnable {
-	private final String playerName; // We want the players name in this variable.
-	public EndCooldownTimer(String playerName) // This is the constructor, it takes a String as a argument.
+	private final String playerName;
+	public EndCooldownTimer(String playerName)
 	{
-		this.playerName = playerName; //Now we map the variable given to the constructor to the variable we want it to have.
+		this.playerName = playerName;
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class Assassin extends JavaPlugin {
 		pm.registerEvents(chatListener, this);
 //		pm.registerEvents(blockListener, this);
 		getCommand("assassin").setExecutor(new Commands(this));
-		
+
 //		try {
 //			Data.createFiles();
 //		} catch (Exception e) {
@@ -93,7 +93,9 @@ public class Assassin extends JavaPlugin {
 			System.out.println("Failed to submit stats.");
 		}
 		BukkitScheduler scheduler = getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
+		if (getConfig().getBoolean("Assassin.warn_others_when_near")) {
+			scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
+		}
 		//Active check timer (Runs every two seconds)
 		scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 40);
 	}
@@ -105,12 +107,13 @@ public class Assassin extends JavaPlugin {
 		config.addDefault("Assassin.active_length", 3600);
 		config.addDefault("Assassin.cooldown_length", 600);
 		config.addDefault("Assassin.messages_distance", 250);
+		config.addDefault("Assassin.warn_others_on_activation", true);
+		config.addDefault("Assassin.warn_others_when_near", true);
+		config.addDefault("Assassin.return_mask", false);
 
 //		config.addDefault("Assassin.max_allowed", 5);
 //		config.addDefault("Assassin.activation_cost", 100);
 //		config.addDefault("Assassin.hide_neutral_names", false);
-//		config.addDefault("Assassin.warn_others_on_activation", true);
-//		config.addDefault("Assassin.warn_others_when_near", true);
 //		config.addDefault("Assassin.particle_effects", true);
 
 		config.options().copyDefaults(true);

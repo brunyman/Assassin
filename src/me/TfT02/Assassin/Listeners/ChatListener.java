@@ -27,8 +27,6 @@ public class ChatListener implements Listener {
 	private MessageScrambler message = new MessageScrambler(plugin);
 //	private final Random random = new Random();
 
-	int chance =  Assassin.getInstance().getConfig().getInt("Assassin.messages_chance");
-
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
@@ -51,6 +49,7 @@ public class ChatListener implements Listener {
 				//When in chatting in Assassin chat, other players who are near can hear scrambled chat.
 
 //				float diceroll = random.nextInt(100);
+//				int chance = plugin.getConfig().getInt("Assassin.messages_chance");
 //				if (chance > 0 && chance < diceroll){
 				double chatDistance = 250;
 				if (chatDistance > 0){

@@ -18,8 +18,6 @@ public class PlayerData {
 		plugin = instance;
 	}
 
-	public long cooldown = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
-
 	public static HashMap<String, String> playerData = new HashMap<String, String>();
 	public static HashSet<String> playerCooldown = new HashSet<String>();
 	public static HashMap<String, Long> playerLoginTime = new HashMap<String, Long>();

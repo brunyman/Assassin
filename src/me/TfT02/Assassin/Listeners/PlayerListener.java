@@ -36,8 +36,6 @@ public class PlayerListener implements Listener {
 	private AssassinMode assassin = new AssassinMode(plugin);
 	private PlayerData data = new PlayerData(plugin);
 	private ItemChecks itemcheck = new ItemChecks(plugin);
-
-	long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 	
 	@EventHandler
 	private void onPlayerJoin(PlayerJoinEvent event) {
@@ -50,6 +48,7 @@ public class PlayerListener implements Listener {
 			assassin.applyMaskForce(player);
 		}
 		if (!data.cooledDown(player)) {
+			long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 		}
 		String status = data.getStatus(player);
@@ -144,8 +143,9 @@ public class PlayerListener implements Listener {
 							if (data.isAssassin(player)) {
 								player.sendMessage(ChatColor.RED + "You already are an Assassin.");
 							} else {
-								System.out.println("Activating assassin");
+								if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
 								assassin.activateAssassin(player);
+								long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 								event.setCancelled(true);
 							}

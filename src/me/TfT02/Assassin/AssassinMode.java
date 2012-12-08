@@ -55,12 +55,14 @@ public class AssassinMode {
 		Location loc = player.getLocation();
 		loc.setY(player.getWorld().getMaxHeight() + 30D);
 		player.getWorld().strikeLightningEffect(loc);
-		double messageDistance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
-		for (Player players : player.getWorld().getPlayers()) {
-			if (messageDistance > 0) {
-				if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
-					players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
-				} else {
+		if (Assassin.getInstance().getConfig().getBoolean("Assassin.warn_others_on_activation")) {
+			double messageDistance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
+			for (Player players : player.getWorld().getPlayers()) {
+				if (messageDistance > 0) {
+					if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
+						players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
+					} else {
+					}
 				}
 			}
 		}
@@ -96,7 +98,7 @@ public class AssassinMode {
 	public void applyMask(Player player) {
 		PlayerInventory inventory = player.getInventory();
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
-		
+
 		//Sets hand item to air, can only activate assassin mode if you are holding a mask
 		//TODO FIX: This will remove a whole stack of masks...
 
@@ -106,7 +108,7 @@ public class AssassinMode {
 		int emptySlot = inventory.firstEmpty();
 		if (itemHead != null){
 			inventory.setItem(emptySlot, itemHead);
-		inventory.setItemInHand(new ItemStack(Material.AIR));
+			inventory.setItemInHand(new ItemStack(Material.AIR));
 		}
 		else
 			inventory.setItemInHand(new ItemStack(Material.AIR));
@@ -124,7 +126,7 @@ public class AssassinMode {
 	public void applyMaskForce(Player player) {
 		PlayerInventory inventory = player.getInventory();
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
-		
+
 		inventory.setHelmet(assassinMask);
 		player.updateInventory();   // Needed until replacement available
 	}
@@ -170,7 +172,7 @@ public class AssassinMode {
 	public void spawnMask(Player player, int amount) {
 		PlayerInventory inventory = player.getInventory();
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, amount, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP", "Hold in your hand and right-click", "to activate assassin mode.").getItemStack();
-		
+
 		int emptySlot = inventory.firstEmpty();
 		inventory.setItem(emptySlot, assassinMask);
 		player.updateInventory();

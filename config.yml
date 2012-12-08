@@ -5,3 +5,6 @@ Assassin:
   active_length: 3600
   cooldown_length: 600
   messages_distance: 250
+  warn_others_on_activation: true
+  warn_others_when_near: true
+  return_mask: false
