@@ -147,6 +147,7 @@ public class PlayerListener implements Listener {
 								assassin.activateAssassin(player);
 								long cooldowntime = 2400L;//TODO Config
 								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+								event.setCancelled(true);
 							}
 						}
 					}

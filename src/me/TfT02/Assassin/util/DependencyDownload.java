@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import me.TfT02.Assassin.Assassin;
+
 import org.bukkit.Bukkit;
 
 public class DependencyDownload {
@@ -17,15 +19,13 @@ public class DependencyDownload {
 	 * 
 	 */
 	static String uri = "http://dev.bukkit.org/media/files/641/61/TagAPI.jar";
-	static String pluginName = "TagAPI.jar";
+	static String pluginName = "plugins/TagAPI.jar";
 	static String pluginActualName = "TagAPI";
 	static String pluginOutputTag = "[Assassin]";
 	final static int size = 1024;
 
-	public static void download()
-	{
-		try
-		{
+	public static void download() {
+		try {
 			URL url = new URL(uri);
 			URLConnection urlC = url.openConnection();
 			InputStream is = urlC.getInputStream();
@@ -34,7 +34,6 @@ public class DependencyDownload {
 			OutputStream os = new BufferedOutputStream(new FileOutputStream(pluginName));
 			while((ByteRead = is.read(buffer)) != -1)
 			{
-				//    System.out.println(".");
 				os.write(buffer,0,ByteRead);
 			}
 			os.flush();

@@ -3,6 +3,7 @@ package me.TfT02.Assassin.util;
 import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemChecks {

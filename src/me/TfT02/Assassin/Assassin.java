@@ -49,8 +49,10 @@ public class Assassin extends JavaPlugin {
 //			spoutEnabled = false;
 		if (pm.getPlugin("TagAPI") == null) {
 			this.getLogger().log(Level.WARNING, "No TagAPI dependency found!");
-			this.getLogger().log(Level.WARNING, "Downloading TagAPI now, to get [Assassin] up and running.");
+			this.getLogger().log(Level.WARNING, "Downloading TagAPI now, hold on!");
 			DependencyDownload.download();
+			this.getLogger().log(Level.WARNING, "TagAPI downloaded! Restart server to enable [Assassin].");
+			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 		if (getConfig().getBoolean("General.debug_mode_enabled")) {
@@ -63,8 +65,9 @@ public class Assassin extends JavaPlugin {
 		pm.registerEvents(entityListener, this);
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(chatListener, this);
-		pm.registerEvents(blockListener, this);
-		registerCommands();
+//		pm.registerEvents(blockListener, this);
+		getCommand("assassin").setExecutor(new Commands(this));
+		
 //		try {
 //			Data.createFiles();
 //		} catch (Exception e) {
@@ -127,13 +130,6 @@ public class Assassin extends JavaPlugin {
 //		econ = rsp.getProvider();
 //		return econ != null;
 //	}
-
-	/**
-	 * Register all the command and set Executor.
-	 */
-	private void registerCommands() {
-		getCommand("assassin").setExecutor(new Commands(this));
-	}
 
 	/**
 	 * Run things on disable.
