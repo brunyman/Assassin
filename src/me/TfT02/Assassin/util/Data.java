@@ -22,6 +22,7 @@ public class Data {
 	public Data(Assassin instance) {
 		plugin = instance;
 	}
+
 	/*
 	 * Credits to BlahBerrys
 	 */

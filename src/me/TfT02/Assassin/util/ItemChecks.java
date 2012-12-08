@@ -11,7 +11,8 @@ public class ItemChecks {
 	public ItemChecks(Assassin instance) {
 		plugin = instance;
 	}
-	public boolean isMask(ItemStack itemstack){
+
+	public boolean isMask(ItemStack itemstack) {
 		int id = itemstack.getTypeId();
 		if (id == 35) {
 			String item = itemNamer.getName(itemstack);

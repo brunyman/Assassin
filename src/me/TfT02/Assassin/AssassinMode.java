@@ -2,6 +2,7 @@ package me.TfT02.Assassin;
 
 import me.TfT02.Assassin.util.NamedItemStack;
 import me.TfT02.Assassin.util.PlayerData;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -27,7 +28,7 @@ public class AssassinMode {
 	 * 
 	 * @param player Player whom will be given the traits.
 	 */
-	public void applyTraits(final Player player){
+	public void applyTraits(final Player player) {
 		data.addLoginTime(player);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
 			@Override
@@ -106,11 +107,10 @@ public class AssassinMode {
 		ItemStack itemHead = inventory.getHelmet();
 
 		int emptySlot = inventory.firstEmpty();
-		if (itemHead != null){
+		if (itemHead != null) {
 			inventory.setItem(emptySlot, itemHead);
 			inventory.setItemInHand(new ItemStack(Material.AIR));
-		}
-		else
+		} else
 			inventory.setItemInHand(new ItemStack(Material.AIR));
 
 		inventory.setHelmet(assassinMask);
@@ -153,8 +153,7 @@ public class AssassinMode {
 			helmetindex = inventory.first(Material.IRON_HELMET);
 		else if (inventory.contains(Material.GOLD_HELMET))
 			helmetindex = inventory.first(Material.GOLD_HELMET);
-		else if (inventory.contains(Material.LEATHER_HELMET))
-			helmetindex = inventory.first(Material.LEATHER_HELMET);
+		else if (inventory.contains(Material.LEATHER_HELMET)) helmetindex = inventory.first(Material.LEATHER_HELMET);
 		if (helmetindex >= 0) {
 			ItemStack helmet = inventory.getItem(helmetindex);
 			inventory.setItem(helmetindex, new ItemStack(0));

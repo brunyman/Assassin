@@ -4,8 +4,8 @@ import me.TfT02.Assassin.util.PlayerData;
 
 public class EndCooldownTimer implements Runnable {
 	private final String playerName;
-	public EndCooldownTimer(String playerName)
-	{
+
+	public EndCooldownTimer(String playerName) {
 		this.playerName = playerName;
 	}
 
@@ -13,6 +13,7 @@ public class EndCooldownTimer implements Runnable {
 	public void run() {
 		updateCooldownList();
 	}
+
 	private void updateCooldownList() {
 		PlayerData.playerCooldown.remove(playerName);
 	}

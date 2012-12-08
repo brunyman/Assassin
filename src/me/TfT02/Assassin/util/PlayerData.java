@@ -54,7 +54,7 @@ public class PlayerData {
 		playerLogoutTime.put(player.getName(), timestamp);
 	}
 
-	public void saveActiveTime(Player player){
+	public void saveActiveTime(Player player) {
 		long loginTime = playerLoginTime.get(player.getName());
 		long logoutTime = playerLogoutTime.get(player.getName());
 		long activeTime = logoutTime - loginTime;
@@ -78,7 +78,7 @@ public class PlayerData {
 		long activetimeleft = maxactive - activetime;
 		return activetimeleft;
 	}
-	
+
 	public String getStringTimeLeft(Player player) {
 		long time = getActiveTimeLeft(player);
 		int hours = (int) time / 3600;
@@ -87,7 +87,7 @@ public class PlayerData {
 		remainder = remainder - mins * 60;
 		int secs = remainder;
 
-		int[] ints = {hours , mins , secs};
+		int[] ints = { hours, mins, secs };
 		return hours + "h " + mins + "m " + secs + "s";
 	}
 
@@ -95,48 +95,53 @@ public class PlayerData {
 		long activetime = 0;
 		PlayerData.playerActiveTime.put(player.getName(), activetime);
 	}
-	public void addCooldownTimer(Player player){
+
+	public void addCooldownTimer(Player player) {
 		playerCooldown.add(player.getName());
 	}
-	public void removeCooldown(Player player){
+
+	public void removeCooldown(Player player) {
 		playerCooldown.remove(player.getName());
 	}
-	public boolean cooledDown(Player player){
-		if(playerCooldown.contains(player.getName())) {
+
+	public boolean cooledDown(Player player) {
+		if (playerCooldown.contains(player.getName())) {
 			return false;
 		}
 		return true;
 	}
 
-	public void addLocation(Player player, Location location){
+	public void addLocation(Player player, Location location) {
 		playerLocationData.put(player.getName(), new LocationData(location).convertToString());
 	}
 
-	public Location getLocation(Player player){
-		if (playerLocationData.containsKey(player.getName())){
-		String locationdata = playerLocationData.get(player.getName());
-		Location location = LocationData.convertFromString(locationdata).getLocation();
-		return location;
-		}
-		else {
+	public Location getLocation(Player player) {
+		if (playerLocationData.containsKey(player.getName())) {
+			String locationdata = playerLocationData.get(player.getName());
+			Location location = LocationData.convertFromString(locationdata).getLocation();
+			return location;
+		} else {
 			System.out.println("No location data found for " + player + "!");
 			System.out.println("Perhaps 'Assassin/data.dat' has been deleted?");
 			return null;
 		}
 	}
 
-	public void addNearSent(Player player){
+	public void addNearSent(Player player) {
 		playerNear.add(player.getName());
 	}
-	public void removeNearSent(Player player){
+
+	public void removeNearSent(Player player) {
 		playerNear.remove(player.getName());
 	}
-	public boolean firstTimeNear(Player player){
-		if(playerNear.contains(player.getName())) {
+
+	public boolean firstTimeNear(Player player) {
+		if (playerNear.contains(player.getName())) {
 			return false;
 		}
 		return true;
 	}
+
 	public boolean isAssassin(Player player) {
 		if (playerData.containsKey(player.getName())) {
 			if (playerData.get(player.getName()) == null) {
@@ -193,26 +198,24 @@ public class PlayerData {
 		}
 		return false;
 	}
-	
-    public List<String> getAssassins() {
-        return assassins;
-    }
 
-    public List<Player> getOnlineAssassins() {
-        Player[] onlinePlayers = Assassin.getInstance().getServer().getOnlinePlayers();
-        List<Player> onlineAssassins = new ArrayList<Player>();
+	public List<String> getAssassins() {
+		return assassins;
+	}
 
-        for (Player onlinePlayer : onlinePlayers) {
-            if (assassins.contains(onlinePlayer.getName())) {
-            	onlineAssassins.add(onlinePlayer);
-            }
-        }
+	public List<Player> getOnlineAssassins() {
+		Player[] onlinePlayers = Assassin.getInstance().getServer().getOnlinePlayers();
+		List<Player> onlineAssassins = new ArrayList<Player>();
 
-        return onlineAssassins;
-    }
-	
-	
-	
+		for (Player onlinePlayer : onlinePlayers) {
+			if (assassins.contains(onlinePlayer.getName())) {
+				onlineAssassins.add(onlinePlayer);
+			}
+		}
+
+		return onlineAssassins;
+	}
+
 	public void enterAssassinChat(Player player) {
 		assassinChatSet.add(player.getName());
 	}
@@ -222,7 +225,7 @@ public class PlayerData {
 	}
 
 	public boolean getAssassinChatMode(Player player) {
-		if (assassinChatSet.contains(player.getName())){
+		if (assassinChatSet.contains(player.getName())) {
 			return true;
 		}
 		return false;

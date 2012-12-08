@@ -54,60 +54,54 @@ public class Commands implements CommandExecutor {
 						}
 						if (args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c")) {
 							if (data.isAssassin(player)) {
-								if (!data.getAssassinChatMode(player)){
+								if (!data.getAssassinChatMode(player)) {
 									data.enterAssassinChat(player);
 									player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
-								}
-								else{
+								} else {
 									data.leaveAssassinChat(player);
 									player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
 								}
-							}
-							else player.sendMessage(ChatColor.RED + "You must be an Assassin to use this.");
+							} else
+								player.sendMessage(ChatColor.RED + "You must be an Assassin to use this.");
 							return true;
 						}
 					case 2:
 						if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
-							if(args.length == 2){
-								if (Integer.parseInt(args[1]) > 1){
+							if (args.length == 2) {
+								if (Integer.parseInt(args[1]) > 1) {
 									getHelpPage(Integer.parseInt(args[1]), player);
 									return true;
-								}
-								else {
+								} else {
 									getHelpPage(1, player);
 									return true;
 								}
-							}
-							else {
+							} else {
 								getHelpPage(1, player);
 								return true;
 							}
 						}
 						if (args[0].equalsIgnoreCase("mask") && player.hasPermission("assassin.spawnmask")) {
-							if(args.length == 2){
+							if (args.length == 2) {
 								assassin.spawnMask(player, Integer.parseInt(args[1]));
 								return true;
-							}
-							else {
+							} else {
 								assassin.spawnMask(player, 1);
 								return true;
 							}
 						}
 						if (args[0].equalsIgnoreCase("refresh") && player.hasPermission("assassin.refresh")) {
-							if(args.length == 2){
+							if (args.length == 2) {
 								Player target = Bukkit.getServer().getPlayer(args[1]);
 								if (target == null) {
 									sender.sendMessage(args[0] + " is not online!");
 									return false;
-								}
-								else {
+								} else {
 									TagAPI.refreshPlayer(target);
 									data.removeCooldown(target);
 									player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target);
 									return true;
 								}
-							}
-							else {
+							} else {
 								TagAPI.refreshPlayer(player);
 								data.removeCooldown(player);
 								player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + player.getName());
@@ -115,7 +109,7 @@ public class Commands implements CommandExecutor {
 							}
 						}
 						if (args[0].equalsIgnoreCase("deactivate") && player.hasPermission("assassin.deactivate")) {
-							if(args.length == 2){
+							if (args.length == 2) {
 								Player target = Bukkit.getServer().getPlayer(args[1]);
 								if (data.isAssassin(target)) {
 									assassin.deactivateAssassin(target);
@@ -125,8 +119,7 @@ public class Commands implements CommandExecutor {
 									player.sendMessage(ChatColor.RED + "Not an Assassin.");
 									return true;
 								}
-							}
-							else {
+							} else {
 								if (data.isAssassin(player)) {
 									assassin.deactivateAssassin(player);
 									data.resetActiveTime(player);
@@ -143,16 +136,16 @@ public class Commands implements CommandExecutor {
 		}
 		return false;
 	}
-	private void getHelpPage (int page, Player player){
+
+	private void getHelpPage(int page, Player player) {
 		int maxPages = 2;
 		int nextPage = page + 1;
-		if (page > maxPages){
+		if (page > maxPages) {
 			player.sendMessage(ChatColor.RED + "This page does not exist." + ChatColor.GOLD + " /help [0-" + maxPages + "]");
-		}
-		else {
+		} else {
 			String dot = ChatColor.DARK_RED + "* ";
-			player.sendMessage(ChatColor.GOLD + "-----[ " + ChatColor.DARK_RED + "Assassin Help" + ChatColor.GOLD + " ]----- Page " + page +"/" + maxPages);
-			if (page == 1){
+			player.sendMessage(ChatColor.GOLD + "-----[ " + ChatColor.DARK_RED + "Assassin Help" + ChatColor.GOLD + " ]----- Page " + page + "/" + maxPages);
+			if (page == 1) {
 				player.sendMessage(ChatColor.GOLD + "How does it work?");
 				player.sendMessage(dot + ChatColor.GRAY + "When an Assassin, you can PVP other players.");
 				player.sendMessage(dot + ChatColor.GRAY + "You're name and skin will be hidden, even in chat.");
@@ -160,7 +153,7 @@ public class Commands implements CommandExecutor {
 				player.sendMessage(dot + ChatColor.GRAY + "When the timer expires, you will be teleported back to where you put on your mask.");
 				player.sendMessage(dot + ChatColor.GRAY + "Nobody will ever know that you were an Assassin.");
 			}
-			if (page == 2){
+			if (page == 2) {
 				player.sendMessage(ChatColor.GOLD + "Commands:");
 				if (player.hasPermission("assassin.info")) {
 					player.sendMessage(dot + ChatColor.GREEN + "/assassin [info]" + ChatColor.GRAY + " Check your status");
@@ -175,7 +168,7 @@ public class Commands implements CommandExecutor {
 					player.sendMessage(dot + ChatColor.GREEN + "/assassin [deactivate] <player>" + ChatColor.GRAY + " Deactivate Assassin mode for <player>");
 				}
 			}
-			if (nextPage <= maxPages) player.sendMessage(ChatColor.GOLD + "Type /assassin help " + nextPage +" for more");
+			if (nextPage <= maxPages) player.sendMessage(ChatColor.GOLD + "Type /assassin help " + nextPage + " for more");
 		}
 	}
 }

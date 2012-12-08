@@ -6,7 +6,7 @@ public class BlockChecks {
 
 	/**
 	 * Check if a block should allow for the activation of masks.
-	 *
+	 * 
 	 * @param block Block to check
 	 * @return true if the block should allow mask activation, false otherwise
 	 */

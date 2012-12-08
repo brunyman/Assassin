@@ -36,14 +36,13 @@ public class PlayerListener implements Listener {
 	private AssassinMode assassin = new AssassinMode(plugin);
 	private PlayerData data = new PlayerData(plugin);
 	private ItemChecks itemcheck = new ItemChecks(plugin);
-	
+
 	@EventHandler
 	private void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		if (!data.isAssassin(player)) {
 			data.setNeutral(player);
-		}
-		else if (data.isAssassin(player)){
+		} else if (data.isAssassin(player)) {
 			assassin.applyTraits(player);
 			assassin.applyMaskForce(player);
 		}
@@ -51,20 +50,20 @@ public class PlayerListener implements Listener {
 			long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 		}
-	}	
-	
+	}
+
 	@EventHandler
 	private void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
-		if (data.isAssassin(player)){
+		if (data.isAssassin(player)) {
 			assassin.applyMaskForce(player);
 		}
 	}
 
 	@EventHandler
-	private void onPlayerQuit(PlayerQuitEvent event){
+	private void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		if (data.isAssassin(player)){
+		if (data.isAssassin(player)) {
 			data.addLogoutTime(player);
 			data.saveActiveTime(player);
 			data.leaveAssassinChat(player);
@@ -85,8 +84,7 @@ public class PlayerListener implements Listener {
 			default:
 				break;
 			}
-		}
-		else {
+		} else {
 			switch (slotType) {
 			case ARMOR:
 				if (itemcheck.isMask(itemstack)) {
@@ -110,14 +108,12 @@ public class PlayerListener implements Listener {
 		Action action = event.getAction();
 		Block block = event.getClickedBlock();
 		ItemStack inHand = player.getItemInHand();
-		@SuppressWarnings("unused")
-		Material material;
+		@SuppressWarnings("unused") Material material;
 
 		/* Fix for NPE on interacting with air */
 		if (block == null) {
 			material = Material.AIR;
-		}
-		else {
+		} else {
 			material = block.getType();
 		}
 
@@ -133,12 +129,10 @@ public class PlayerListener implements Listener {
 				} else if (item.equalsIgnoreCase(mask)) {
 					if (!player.hasPermission("assassin.assassin")) {
 						player.sendMessage(ChatColor.RED + "You haven't got permission.");
-					}
-					else{
-						if(!data.cooledDown(player)){
+					} else {
+						if (!data.cooledDown(player)) {
 							player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
-						}
-						else {
+						} else {
 							if (data.isAssassin(player)) {
 								player.sendMessage(ChatColor.RED + "You already are an Assassin.");
 							} else {

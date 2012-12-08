@@ -28,18 +28,15 @@ public class DependencyDownload {
 			InputStream is = urlC.getInputStream();
 			byte[] buffer = new byte[size];
 			int ByteRead = 0;
-			@SuppressWarnings("resource")
-			OutputStream os = new BufferedOutputStream(new FileOutputStream(pluginName));
-			while((ByteRead = is.read(buffer)) != -1)
-			{
-				os.write(buffer,0,ByteRead);
+			@SuppressWarnings("resource") OutputStream os = new BufferedOutputStream(new FileOutputStream(pluginName));
+			while ((ByteRead = is.read(buffer)) != -1) {
+				os.write(buffer, 0, ByteRead);
 			}
 			os.flush();
 			Bukkit.getLogger().info(pluginOutputTag + " Saved file " + pluginName + "... Now attempting to enable!");
 			Bukkit.getPluginManager().loadPlugin(new File(pluginName));
 			Bukkit.getPluginManager().enablePlugin(Bukkit.getPluginManager().getPlugin(pluginActualName));
-		}catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

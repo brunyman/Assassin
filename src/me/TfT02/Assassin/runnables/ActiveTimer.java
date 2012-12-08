@@ -32,15 +32,16 @@ public class ActiveTimer implements Runnable {
 			}
 		}
 	}
+
 	private void updateAssassinStatus() {
 		for (Player players : Bukkit.getServer().getOnlinePlayers()) {
 			long activetime = data.getActiveTime(players);
 			long maxactivetime = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
 			if (activetime >= maxactivetime) {
 				if (data.isAssassin(players)) {
-				assassin.deactivateAssassin(players);
-				data.resetActiveTime(players);
-				if (plugin.debug_mode) System.out.println(players + " status set to Neutral. Active time reached max.");
+					assassin.deactivateAssassin(players);
+					data.resetActiveTime(players);
+					if (plugin.debug_mode) System.out.println(players + " status set to Neutral. Active time reached max.");
 				}
 			}
 		}

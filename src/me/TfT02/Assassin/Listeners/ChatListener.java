@@ -25,6 +25,7 @@ public class ChatListener implements Listener {
 
 	private PlayerData data = new PlayerData(plugin);
 	private MessageScrambler message = new MessageScrambler(plugin);
+
 //	private final Random random = new Random();
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
@@ -33,9 +34,8 @@ public class ChatListener implements Listener {
 		String pName = ChatColor.DARK_RED + "[ASSASSIN]: " + ChatColor.RESET;
 		String msg = event.getMessage();
 
-		if (msg == null)
-			return;
-		if (data.isAssassin(player)){
+		if (msg == null) return;
+		if (data.isAssassin(player)) {
 			if (data.getAssassinChatMode(player)) {
 //			String number = data.getAssassinNumber(player);
 				String number = "?";
@@ -45,20 +45,18 @@ public class ChatListener implements Listener {
 					event.setCancelled(true);
 				}
 
-
 				//When in chatting in Assassin chat, other players who are near can hear scrambled chat.
 
 //				float diceroll = random.nextInt(100);
 //				int chance = plugin.getConfig().getInt("Assassin.messages_chance");
 //				if (chance > 0 && chance < diceroll){
 				double chatDistance = 250;
-				if (chatDistance > 0){
+				if (chatDistance > 0) {
 					for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
 						if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
 							event.getRecipients().remove(players);
-						}
-						else {
-							if(!data.isAssassin(players)){
+						} else {
+							if (!data.isAssassin(players)) {
 								//Assassins have already received unscrambled message
 								for (Player assassin : data.getOnlineAssassins()) {
 									event.getRecipients().remove(assassin);
@@ -72,8 +70,7 @@ public class ChatListener implements Listener {
 
 				}
 				//If an Assassin chats, but not in Assassin chat, show normal message with pName formatting
-			}
-			else {
+			} else {
 				event.setFormat(pName + msg);
 			}
 		}
@@ -92,21 +89,20 @@ public class ChatListener implements Listener {
 		if (isEntityInvolved) {
 			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
 			Entity damager = edbe.getDamager();
-			if (data.isAssassin(player)){
+			if (data.isAssassin(player)) {
 				String deathmessage = event.getDeathMessage();
-				String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET );
+				String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 				event.setDeathMessage(newmsg);
 			}
-			if (data.isAssassin((Player) damager)){
+			if (data.isAssassin((Player) damager)) {
 				String damagername = ((HumanEntity) damager).getName();
 				String deathmessage = event.getDeathMessage();
-				String newmsg = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET );
+				String newmsg = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 				event.setDeathMessage(newmsg);
-			}			
-		}
-		else if (data.isAssassin(player)){
+			}
+		} else if (data.isAssassin(player)) {
 			String deathmessage = event.getDeathMessage();
-			String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET );
+			String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 			event.setDeathMessage(newmsg);
 		}
 	}
