@@ -33,8 +33,8 @@ public class AssassinMode {
 			@Override
 			public void run() {
 				player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
-				long activetime = data.getActiveTimeLeft(player);
-				player.sendMessage(ChatColor.DARK_RED + "Time left: " + activetime + " seconds");
+				String timeleft = data.getStringTimeLeft(player);
+				player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
 			}
 		}, 20 * 1);
 

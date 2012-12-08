@@ -78,6 +78,18 @@ public class PlayerData {
 		long activetimeleft = maxactive - activetime;
 		return activetimeleft;
 	}
+	
+	public String getStringTimeLeft(Player player) {
+		long time = getActiveTimeLeft(player);
+		int hours = (int) time / 3600;
+		int remainder = (int) time - hours * 3600;
+		int mins = remainder / 60;
+		remainder = remainder - mins * 60;
+		int secs = remainder;
+
+		int[] ints = {hours , mins , secs};
+		return hours + "h " + mins + "m " + secs + "s";
+	}
 
 	public void resetActiveTime(Player player) {
 		long activetime = 0;

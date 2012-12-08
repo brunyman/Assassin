@@ -51,10 +51,9 @@ public class PlayerListener implements Listener {
 			long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 			plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 		}
-		String status = data.getStatus(player);
-		player.sendMessage(ChatColor.YELLOW + "Your status = " + ChatColor.RED + status);
-	}	@EventHandler
+	}	
 	
+	@EventHandler
 	private void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		if (data.isAssassin(player)){

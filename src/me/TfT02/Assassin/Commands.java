@@ -47,8 +47,8 @@ public class Commands implements CommandExecutor {
 							String status = data.getStatus(player);
 							player.sendMessage(ChatColor.GOLD + "Your status = " + ChatColor.RED + status);
 							if (data.isAssassin(player)) {
-								long activetime = data.getActiveTimeLeft(player);
-								player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + activetime);
+								String timeleft = data.getStringTimeLeft(player);
+								player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
 							}
 							return true;
 						}
