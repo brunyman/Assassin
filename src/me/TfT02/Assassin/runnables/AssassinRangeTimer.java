@@ -3,7 +3,6 @@ package me.TfT02.Assassin.runnables;
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.util.PlayerData;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -26,21 +25,18 @@ public class AssassinRangeTimer implements Runnable {
 		for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()){
 			for (Player assassin : data.getOnlineAssassins()) {
 				System.out.println("Checking if Assassin near.");
-				System.out.println("assassins " + assassin);
-				System.out.println("==========");
 				if (distance > 0) {
-					if (players.getWorld().equals(assassin.getWorld()) || players.getLocation().distance(assassin.getLocation()) > distance) {
+					if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) < distance) {
 						System.out.println("data.isAssassin(players) " + data.isAssassin(players));
 						System.out.println("data.firstTimeNear(players) " + data.firstTimeNear(players));
-						if(!data.isAssassin(players)){
-//						if(!data.isAssassin(players) && data.firstTimeNear(players)){
+						if(!data.isAssassin(players) && data.firstTimeNear(players)){
 							players.sendMessage(ChatColor.DARK_RED + "ASSASSIN SIGHTED!");
 							data.addNearSent(players);
 						}
 						else {
 							//Message already been sent, dont send it again.
 						}
-					} if (players.getWorld().equals(assassin.getWorld()) || players.getLocation().distance(assassin.getLocation()) < distance) {
+					} if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) > distance) {
 						if(!data.isAssassin(players) && !data.firstTimeNear(players)){
 							data.removeNearSent(players);
 						}
@@ -52,8 +48,4 @@ public class AssassinRangeTimer implements Runnable {
 			}
 		}
 	}
-}/*
-	SPAM PREVENTION IDEA
-	timer to check if in range => if yes set a hashmap boolean to true
-	if not set a hashmap boolean to false
-	if (!boolean hashmap) send message*/
+}
