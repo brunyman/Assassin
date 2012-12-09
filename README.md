@@ -30,7 +30,7 @@ Who made this?
 
 Download here: [BukkitDev]
 
-[Banner]: https://dl.dropbox.com/u/29178507/Spout/Assassin.png
-[Project Logo]: https://dl.dropbox.com/u/29178507/Spout/Assassin%20logo.png
+[Banner]: https://dl.dropbox.com/u/29178507/Dev/Assassin/title_banner.png
+[Project Logo]: https://dl.dropbox.com/u/29178507/Dev/Assassin/logo.png
 [BukkitDev]: http://dev.bukkit.org/server-mods/Assassin/
 [GitHub]: https://github.com/TfT-02/Assassin
