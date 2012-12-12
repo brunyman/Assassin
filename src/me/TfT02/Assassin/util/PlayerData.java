@@ -85,7 +85,9 @@ public class PlayerData {
 		int mins = remainder / 60;
 		remainder = remainder - mins * 60;
 		int secs = remainder;
-		return hours + "h " + mins + "m " + secs + "s";
+		if (mins == 0 && hours == 0) return secs + "s";
+		if (hours == 0) return mins + "m " + secs + "s";
+		else return hours + "h " + mins + "m " + secs + "s";
 	}
 
 	public void resetActiveTime(Player player) {
