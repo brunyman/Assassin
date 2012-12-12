@@ -58,12 +58,15 @@ public class ChatListener implements Listener {
 						} else {
 							if (!data.isAssassin(players)) {
 								//Assassins have already received unscrambled message
-								for (Player assassin : data.getOnlineAssassins()) {
-									event.getRecipients().remove(assassin);
-								}
+								//But this isn't nessecary here... I think
+//								for (Player assassin : data.getOnlineAssassins()) {
+//									event.getRecipients().remove(assassin);
+//								}
 								//Show scrambled chat messages
 								String scrambled = message.Scrambled(msg);
 								event.setFormat(pName + scrambled);
+								players.sendMessage(prefix + msg);//TODO FIX
+								event.setCancelled(true);
 							}
 						}
 					}

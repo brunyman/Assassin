@@ -17,4 +17,3 @@ public class BlockListener implements Listener {
 }
 //TODO Perhaps prevent block breaks from Assassins?
 // This might be a simple way to prevent griefers to become anonymous and destroying stuff
-//}

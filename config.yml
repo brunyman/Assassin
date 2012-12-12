@@ -1,3 +1,8 @@
+# 
+#  Assassin configuration
+#  for more information check
+#  http://dev.bukkit.org/server-mods/assassin/
+#################################################
 General:
   debug_mode_enabled: false
   stats_tracking_enabled: true
@@ -8,3 +13,4 @@ Assassin:
   warn_others_on_activation: true
   warn_others_when_near: true
   return_mask: false
+  prevent_neutral_pvp: true

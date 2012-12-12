@@ -56,7 +56,11 @@ public class EntityListener implements Listener {
 			if (!defendingPlayer.isOnline()) {
 				return;
 			}
-
+			
+			if (!Assassin.getInstance().getConfig().getBoolean("Assassin.prevent_neutral_pvp")) {
+				return;
+			}
+			
 			if (attacker instanceof Player) {
 				if (data.bothNeutral(defendingPlayer, (Player) attacker)) {
 					event.setCancelled(true);

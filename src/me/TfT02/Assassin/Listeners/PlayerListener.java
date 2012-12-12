@@ -6,8 +6,6 @@ import me.TfT02.Assassin.runnables.EndCooldownTimer;
 import me.TfT02.Assassin.util.BlockChecks;
 import me.TfT02.Assassin.util.ItemChecks;
 import me.TfT02.Assassin.util.PlayerData;
-import me.TfT02.Assassin.util.itemNamer;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -123,10 +122,7 @@ public class PlayerListener implements Listener {
 			int inHandID = inHand.getTypeId();
 			if ((inHandID == 35) && BlockChecks.abilityBlockCheck(block)) {
 				ItemStack itemHand = player.getInventory().getItemInHand();
-				String item = itemNamer.getName(itemHand);
-				String mask = ChatColor.DARK_RED + "Assassin Mask";
-				if (item == null) {
-				} else if (item.equalsIgnoreCase(mask)) {
+				if (itemcheck.isMask(itemHand)) {
 					if (!player.hasPermission("assassin.assassin")) {
 						player.sendMessage(ChatColor.RED + "You haven't got permission.");
 					} else {
@@ -140,15 +136,27 @@ public class PlayerListener implements Listener {
 								assassin.activateAssassin(player);
 								long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
 								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
-								event.setCancelled(true);
 							}
 						}
 					}
+					event.setCancelled(true);
 				}
 			}
 			break;
 		default:
 			break;
+		}
+	}
+
+	//TODO Prevent dropping masks on the floor, just delete them?
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void onItemDrop (PlayerDropItemEvent event) {
+		Player player = event.getPlayer();
+		ItemStack droppeditem = event.getItemDrop().getItemStack();
+		if (itemcheck.isMask(droppeditem)) {
+			event.setCancelled(true);
+			player.updateInventory();
 		}
 	}
 }

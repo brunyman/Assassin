@@ -80,7 +80,7 @@ public class AssassinMode {
 		String playername = player.getName();
 		data.leaveAssassinChat(player);
 		data.setNeutral(player);
-		player.sendMessage(ChatColor.GRAY + "DEACTIVATED");
+		player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
 		player.setDisplayName(playername);
 		TagAPI.refreshPlayer(player);
@@ -114,7 +114,7 @@ public class AssassinMode {
 			inventory.setItemInHand(new ItemStack(Material.AIR));
 
 		inventory.setHelmet(assassinMask);
-		player.updateInventory();   // Needed until replacement available
+		player.updateInventory();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class AssassinMode {
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
 
 		inventory.setHelmet(assassinMask);
-		player.updateInventory();   // Needed until replacement available
+		player.updateInventory();
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class AssassinMode {
 			inventory.setItem(helmetindex, new ItemStack(0));
 			inventory.setHelmet(helmet);
 		}
-		player.updateInventory();   // Needed until replacement available
+		player.updateInventory();
 	}
 
 	/**
