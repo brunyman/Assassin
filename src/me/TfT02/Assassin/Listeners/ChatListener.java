@@ -39,7 +39,7 @@ public class ChatListener implements Listener {
 			if (data.getAssassinChatMode(player)) {
 //			String number = data.getAssassinNumber(player);
 				String number = "?";
-				String prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_RED + "Assassin #" + number + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
+				String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
 				for (Player assassin : data.getOnlineAssassins()) {
 					assassin.sendMessage(prefix + msg);
 					event.setCancelled(true);
@@ -100,8 +100,9 @@ public class ChatListener implements Listener {
 				}
 				if (data.isAssassin((Player) damager)) {
 					String damagername = ((HumanEntity) damager).getName();
-					String newmsg = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-					event.setDeathMessage(newmsg);
+					String newmsg1 = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+					String newmsg2 = newmsg1.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+					event.setDeathMessage(newmsg2);
 				}
 			}
 		} else if (data.isAssassin(player)) {
