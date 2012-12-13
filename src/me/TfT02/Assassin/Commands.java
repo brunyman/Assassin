@@ -37,9 +37,10 @@ public class Commands implements CommandExecutor {
 					case 0:
 						player.sendMessage(ChatColor.GOLD + "-----[ " + ChatColor.DARK_RED + "Assassin" + ChatColor.GOLD + " ]-----");
 						player.sendMessage(ChatColor.GOLD + "Become an " + ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.GOLD + " and kill other players anonymously:");
-						player.sendMessage(ChatColor.GREEN + "[1]" + ChatColor.GRAY + " Grab an Assassin Mask.");
+						player.sendMessage(ChatColor.GREEN + "[1]" + ChatColor.GRAY + " Craft an Assassin Mask.");
 						player.sendMessage(ChatColor.GREEN + "[2]" + ChatColor.GRAY + " Right click while holding it, to put it on.");
-						player.sendMessage(ChatColor.GREEN + "[3]" + ChatColor.GRAY + " Your name will be hidden.");
+						player.sendMessage(ChatColor.GREEN + "[3]" + ChatColor.GRAY + " Your skin & name will be hidden.");
+						player.sendMessage(ChatColor.GREEN + "[4]" + ChatColor.GRAY + " Happy killing! :D");
 						player.sendMessage(ChatColor.GRAY + "Type /assassin [help] for more information.");
 						return true;
 					case 1:
@@ -150,15 +151,15 @@ public class Commands implements CommandExecutor {
 			if (page == 1) {
 				player.sendMessage(ChatColor.GOLD + "How does it work?");
 				player.sendMessage(dot + ChatColor.GRAY + "When an Assassin, you can PVP other players.");
-				player.sendMessage(dot + ChatColor.GRAY + "You're name and skin will be hidden, even in chat.");
-				player.sendMessage(dot + ChatColor.GRAY + "You can chat with other Assassins in AssassinChat.");
+				player.sendMessage(dot + ChatColor.GRAY + "You're skin and name will be hidden, even in chat.");
+				player.sendMessage(dot + ChatColor.GRAY + "You can chat with other Assassins in 'Assassin Chat'.");
 				player.sendMessage(dot + ChatColor.GRAY + "When the timer expires, you will be teleported back to where you put on your mask.");
 				player.sendMessage(dot + ChatColor.GRAY + "Nobody will ever know that you were an Assassin.");
 			}
 			if (page == 2) {
 				player.sendMessage(ChatColor.GOLD + "Commands:");
 				if (player.hasPermission("assassin.info")) {
-					player.sendMessage(dot + ChatColor.GREEN + "/assassin [info]" + ChatColor.GRAY + " Check your status");
+					player.sendMessage(dot + ChatColor.GREEN + "/assassin [info/status]" + ChatColor.GRAY + " Check your status");
 				}
 				if (player.hasPermission("assassin.spawnmask")) {
 					player.sendMessage(dot + ChatColor.GREEN + "/assassin [mask] <amount>" + ChatColor.GRAY + " Spawn Assassin mask");
