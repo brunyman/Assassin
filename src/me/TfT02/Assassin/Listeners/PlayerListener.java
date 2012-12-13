@@ -74,25 +74,21 @@ public class PlayerListener implements Listener {
 		HumanEntity player = event.getWhoClicked();
 		ItemStack itemstack = event.getCurrentItem();
 		SlotType slotType = event.getSlotType();
-		if (data.isAssassin((Player) player)) {
-			switch (slotType) {
-			case ARMOR:
+
+		switch (slotType) {
+		case ARMOR:
+			if (data.isAssassin((Player) player)) {
 				if (itemcheck.isMask(itemstack)) {
 					event.setCancelled(true);
 				}
-			default:
-				break;
-			}
-		} else {
-			switch (slotType) {
-			case ARMOR:
+			} else {
 				if (itemcheck.isMask(itemstack)) {
 					PlayerInventory inventory = player.getInventory();
 					inventory.setHelmet(new ItemStack(Material.AIR));
 				}
-			default:
-				break;
 			}
+		default:
+			break;
 		}
 	}
 
