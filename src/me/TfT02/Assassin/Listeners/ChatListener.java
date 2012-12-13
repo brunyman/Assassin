@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -65,7 +66,7 @@ public class ChatListener implements Listener {
 								//Show scrambled chat messages
 								String scrambled = message.Scrambled(msg);
 								event.setFormat(pName + scrambled);
-								players.sendMessage(prefix + msg);//TODO FIX
+								players.sendMessage(prefix + msg);//TODO FINISH Assassin chat
 								event.setCancelled(true);
 							}
 						}
@@ -93,6 +94,9 @@ public class ChatListener implements Listener {
 		if (isEntityInvolved) {
 			EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
 			Entity damager = edbe.getDamager();
+			if (damager instanceof Projectile) {
+				damager = ((Projectile) damager).getShooter();
+			
 			if (damager instanceof Player){
 				if (data.isAssassin(player)) {
 					String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
@@ -104,6 +108,7 @@ public class ChatListener implements Listener {
 					String newmsg2 = newmsg1.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
 					event.setDeathMessage(newmsg2);
 				}
+			}
 			}
 		} else if (data.isAssassin(player)) {
 			String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);

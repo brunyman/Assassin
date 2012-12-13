@@ -1,5 +1,7 @@
 package me.TfT02.Assassin.Listeners;
 
+import java.util.List;
+
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.AssassinMode;
 import me.TfT02.Assassin.runnables.EndCooldownTimer;
@@ -15,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -144,15 +147,22 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	//TODO Prevent dropping masks on the floor, just delete them?
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onItemDrop (PlayerDropItemEvent event) {
-		Player player = event.getPlayer();
 		ItemStack droppeditem = event.getItemDrop().getItemStack();
 		if (itemcheck.isMask(droppeditem)) {
 			event.setCancelled(true);
-			player.updateInventory();
+			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to drop masks.");
 		}
 	}
+	
+//	@EventHandler
+//	public void onPlayerDeath(PlayerDeathEvent event) {
+//		List<ItemStack> droppeditems = event.getDrops();
+//		for(droppeditems) {
+//			if (itemcheck.isMask(droppeditems)) {
+//				event.getDrops().remove(droppeditems);
+//			}
+//		}
+//	}
 }
