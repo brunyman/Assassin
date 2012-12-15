@@ -5,6 +5,7 @@ import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -69,6 +70,9 @@ public class AssassinMode {
 		}
 		applyMask(player);
 		data.addCooldownTimer(player);
+		if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+			player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1);
+		}
 	}
 
 	/**
@@ -100,18 +104,22 @@ public class AssassinMode {
 		PlayerInventory inventory = player.getInventory();
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
 
-		//Sets hand item to air, can only activate assassin mode if you are holding a mask
-		//TODO FIX: This will remove a whole stack of masks...
-
-		//give back helmet if player was wearing one
 		ItemStack itemHead = inventory.getHelmet();
+		int amountInHand = inventory.getItemInHand().getAmount();
+		int amount;
+		if (amountInHand > 1) {
+			amount = amountInHand - 1;
+		} else {
+			amount = 0;
+		}
+		ItemStack assassinMasks = new NamedItemStack(new ItemStack(Material.WOOL, amount, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP", "Hold in your hand and right-click", "to activate assassin mode.").getItemStack();
 
 		int emptySlot = inventory.firstEmpty();
 		if (itemHead != null) {
 			inventory.setItem(emptySlot, itemHead);
-			inventory.setItemInHand(new ItemStack(Material.AIR));
+			inventory.setItemInHand(assassinMasks);
 		} else
-			inventory.setItemInHand(new ItemStack(Material.AIR));
+			inventory.setItemInHand(assassinMasks);
 
 		inventory.setHelmet(assassinMask);
 		player.updateInventory();
