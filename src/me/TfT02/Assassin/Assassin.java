@@ -109,7 +109,7 @@ public class Assassin extends JavaPlugin {
 	private void addCustomRecipes() {
 		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP", "Hold in your hand and right-click", "to activate assassin mode.").getItemStack();
 		ItemStack blackWool = new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15);
-		CustomShapedRecipe.addRecipe("Assassin Mask", assassinMask, new Object[]{"XXX", "X X", 'X', blackWool});
+		CustomShapedRecipe.addRecipe("Assassin Mask", assassinMask, new Object[] { "XXX", "X X", 'X', blackWool });
 	}
 
 	private void setupConfiguration() {
@@ -123,11 +123,12 @@ public class Assassin extends JavaPlugin {
 		config.addDefault("Assassin.warn_others_when_near", true);
 		config.addDefault("Assassin.return_mask", false);
 		config.addDefault("Assassin.prevent_neutral_pvp", true);
+		config.addDefault("Assassin.particle_effects", true);
+		config.addDefault("Assassin.warn_time_almost_up", 10);
 
 //		config.addDefault("Assassin.max_allowed", 5);
 //		config.addDefault("Assassin.activation_cost", 100);
 //		config.addDefault("Assassin.hide_neutral_names", false);
-//		config.addDefault("Assassin.particle_effects", true);
 
 		config.options().copyDefaults(true);
 		saveConfig();

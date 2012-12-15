@@ -15,6 +15,7 @@ Version 1.1 | Tested on CB 1.4.5-R0.3
  + Added prevent players from dropping Masks on the ground
  + Added custom recipe for crafting masks
  + Added config option to allow neutral pvp (pvp between non assassins)
+ + Added some particle effects
  - Removed status message when joining the game
 
 
