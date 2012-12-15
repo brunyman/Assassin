@@ -1,13 +1,12 @@
 package me.TfT02.Assassin.Listeners;
 
-import java.util.List;
-
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.AssassinMode;
 import me.TfT02.Assassin.runnables.EndCooldownTimer;
 import me.TfT02.Assassin.util.BlockChecks;
 import me.TfT02.Assassin.util.ItemChecks;
 import me.TfT02.Assassin.util.PlayerData;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -148,21 +147,21 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler
-	public void onItemDrop (PlayerDropItemEvent event) {
+	public void onItemDrop(PlayerDropItemEvent event) {
 		ItemStack droppeditem = event.getItemDrop().getItemStack();
 		if (itemcheck.isMask(droppeditem)) {
 			event.setCancelled(true);
 			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to drop masks.");
 		}
 	}
-	
-//	@EventHandler
-//	public void onPlayerDeath(PlayerDeathEvent event) {
-//		List<ItemStack> droppeditems = event.getDrops();
-//		for(droppeditems) {
-//			if (itemcheck.isMask(droppeditems)) {
-//				event.getDrops().remove(droppeditems);
-//			}
-//		}
-//	}
+
+	@EventHandler
+	public void onPlayerDeathEvent(PlayerDeathEvent event) {
+		for (ItemStack items : event.getDrops()) {
+			if (itemcheck.isMask(items)) {
+				event.getDrops().remove(items);
+				return;
+			}
+		}
+	}
 }
