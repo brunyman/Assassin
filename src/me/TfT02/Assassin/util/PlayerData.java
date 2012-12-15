@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 import me.TfT02.Assassin.Assassin;
 
@@ -26,10 +27,13 @@ public class PlayerData {
 
 	public static List<String> assassins = new ArrayList<String>();
 	public static HashSet<String> assassinChatSet = new HashSet<String>();
+	public static HashMap<String, Integer> assassinNumber = new HashMap<String, Integer>();
+	public static HashSet<Integer> takenNumbers = new HashSet<Integer>();
 	public static HashSet<String> playerNear = new HashSet<String>();
 	public static HashMap<String, String> playerLocationData = new HashMap<String, String>();
 
 //	public ArrayList<String> assassinsList = new ArrayList<String>();
+	private final Random random = new Random();
 
 	public void addAssassin(Player player) {
 		playerData.put(player.getName(), "Assassin");
@@ -86,8 +90,10 @@ public class PlayerData {
 		remainder = remainder - mins * 60;
 		int secs = remainder;
 		if (mins == 0 && hours == 0) return secs + "s";
-		if (hours == 0) return mins + "m " + secs + "s";
-		else return hours + "h " + mins + "m " + secs + "s";
+		if (hours == 0)
+			return mins + "m " + secs + "s";
+		else
+			return hours + "h " + mins + "m " + secs + "s";
 	}
 
 	public void resetActiveTime(Player player) {
@@ -223,5 +229,35 @@ public class PlayerData {
 			return true;
 		}
 		return false;
+	}
+
+	public int getAssassinNumber(Player player) {
+		String playername = player.getName();
+		int number;
+
+		if (assassinNumber.containsKey(playername)) {
+			if (assassinNumber.get(playername) == null) {
+				number = 0;
+			} else {
+				number = assassinNumber.get(playername);
+			}
+		} else {
+			assassinNumber.put(playername, generateRandomNumber());
+			number = assassinNumber.get(playername);
+		}
+		return number;
+	}
+
+	public int generateRandomNumber() {
+		int number;
+		int randomNumber = random.nextInt(100);
+		if (takenNumbers.contains(randomNumber)) {
+			number = randomNumber + 1;
+			takenNumbers.add(number);
+		} else {
+			number = randomNumber;
+			takenNumbers.add(number);
+		}
+		return number;
 	}
 }
