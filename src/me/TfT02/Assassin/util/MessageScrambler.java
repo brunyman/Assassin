@@ -144,14 +144,7 @@ public class MessageScrambler {
 	}
 
 	public String addMagic(String string) {
-		return string = string.replace("a", ChatColor.MAGIC + "a")
-				.replace("`r", "\u00A7c").replace("`R", "\u00A74")
-				.replace("`y", "\u00A7e").replace("`Y", "\u00A76")
-				.replace("`g", "\u00A7a").replace("`G", "\u00A72")
-				.replace("`a", "\u00A7b").replace("`A", "\u00A73")
-				.replace("`b", "\u00A79").replace("`B", "\u00A71")
-				.replace("`p", "\u00A7d").replace("`P", "\u00A75")
-				.replace("`k", "\u00A70").replace("`s", "\u00A77")
-				.replace("`S", "\u00A78").replace("`w", "\u00A7f");
+		return string = string.replace("a", ChatColor.MAGIC + "a").replace("`r", "\u00A7c").replace("`R", "\u00A74").replace("`y", "\u00A7e").replace("`Y", "\u00A76").replace("`g", "\u00A7a").replace("`G", "\u00A72").replace("`a", "\u00A7b").replace("`A", "\u00A73").replace("`b", "\u00A79")
+				.replace("`B", "\u00A71").replace("`p", "\u00A7d").replace("`P", "\u00A75").replace("`k", "\u00A70").replace("`s", "\u00A77").replace("`S", "\u00A78").replace("`w", "\u00A7f");
 	}
 }

@@ -38,8 +38,7 @@ public class ChatListener implements Listener {
 		if (msg == null) return;
 		if (data.isAssassin(player)) {
 			if (data.getAssassinChatMode(player)) {
-//			String number = data.getAssassinNumber(player);
-				String number = "?";
+				int number = data.getAssassinNumber(player);
 				String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
 				for (Player assassin : data.getOnlineAssassins()) {
 					assassin.sendMessage(prefix + msg);
@@ -65,8 +64,8 @@ public class ChatListener implements Listener {
 //								}
 								//Show scrambled chat messages
 								String scrambled = message.Scrambled(msg);
-								event.setFormat(pName + scrambled);
-								players.sendMessage(prefix + msg);//TODO FINISH Assassin chat
+//								event.setFormat(pName + scrambled);
+								players.sendMessage(pName + scrambled);//TODO FINISH Assassin chat
 								event.setCancelled(true);
 							}
 						}
@@ -96,19 +95,19 @@ public class ChatListener implements Listener {
 			Entity damager = edbe.getDamager();
 			if (damager instanceof Projectile) {
 				damager = ((Projectile) damager).getShooter();
-			
-			if (damager instanceof Player){
-				if (data.isAssassin(player)) {
-					String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-					event.setDeathMessage(newmsg);
+
+				if (damager instanceof Player) {
+					if (data.isAssassin(player)) {
+						String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+						event.setDeathMessage(newmsg);
+					}
+					if (data.isAssassin((Player) damager)) {
+						String damagername = ((HumanEntity) damager).getName();
+						String newmsg1 = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+						String newmsg2 = newmsg1.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+						event.setDeathMessage(newmsg2);
+					}
 				}
-				if (data.isAssassin((Player) damager)) {
-					String damagername = ((HumanEntity) damager).getName();
-					String newmsg1 = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-					String newmsg2 = newmsg1.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-					event.setDeathMessage(newmsg2);
-				}
-			}
 			}
 		} else if (data.isAssassin(player)) {
 			String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);

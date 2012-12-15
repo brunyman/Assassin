@@ -8,12 +8,12 @@ import org.bukkit.inventory.ItemStack;
  * Event fired, when custom recipe is preparing result of recipe.
  */
 public class PrepareRecipeEvent extends Event {
-	
-	private ItemStack			result;
-	private ItemStack[]			inv;
-	private String				name;
-	private static HandlerList	handlers	= new HandlerList();
-	
+
+	private ItemStack result;
+	private ItemStack[] inv;
+	private String name;
+	private static HandlerList handlers = new HandlerList();
+
 	/**
 	 * Instantiates a new prepare recipe event.
 	 * 
@@ -24,19 +24,18 @@ public class PrepareRecipeEvent extends Event {
 	 * @param name
 	 *            the name
 	 */
-	public PrepareRecipeEvent(ItemStack[] inventory, ItemStack result,
-			String name) {
+	public PrepareRecipeEvent(ItemStack[] inventory, ItemStack result, String name) {
 		super();
 		inv = inventory;
 		setResult(result);
 		this.name = name;
 	}
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;
 	}
-	
+
 	/**
 	 * Gets the handler list.
 	 * 
@@ -45,7 +44,7 @@ public class PrepareRecipeEvent extends Event {
 	public static HandlerList getHandlerList() {
 		return handlers;
 	}
-	
+
 	/**
 	 * Gets the result.
 	 * 
@@ -54,7 +53,7 @@ public class PrepareRecipeEvent extends Event {
 	public ItemStack getResult() {
 		return result;
 	}
-	
+
 	/**
 	 * Sets the result.
 	 * 
@@ -64,7 +63,7 @@ public class PrepareRecipeEvent extends Event {
 	public void setResult(ItemStack result) {
 		this.result = result;
 	}
-	
+
 	/**
 	 * Gets the inventory.
 	 * 
@@ -73,7 +72,7 @@ public class PrepareRecipeEvent extends Event {
 	public ItemStack[] getInventory() {
 		return inv;
 	}
-	
+
 	/**
 	 * Gets the name.
 	 * 
@@ -82,5 +81,5 @@ public class PrepareRecipeEvent extends Event {
 	public String getName() {
 		return name;
 	}
-	
+
 }

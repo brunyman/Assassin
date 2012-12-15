@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 public class itemNamer {
 
 	private static CraftItemStack craftStack;
-	private static net.minecraft.server.v1_4_5.ItemStack	itemStack;
+	private static net.minecraft.server.v1_4_5.ItemStack itemStack;
 
 	public static ItemStack setName(ItemStack item, String name) {
 		if (item instanceof CraftItemStack) {

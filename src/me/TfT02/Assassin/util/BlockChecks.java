@@ -21,6 +21,7 @@ public class BlockChecks {
 		case BURNING_FURNACE:
 		case CAKE_BLOCK:
 		case CHEST:
+		case SIGN:
 		case DISPENSER:
 		case ENCHANTMENT_TABLE:
 		case ENDER_CHEST:
