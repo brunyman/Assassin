@@ -1,6 +1,7 @@
 package me.TfT02.Assassin;
 
-import me.TfT02.Assassin.util.NamedItemStack;
+import java.util.ArrayList;
+
 import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.kitteh.tag.TagAPI;
 
 public class AssassinMode {
@@ -104,7 +106,7 @@ public class AssassinMode {
 	@SuppressWarnings("deprecation")
 	public void applyMask(Player player) {
 		PlayerInventory inventory = player.getInventory();
-		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
+		ItemStack assassinMask = getMaskPlain();
 
 		ItemStack itemHead = inventory.getHelmet();
 		int amountInHand = inventory.getItemInHand().getAmount();
@@ -114,7 +116,7 @@ public class AssassinMode {
 		} else {
 			amount = 0;
 		}
-		ItemStack assassinMasks = new NamedItemStack(new ItemStack(Material.WOOL, amount, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP", "Hold in your hand and right-click", "to activate assassin mode.").getItemStack();
+		ItemStack assassinMasks = getMask(amount);
 
 		int emptySlot = inventory.firstEmpty();
 		if (itemHead != null) {
@@ -135,7 +137,7 @@ public class AssassinMode {
 	@SuppressWarnings("deprecation")
 	public void applyMaskForce(Player player) {
 		PlayerInventory inventory = player.getInventory();
-		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP").getItemStack();
+		ItemStack assassinMask = getMaskPlain();
 
 		inventory.setHelmet(assassinMask);
 		player.updateInventory();
@@ -180,10 +182,31 @@ public class AssassinMode {
 	@SuppressWarnings("deprecation")
 	public void spawnMask(Player player, int amount) {
 		PlayerInventory inventory = player.getInventory();
-		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, amount, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP", "Hold in your hand and right-click", "to activate assassin mode.").getItemStack();
-
+		ItemStack assassinMask = getMask(amount);
 		int emptySlot = inventory.firstEmpty();
 		inventory.setItem(emptySlot, assassinMask);
 		player.updateInventory();
+	}
+	public ItemStack getMask(int amount){
+		ItemStack is = new ItemStack(Material.WOOL, amount, (short) 0, (byte) 15);
+		ItemMeta im = is.getItemMeta();
+		im.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.GRAY + "Allows PVP");
+		lore.add("Hold in your hand and right-click");
+		lore.add("to activate assassin mode.");
+		im.setLore(lore);
+		is.setItemMeta(im);
+		return is;
+	}
+	public ItemStack getMaskPlain(){
+		ItemStack is = new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15);
+		ItemMeta im = is.getItemMeta();
+		im.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
+		ArrayList<String> lore = new ArrayList<String>();
+		lore.add(ChatColor.GRAY + "Allows PVP");
+		im.setLore(lore);
+		is.setItemMeta(im);
+		return is;
 	}
 }

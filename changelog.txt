@@ -18,6 +18,8 @@ Version 1.1 | Tested on CB 1.4.5-R0.3
  + Added config option to disable teleportation when Assassin Mode deactivates
  + Added some particle effects
  + Added config option to disable all particle effects (created by this plugin)
+ + Added sound effect when Assassin mode activates / deactivates
+ + Added potion effects when a Assassin respawns (+config option to disable this)
  - Removed status message when joining the game
 
 

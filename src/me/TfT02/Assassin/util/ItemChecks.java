@@ -4,6 +4,7 @@ import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemChecks {
 	Assassin plugin;
@@ -12,13 +13,14 @@ public class ItemChecks {
 		plugin = instance;
 	}
 
-	public boolean isMask(ItemStack itemstack) {
-		int id = itemstack.getTypeId();
+	public boolean isMask(ItemStack is) {
+		int id = is.getTypeId();
 		if (id == 35) {
-			String item = itemNamer.getName(itemstack);
+			ItemMeta im = is.getItemMeta();
+			String name = im.getDisplayName();
 			String mask = ChatColor.DARK_RED + "Assassin Mask";
-			if (item == null) {
-			} else if (item.equalsIgnoreCase(mask)) {
+			if (name == null) {
+			} else if (name.equalsIgnoreCase(mask)) {
 				return true;
 			}
 		}

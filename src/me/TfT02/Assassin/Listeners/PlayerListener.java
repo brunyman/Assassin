@@ -7,6 +7,7 @@ import me.TfT02.Assassin.util.BlockChecks;
 import me.TfT02.Assassin.util.ItemChecks;
 import me.TfT02.Assassin.util.PlayerData;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,6 +27,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PlayerListener implements Listener {
 	Assassin plugin;
@@ -55,9 +58,18 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	private void onPlayerRespawn(PlayerRespawnEvent event) {
-		Player player = event.getPlayer();
+		final Player player = event.getPlayer();
 		if (data.isAssassin(player)) {
 			assassin.applyMaskForce(player);
+			if (Assassin.getInstance().getConfig().getBoolean("Assassin.potion_effects")) {
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
+					@Override
+					public void run() {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 30, 1));
+					}
+				}, 5);
+			}
 		}
 	}
 

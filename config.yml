@@ -16,4 +16,5 @@ Assassin:
   return_mask: false
   prevent_neutral_pvp: true
   particle_effects: true
+  potion_effects: true
   warn_time_almost_up: 10
