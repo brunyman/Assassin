@@ -1,7 +1,6 @@
 package me.TfT02.Assassin.Listeners;
 
 import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.ItemChecks;
 import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Effect;
@@ -25,7 +24,6 @@ public class EntityListener implements Listener {
 	}
 
 	private PlayerData data = new PlayerData(plugin);
-	private ItemChecks itemcheck = new ItemChecks(plugin);
 
 	/**
 	 * Monitor EntityDamageByEntity events.
