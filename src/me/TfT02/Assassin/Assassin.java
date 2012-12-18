@@ -1,6 +1,7 @@
 package me.TfT02.Assassin;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import me.TfT02.Assassin.Listeners.ChatListener;
@@ -129,6 +130,8 @@ public class Assassin extends JavaPlugin {
 		config.addDefault("Assassin.potion_effects", true);
 		config.addDefault("Assassin.warn_time_almost_up", 10);
 		config.addDefault("Assassin.max_allowed", 5);
+		String[] defaultBlockedcmds = { "/spawn", "/home", "/tp", "/tphere" , "/tpa" , "/tpahere" , "/tpall" , "/tpaall" };
+		config.addDefault("Assassin.blocked_commands", Arrays.asList(defaultBlockedcmds));
 
 //		config.addDefault("Assassin.activation_cost", 100);
 //		config.addDefault("Assassin.hide_neutral_names", false);

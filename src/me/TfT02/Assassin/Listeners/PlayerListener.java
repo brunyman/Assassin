@@ -1,5 +1,7 @@
 package me.TfT02.Assassin.Listeners;
 
+import java.util.List;
+
 import me.TfT02.Assassin.Assassin;
 import me.TfT02.Assassin.AssassinMode;
 import me.TfT02.Assassin.runnables.EndCooldownTimer;
@@ -20,6 +22,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -174,6 +177,16 @@ public class PlayerListener implements Listener {
 				event.getDrops().remove(items);
 				return;
 			}
+		}
+	}
+	@EventHandler(ignoreCancelled=true)
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event){
+		Player player = event.getPlayer();
+		String command = event.getMessage();
+		List<String> blockedCmds = Assassin.getInstance().getConfig().getStringList("Assassin.blocked_commands");
+		if (data.isAssassin(player) && blockedCmds.contains(command)) {
+			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
+			event.setCancelled(true);
 		}
 	}
 }
