@@ -44,6 +44,8 @@ public class AssassinMode {
 		}, 20 * 1);
 
 		player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+		int number = data.getAssassinNumber(player);
+		player.setPlayerListName(ChatColor.DARK_RED + "ASSASSIN [" + number + "]");
 		TagAPI.refreshPlayer(player);
 	}
 
@@ -94,7 +96,12 @@ public class AssassinMode {
 		removeMask(player);
 		if (Assassin.getInstance().getConfig().getBoolean("Assassin.teleport_on_deactivate")) {
 			Location previousLocation = data.getLocation(player);
-			player.teleport(previousLocation);
+			if (previousLocation == null){
+				player.sendMessage(ChatColor.RED + "Location not found!");
+			}
+			else {
+				player.teleport(previousLocation);
+			}
 		}
 	}
 
