@@ -117,6 +117,7 @@ public class Assassin extends JavaPlugin {
 		config.addDefault("General.debug_mode_enabled", false);
 		config.addDefault("General.stats_tracking_enabled", true);
 		config.addDefault("Assassin.active_length", 3600);
+		config.addDefault("Assassin.teleport_on_deactivate", true);
 		config.addDefault("Assassin.cooldown_length", 600);
 		config.addDefault("Assassin.messages_distance", 250);
 		config.addDefault("Assassin.warn_others_on_activation", true);
@@ -125,8 +126,8 @@ public class Assassin extends JavaPlugin {
 		config.addDefault("Assassin.prevent_neutral_pvp", true);
 		config.addDefault("Assassin.particle_effects", true);
 		config.addDefault("Assassin.warn_time_almost_up", 10);
+		config.addDefault("Assassin.max_allowed", 5);
 
-//		config.addDefault("Assassin.max_allowed", 5);
 //		config.addDefault("Assassin.activation_cost", 100);
 //		config.addDefault("Assassin.hide_neutral_names", false);
 

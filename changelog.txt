@@ -8,14 +8,16 @@ Key:
 
 Version 1.1 | Tested on CB 1.4.5-R0.3
  ! Compatible with 1.4.5-R0.3
- ! Now uses TapAPI v1.8
+ ! Now uses TapAPI v1.9
  = Fix with EntityDeathEvents
  + Added time formatting. Time left is now displayed in hours/mins/secs
  + Added Assassin chat channel, Assassins can talk with each other. Neutral players will see messages scrambled.
  + Added prevent players from dropping Masks on the ground
  + Added custom recipe for crafting masks
  + Added config option to allow neutral pvp (pvp between non assassins)
+ + Added config option to disable teleportation when Assassin Mode deactivates
  + Added some particle effects
+ + Added config option to disable all particle effects (created by this plugin)
  - Removed status message when joining the game
 
 

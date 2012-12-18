@@ -8,6 +8,7 @@ General:
   stats_tracking_enabled: true
 Assassin:
   active_length: 3600
+  teleport_on_deactivate: true
   cooldown_length: 600
   messages_distance: 250
   warn_others_on_activation: true

@@ -260,4 +260,20 @@ public class PlayerData {
 		}
 		return number;
 	}
+
+	/**
+	 * Check if the maximum amount of assassins is reached
+	 * 
+	 * @return true if maximum is reached, false otherwise
+	 */	
+	public boolean assassinMaximumReached(){
+		int maxamount = Assassin.getInstance().getConfig().getInt("Assassin.max_allowed");
+		int amount = assassins.size();
+		if (maxamount > 0){
+			if (maxamount >= amount) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

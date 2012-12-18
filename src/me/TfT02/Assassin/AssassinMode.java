@@ -89,8 +89,10 @@ public class AssassinMode {
 		player.setDisplayName(playername);
 		TagAPI.refreshPlayer(player);
 		removeMask(player);
-		Location previousLocation = data.getLocation(player);
-		player.teleport(previousLocation);
+		if (Assassin.getInstance().getConfig().getBoolean("Assassin.teleport_on_deactivate")) {
+			Location previousLocation = data.getLocation(player);
+			player.teleport(previousLocation);
+		}
 	}
 
 	/**
