@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.kitteh.tag.TagAPI;
 
 public class AssassinMode {
@@ -188,7 +189,8 @@ public class AssassinMode {
 		player.updateInventory();
 	}
 	public ItemStack getMask(int amount){
-		ItemStack is = new ItemStack(Material.WOOL, amount, (short) 0, (byte) 15);
+		MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
+		ItemStack is = blackWool.toItemStack(amount);
 		ItemMeta im = is.getItemMeta();
 		im.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
 		ArrayList<String> lore = new ArrayList<String>();
@@ -200,7 +202,8 @@ public class AssassinMode {
 		return is;
 	}
 	public ItemStack getMaskPlain(){
-		ItemStack is = new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15);
+		MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
+		ItemStack is = blackWool.toItemStack();
 		ItemMeta im = is.getItemMeta();
 		im.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
 		ArrayList<String> lore = new ArrayList<String>();

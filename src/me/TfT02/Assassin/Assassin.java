@@ -9,14 +9,15 @@ import me.TfT02.Assassin.Listeners.PlayerListener;
 import me.TfT02.Assassin.Listeners.TagListener;
 import me.TfT02.Assassin.runnables.ActiveTimer;
 import me.TfT02.Assassin.runnables.AssassinRangeTimer;
-//import me.TfT02.Assassin.util.CustomShapedRecipe;
 import me.TfT02.Assassin.util.Data;
 import me.TfT02.Assassin.util.DependencyDownload;
 import me.TfT02.Assassin.util.Metrics;
-//import me.TfT02.Assassin.util.NamedItemStack;
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -27,6 +28,7 @@ public class Assassin extends JavaPlugin {
 	private EntityListener entityListener = new EntityListener(this);
 	private PlayerListener playerListener = new PlayerListener(this);
 	private ChatListener chatListener = new ChatListener(this);
+	private AssassinMode assassin = new AssassinMode(this);
 	public boolean spoutEnabled;
 	public boolean debug_mode = false;
 
@@ -60,7 +62,7 @@ public class Assassin extends JavaPlugin {
 			debug_mode = true;
 		}
 		setupConfiguration();
-//		addCustomRecipes();
+		addCustomRecipes();
 		//Register events
 		pm.registerEvents(tagListener, this);
 		pm.registerEvents(entityListener, this);
@@ -103,11 +105,13 @@ public class Assassin extends JavaPlugin {
 		scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 40);
 	}
 
-//	private void addCustomRecipes() {
-//		ItemStack assassinMask = new NamedItemStack(new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15)).setName(ChatColor.DARK_RED + "Assassin Mask").setLore(ChatColor.GRAY + "Allows PVP", "Hold in your hand and right-click", "to activate assassin mode.").getItemStack();
-//		ItemStack blackWool = new ItemStack(Material.WOOL, 1, (short) 0, (byte) 15);
-//		CustomShapedRecipe.addRecipe("Assassin Mask", assassinMask, new Object[] { "XXX", "X X", 'X', blackWool });
-//	}
+	private void addCustomRecipes() {
+		MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
+		ShapedRecipe AssassinMask = new ShapedRecipe(assassin.getMask(1));
+		AssassinMask.shape(new String[] { "XXX", "X X" });
+		AssassinMask.setIngredient('X', blackWool);
+		getServer().addRecipe(AssassinMask);
+	}
 
 	private void setupConfiguration() {
 		FileConfiguration config = this.getConfig();
