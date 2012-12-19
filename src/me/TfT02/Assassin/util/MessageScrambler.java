@@ -51,6 +51,9 @@ public class MessageScrambler {
 			end1 = scrambleLength1 + start1;
 			start2 = random.nextInt(halfLength) + end1;
 			end2 = scrambleLength2 + start2;
+			if (end1 > length) {
+				end1 = length;
+			}
 			if (end2 > length) {
 				end2 = length;
 			}
@@ -61,11 +64,6 @@ public class MessageScrambler {
 			sb.insert(end1 + 2, ChatColor.RESET);
 			sb.insert(start2 + 4, ChatColor.MAGIC);
 			sb.insert(end2 + 6, ChatColor.RESET);
-			if (plugin.debug_mode) {
-				System.out.println("DEBUG INFORMATION:");
-				System.out.println(start1 + "-" + end1 + " | " + scrambleLength1);
-				System.out.println(start2 + "-" + end2 + " | " + scrambleLength2);
-			}
 		}
 		String scrambled = sb.toString();
 		return scrambled;

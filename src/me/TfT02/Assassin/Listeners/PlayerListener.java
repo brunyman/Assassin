@@ -51,6 +51,7 @@ public class PlayerListener implements Listener {
 		if (!data.isAssassin(player)) {
 			data.setNeutral(player);
 		} else if (data.isAssassin(player)) {
+			event.setJoinMessage(ChatColor.DARK_RED + "AN ASSASSIN JOINED THE GAME");
 			assassin.applyTraits(player);
 			assassin.applyMaskForce(player);
 		}
@@ -81,6 +82,7 @@ public class PlayerListener implements Listener {
 	private void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (data.isAssassin(player)) {
+			event.setQuitMessage(ChatColor.DARK_RED + "AN ASSASSIN LEFT THE GAME");
 			data.addLogoutTime(player);
 			data.saveActiveTime(player);
 			data.leaveAssassinChat(player);
@@ -175,15 +177,15 @@ public class PlayerListener implements Listener {
 			break;
 		}
 	}
-
-	@EventHandler
-	public void onItemDrop(PlayerDropItemEvent event) {
-		ItemStack droppeditem = event.getItemDrop().getItemStack();
-		if (itemcheck.isMask(droppeditem)) {
-			event.setCancelled(true);
-			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to drop masks.");
-		}
-	}
+//
+//	@EventHandler
+//	public void onItemDrop(PlayerDropItemEvent event) {
+//		ItemStack droppeditem = event.getItemDrop().getItemStack();
+//		if (itemcheck.isMask(droppeditem)) {
+//			event.setCancelled(true);
+//			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to drop masks.");
+//		}
+//	}
 
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event) {

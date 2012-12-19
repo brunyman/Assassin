@@ -94,6 +94,7 @@ public class AssassinMode {
 		player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
 		player.setDisplayName(playername);
+		player.setPlayerListName(playername);
 		TagAPI.refreshPlayer(player);
 		removeMask(player);
 		if (Assassin.getInstance().getConfig().getBoolean("Assassin.teleport_on_deactivate")) {

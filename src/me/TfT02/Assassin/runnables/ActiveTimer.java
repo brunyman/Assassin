@@ -5,6 +5,7 @@ import me.TfT02.Assassin.AssassinMode;
 import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 
@@ -45,10 +46,11 @@ public class ActiveTimer implements Runnable {
 					data.resetActiveTime(players);
 					if (plugin.debug_mode) System.out.println(players + " status set to Neutral. Active time reached max.");
 				}
-			} else if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+			} else if (warntime > 0) {
 				if (activetime + warntime >= maxactivetime) {
 					if (data.isAssassin(players)) {
-						players.getWorld().playEffect(players.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+						players.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
+						if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) players.getWorld().playEffect(players.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
 						if (plugin.debug_mode) System.out.println(players + " has received a warning because his Assassin mode is running out.");
 					}
 				}
