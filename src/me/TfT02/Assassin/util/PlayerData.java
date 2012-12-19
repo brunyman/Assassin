@@ -249,16 +249,17 @@ public class PlayerData {
 	}
 
 	public int generateRandomNumber() {
-		int number;
-		int randomNumber = random.nextInt(100);
-		if (takenNumbers.contains(randomNumber)) {
-			number = randomNumber + 1;
-			takenNumbers.add(number);
-		} else {
-			number = randomNumber;
-			takenNumbers.add(number);
+		int randomNumber = random.nextInt(1000);
+		boolean check = false;
+		while(check == false){
+		    if(takenNumbers.contains(randomNumber)){
+		        randomNumber = random.nextInt(1000);
+		    }else{
+		        check = true;
+		        takenNumbers.add(randomNumber);
+		    }
 		}
-		return number;
+		return randomNumber;
 	}
 
 	/**
