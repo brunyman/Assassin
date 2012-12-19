@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -40,6 +41,7 @@ public class AssassinMode {
 				player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
 				String timeleft = data.getStringTimeLeft(player);
 				player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
+				player.getWorld().playSound(player.getLocation(), Sound.PISTON_RETRACT,1.0f,1.0f);
 			}
 		}, 20 * 1);
 
@@ -103,6 +105,8 @@ public class AssassinMode {
 				player.teleport(previousLocation);
 			}
 		}
+		player.getWorld().playSound(player.getLocation(), Sound.PISTON_EXTEND,1.0f,1.0f);
+		player.getWorld().playSound(player.getLocation(), Sound.LEVEL_UP,1.0f,1.0f);
 	}
 
 	/**
