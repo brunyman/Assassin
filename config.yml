@@ -6,6 +6,7 @@
 General:
   debug_mode_enabled: false
   stats_tracking_enabled: true
+  config_version: 1.1
 Assassin:
   active_length: 3600
   teleport_on_deactivate: true
@@ -14,6 +15,7 @@ Assassin:
   warn_others_on_activation: true
   warn_others_when_near: true
   return_mask: false
+  activation_cost: 0
   prevent_neutral_pvp: true
   particle_effects: true
   potion_effects: true

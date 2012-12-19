@@ -20,6 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -30,7 +31,8 @@ public class Assassin extends JavaPlugin {
 	private PlayerListener playerListener = new PlayerListener(this);
 	private ChatListener chatListener = new ChatListener(this);
 	private AssassinMode assassin = new AssassinMode(this);
-	public boolean spoutEnabled;
+//	public boolean spoutEnabled;
+	public boolean vaultEnabled;
 	public boolean debug_mode = false;
 
 	public static Economy econ = null;
@@ -62,21 +64,20 @@ public class Assassin extends JavaPlugin {
 			this.getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
 			debug_mode = true;
 		}
+		if (!setupEconomy()) {
+			vaultEnabled = false;
+		}
+		else vaultEnabled = true;
+
 		setupConfiguration();
+		checkConfiguration();
 		addCustomRecipes();
-		//Register events
 		pm.registerEvents(tagListener, this);
 		pm.registerEvents(entityListener, this);
 		pm.registerEvents(playerListener, this);
 		pm.registerEvents(chatListener, this);
 //		pm.registerEvents(blockListener, this);
 		getCommand("assassin").setExecutor(new Commands(this));
-
-//		try {
-//			Data.createFiles();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 
 		Data.loadData();
 		if (getConfig().getBoolean("General.stats_tracking_enabled")) {
@@ -87,11 +88,6 @@ public class Assassin extends JavaPlugin {
 				System.out.println("Failed to submit stats.");
 			}
 		}
-//		if (!setupEconomy()) {
-//			this.getLogger().log(Level.WARNING, "Disabled due to no Vault dependency found!");
-//			getServer().getPluginManager().disablePlugin(this);
-//			return;
-//		}
 		try {
 			Metrics metrics = new Metrics(this);
 			metrics.start();
@@ -118,6 +114,7 @@ public class Assassin extends JavaPlugin {
 		FileConfiguration config = this.getConfig();
 		config.addDefault("General.debug_mode_enabled", false);
 		config.addDefault("General.stats_tracking_enabled", true);
+		config.addDefault("General.config_version", "1.1");
 		config.addDefault("Assassin.active_length", 3600);
 		config.addDefault("Assassin.teleport_on_deactivate", true);
 		config.addDefault("Assassin.cooldown_length", 600);
@@ -125,32 +122,36 @@ public class Assassin extends JavaPlugin {
 		config.addDefault("Assassin.warn_others_on_activation", true);
 		config.addDefault("Assassin.warn_others_when_near", true);
 		config.addDefault("Assassin.return_mask", false);
+		config.addDefault("Assassin.activation_cost", 0);
 		config.addDefault("Assassin.prevent_neutral_pvp", true);
 		config.addDefault("Assassin.particle_effects", true);
 		config.addDefault("Assassin.potion_effects", true);
 		config.addDefault("Assassin.warn_time_almost_up", 10);
-		config.addDefault("Assassin.max_allowed", 5);
+//		config.addDefault("Assassin.max_allowed", 5);
 		String[] defaultBlockedcmds = { "/spawn", "/home", "/tp", "/tphere" , "/tpa" , "/tpahere" , "/tpall" , "/tpaall" };
 		config.addDefault("Assassin.blocked_commands", Arrays.asList(defaultBlockedcmds));
 
-//		config.addDefault("Assassin.activation_cost", 100);
 //		config.addDefault("Assassin.hide_neutral_names", false);
 
 		config.options().copyDefaults(true);
 		saveConfig();
 	}
-
-//	private boolean setupEconomy() {
-//		if (getServer().getPluginManager().getPlugin("Vault") == null) {
-//			return false;
-//		}
-//		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-//		if (rsp == null) {
-//			return false;
-//		}
-//		econ = rsp.getProvider();
-//		return econ != null;
-//	}
+	private void checkConfiguration() {
+		if (getConfig().getDouble("Assassin.activation_cost") > 0 && !vaultEnabled) {
+			this.getLogger().log(Level.WARNING, "Vault dependency needed if you want to use currency!");
+		}
+	}
+	private boolean setupEconomy() {
+		if (getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) {
+			return false;
+		}
+		econ = rsp.getProvider();
+		return econ != null;
+	}
 
 	/**
 	 * Run things on disable.

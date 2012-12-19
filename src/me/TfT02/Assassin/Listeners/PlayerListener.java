@@ -8,6 +8,7 @@ import me.TfT02.Assassin.runnables.EndCooldownTimer;
 import me.TfT02.Assassin.util.BlockChecks;
 import me.TfT02.Assassin.util.ItemChecks;
 import me.TfT02.Assassin.util.PlayerData;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -145,10 +146,24 @@ public class PlayerListener implements Listener {
 							if (data.isAssassin(player)) {
 								player.sendMessage(ChatColor.RED + "You already are an Assassin.");
 							} else {
-								if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
-								assassin.activateAssassin(player);
-								long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
-								plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+								double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
+								if (plugin.vaultEnabled && activation_cost > 0){
+									EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
+									if(r.transactionSuccess()) {
+										if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
+										assassin.activateAssassin(player);
+										long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+										plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+										player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
+									} else {
+										player.sendMessage(String.format("An error occured: %s", r.errorMessage));
+									}
+								} else { 
+									if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
+									assassin.activateAssassin(player);
+									long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+									plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+								}
 							}
 						}
 					}
