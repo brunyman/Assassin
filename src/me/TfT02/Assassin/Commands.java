@@ -96,12 +96,12 @@ public class Commands implements CommandExecutor {
 							if (args.length == 2) {
 								Player target = Bukkit.getServer().getPlayer(args[1]);
 								if (target == null) {
-									sender.sendMessage(args[0] + " is not online!");
+									sender.sendMessage(ChatColor.GOLD + args[1] + ChatColor.RED + " is not online!");
 									return false;
 								} else {
 									TagAPI.refreshPlayer(target);
 									data.removeCooldown(target);
-									player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target);
+									player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target.getName());
 									return true;
 								}
 							} else {
