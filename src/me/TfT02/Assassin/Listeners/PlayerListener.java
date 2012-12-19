@@ -187,10 +187,13 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event) {
-		for (ItemStack items : event.getDrops()) {
-			if (itemcheck.isMask(items)) {
-				event.getDrops().remove(items);
-				return;
+		Player player = event.getEntity();
+		if (data.isAssassin(player)) {
+			for (ItemStack items : event.getDrops()) {
+				if (itemcheck.isMask(items)) {
+					event.getDrops().remove(items);
+					return;
+				}
 			}
 		}
 	}
