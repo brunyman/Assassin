@@ -3,7 +3,7 @@ author: TfT_02
 main: me.TfT02.Assassin.Assassin
 description: A whole new concept on PVP!
 dev-url: http://dev.bukkit.org/server-mods/Assassin/
-version: 1.2-dev
+version: 1.1
 softdepend: [ThisPluginDoesNotExist]
 commands:
    assassin:
@@ -46,3 +46,6 @@ permissions:
     assassin.chat:
         description: Allows Assassins to chat with other Assassins.
         default: true
+    assassin.admin:
+        description: Permission node for admins, will send messages to players with this permission when Assassin is outdated.
+        default: op

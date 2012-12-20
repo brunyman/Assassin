@@ -57,9 +57,14 @@ public class Assassin extends JavaPlugin {
 			this.getLogger().log(Level.WARNING, "Downloading TagAPI now, hold on!");
 			DependencyDownload.download();
 			this.getLogger().log(Level.WARNING, "TagAPI downloaded! Restart server to enable [Assassin].");
-			getServer().getPluginManager().disablePlugin(this);
+			pm.disablePlugin(this);
 			return;
-		}
+		} else
+			if (!pm.isPluginEnabled("TagAPI")) {
+				this.getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
+				pm.disablePlugin(this);
+				return;
+			}
 		if (getConfig().getBoolean("General.debug_mode_enabled")) {
 			this.getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
 			debug_mode = true;

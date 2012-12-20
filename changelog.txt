@@ -7,8 +7,8 @@ Key:
   - Removal
 
 Version 1.1 | Tested on CB 1.4.5-R1.0
- ! Compatible with 1.4.5-R1.0
- ! Now uses TapAPI v1.9
+ ! Compatible with 1.4.5-R1.0 & 1.4.6-R0.1
+ ! Now uses TapAPI v1.9.1
  = Fix with EntityDeathEvents
  = Fixed rare bug which could occur when Location data was lost
  + Added custom recipe for crafting masks

@@ -32,13 +32,13 @@ public class ChatListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
 	public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
-		String pName = ChatColor.DARK_RED + "[ASSASSIN]: " + ChatColor.RESET;
+		int number = data.getAssassinNumber(player);
+		String pName = ChatColor.DARK_RED + "[ASSASSIN " + number + "]: " + ChatColor.RESET;
 		String msg = event.getMessage();
 
 		if (msg == null) return;
 		if (data.isAssassin(player)) {
 			if (data.getAssassinChatMode(player)) {
-				int number = data.getAssassinNumber(player);
 				String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
 				for (Player assassin : data.getOnlineAssassins()) {
 					assassin.sendMessage(prefix + msg);
