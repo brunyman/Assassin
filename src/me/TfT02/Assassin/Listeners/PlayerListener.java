@@ -44,7 +44,7 @@ public class PlayerListener implements Listener {
 	private PlayerData data = new PlayerData(plugin);
 	private ItemChecks itemcheck = new ItemChecks(plugin);
 
-	@EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	private void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		if (!data.isAssassin(player)) {
@@ -77,7 +77,7 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	@EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	private void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (data.isAssassin(player)) {
