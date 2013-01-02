@@ -1,4 +1,4 @@
-package me.TfT02.Assassin.util;
+package com.me.tft_02.assassin.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,10 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import com.me.tft_02.assassin.Assassin;
 
 public class PlayerData {
 

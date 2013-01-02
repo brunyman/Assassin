@@ -1,7 +1,5 @@
-package me.TfT02.Assassin.Listeners;
+package com.me.tft_02.assassin.Listeners;
 
-import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -14,6 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class EntityListener implements Listener {
 

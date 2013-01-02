@@ -1,8 +1,7 @@
-package me.TfT02.Assassin;
+package com.me.tft_02.assassin;
 
 import java.util.ArrayList;
 
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,6 +15,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.kitteh.tag.TagAPI;
+
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class AssassinMode {
 

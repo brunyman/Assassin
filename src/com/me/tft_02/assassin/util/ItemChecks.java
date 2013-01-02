@@ -1,10 +1,11 @@
-package me.TfT02.Assassin.util;
+package com.me.tft_02.assassin.util;
 
-import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.me.tft_02.assassin.Assassin;
 
 public class ItemChecks {
 	Assassin plugin;

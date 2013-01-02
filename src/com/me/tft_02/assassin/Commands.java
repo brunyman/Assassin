@@ -1,6 +1,5 @@
-package me.TfT02.Assassin;
+package com.me.tft_02.assassin;
 
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.kitteh.tag.TagAPI;
+
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class Commands implements CommandExecutor {
 	Assassin plugin;

@@ -1,4 +1,4 @@
-package me.TfT02.Assassin.util;
+package com.me.tft_02.assassin.util;
 
 import org.bukkit.block.Block;
 

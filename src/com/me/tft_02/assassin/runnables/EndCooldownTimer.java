@@ -1,6 +1,6 @@
-package me.TfT02.Assassin.runnables;
+package com.me.tft_02.assassin.runnables;
 
-import me.TfT02.Assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class EndCooldownTimer implements Runnable {
 	private final String playerName;

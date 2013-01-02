@@ -1,7 +1,5 @@
-package me.TfT02.Assassin.Listeners;
+package com.me.tft_02.assassin.Listeners;
 
-import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -9,6 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
+
+import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class TagListener implements Listener {
 

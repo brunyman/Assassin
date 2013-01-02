@@ -1,8 +1,9 @@
-package me.TfT02.Assassin.Listeners;
+package com.me.tft_02.assassin.Listeners;
 
-import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.event.Listener;
+
+import com.me.tft_02.assassin.Assassin;
 
 public class BlockListener implements Listener {
 	Assassin plugin;

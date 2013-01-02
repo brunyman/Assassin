@@ -1,9 +1,10 @@
-package me.TfT02.Assassin.util;
+package com.me.tft_02.assassin.util;
 
 import java.util.Random;
-import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.ChatColor;
+
+import com.me.tft_02.assassin.Assassin;
 
 public class MessageScrambler {
 

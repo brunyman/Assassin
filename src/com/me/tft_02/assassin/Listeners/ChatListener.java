@@ -1,8 +1,5 @@
-package me.TfT02.Assassin.Listeners;
+package com.me.tft_02.assassin.Listeners;
 
-import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.util.MessageScrambler;
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -16,6 +13,10 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.util.MessageScrambler;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class ChatListener implements Listener {
 	Assassin plugin;

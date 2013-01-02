@@ -1,6 +1,6 @@
 name: Assassin
 author: TfT_02
-main: me.TfT02.Assassin.Assassin
+main: com.me.tft_02.assassin.Assassin
 description: A whole new concept on PVP!
 dev-url: http://dev.bukkit.org/server-mods/Assassin/
 version: 1.1

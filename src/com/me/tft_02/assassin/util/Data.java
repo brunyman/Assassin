@@ -1,4 +1,4 @@
-package me.TfT02.Assassin.util;
+package com.me.tft_02.assassin.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,9 +12,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.logging.Level;
 
-import me.TfT02.Assassin.Assassin;
 
 import org.bukkit.Bukkit;
+
+import com.me.tft_02.assassin.Assassin;
 
 public class Data {
 	static Assassin plugin;

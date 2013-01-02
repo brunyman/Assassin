@@ -1,13 +1,7 @@
-package me.TfT02.Assassin.Listeners;
+package com.me.tft_02.assassin.Listeners;
 
 import java.util.List;
 
-import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.AssassinMode;
-import me.TfT02.Assassin.runnables.EndCooldownTimer;
-import me.TfT02.Assassin.util.BlockChecks;
-import me.TfT02.Assassin.util.ItemChecks;
-import me.TfT02.Assassin.util.PlayerData;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 import org.bukkit.Bukkit;
@@ -32,6 +26,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.runnables.EndCooldownTimer;
+import com.me.tft_02.assassin.util.BlockChecks;
+import com.me.tft_02.assassin.util.ItemChecks;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class PlayerListener implements Listener {
 	Assassin plugin;

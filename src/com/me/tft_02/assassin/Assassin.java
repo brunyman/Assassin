@@ -1,18 +1,9 @@
-package me.TfT02.Assassin;
+package com.me.tft_02.assassin;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 
-import me.TfT02.Assassin.Listeners.ChatListener;
-import me.TfT02.Assassin.Listeners.EntityListener;
-import me.TfT02.Assassin.Listeners.PlayerListener;
-import me.TfT02.Assassin.Listeners.TagListener;
-import me.TfT02.Assassin.runnables.ActiveTimer;
-import me.TfT02.Assassin.runnables.AssassinRangeTimer;
-import me.TfT02.Assassin.util.Data;
-import me.TfT02.Assassin.util.DependencyDownload;
-import me.TfT02.Assassin.util.Metrics;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Material;
@@ -23,6 +14,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+
+import com.me.tft_02.assassin.Listeners.ChatListener;
+import com.me.tft_02.assassin.Listeners.EntityListener;
+import com.me.tft_02.assassin.Listeners.PlayerListener;
+import com.me.tft_02.assassin.Listeners.TagListener;
+import com.me.tft_02.assassin.runnables.ActiveTimer;
+import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
+import com.me.tft_02.assassin.util.Data;
+import com.me.tft_02.assassin.util.DependencyDownload;
+import com.me.tft_02.assassin.util.Metrics;
 
 public class Assassin extends JavaPlugin {
 	public static Assassin instance;

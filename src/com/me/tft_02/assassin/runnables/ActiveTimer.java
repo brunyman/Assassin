@@ -1,13 +1,14 @@
-package me.TfT02.Assassin.runnables;
+package com.me.tft_02.assassin.runnables;
 
-import me.TfT02.Assassin.Assassin;
-import me.TfT02.Assassin.AssassinMode;
-import me.TfT02.Assassin.util.PlayerData;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
+
+import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class ActiveTimer implements Runnable {
 	Assassin plugin;
