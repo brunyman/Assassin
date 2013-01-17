@@ -94,12 +94,6 @@ public class Assassin extends JavaPlugin {
 				System.out.println("Failed to submit stats.");
 			}
 		}
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		} catch (IOException e) {
-			System.out.println("Failed to submit stats.");
-		}
 		BukkitScheduler scheduler = getServer().getScheduler();
 		if (getConfig().getBoolean("Assassin.warn_others_when_near")) {
 			scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
