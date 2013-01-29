@@ -24,17 +24,23 @@ import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
 import com.me.tft_02.assassin.util.Data;
 import com.me.tft_02.assassin.util.DependencyDownload;
 import com.me.tft_02.assassin.util.Metrics;
+import com.me.tft_02.assassin.util.UpdateChecker;
 
 public class Assassin extends JavaPlugin {
 	public static Assassin instance;
+
 	private TagListener tagListener = new TagListener(this);
 	private EntityListener entityListener = new EntityListener(this);
 	private PlayerListener playerListener = new PlayerListener(this);
 	private ChatListener chatListener = new ChatListener(this);
+
 	private AssassinMode assassin = new AssassinMode(this);
+	private UpdateChecker update = new UpdateChecker(this);
+
 //	public boolean spoutEnabled;
 	public boolean vaultEnabled;
 	public boolean debug_mode = false;
+    public boolean needsUpdate;
 
 	public static Economy econ = null;
 
@@ -100,6 +106,21 @@ public class Assassin extends JavaPlugin {
 		}
 		//Active check timer (Runs every two seconds)
 		scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 40);
+		
+		try {
+		    if(getConfig().getBoolean("General.update_check_enabled")) {
+		        needsUpdate = update.getUpdate();
+		    }
+		    else {
+		        needsUpdate = false;
+		    }
+		}
+		catch(Exception e) {
+		    needsUpdate = false;
+		}
+		if (needsUpdate) {
+            this.getLogger().log(Level.INFO, "New version available on BukkitDev!");
+		}
 	}
 
 	private void addCustomRecipes() {
@@ -113,8 +134,9 @@ public class Assassin extends JavaPlugin {
 	private void setupConfiguration() {
 		FileConfiguration config = this.getConfig();
 		config.addDefault("General.debug_mode_enabled", false);
-		config.addDefault("General.stats_tracking_enabled", true);
-		config.addDefault("General.config_version", "1.1");
+        config.addDefault("General.stats_tracking_enabled", true);
+        config.addDefault("General.update_check_enabled", true);
+		config.addDefault("General.config_version", "1.1.1");
 		config.addDefault("Assassin.active_length", 3600);
 		config.addDefault("Assassin.teleport_on_deactivate", true);
 		config.addDefault("Assassin.cooldown_length", 600);

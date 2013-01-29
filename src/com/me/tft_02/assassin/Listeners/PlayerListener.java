@@ -47,7 +47,11 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
 	private void onPlayerJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
+        Player player = event.getPlayer();
+        if (plugin.needsUpdate && player.isOp()) {
+            player.sendMessage(ChatColor.DARK_RED + "Assassin:" + ChatColor.GOLD + "New version available on BukkitDev!");
+        }
+        
 		if (!data.isAssassin(player)) {
 			data.setNeutral(player);
 		} else if (data.isAssassin(player)) {
