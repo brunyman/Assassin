@@ -4,10 +4,9 @@ import org.bukkit.Location;
 
 public class Misc {
 
-
     /**
      * Determine if two locations are near each other.
-     *
+     * 
      * @param first The first location
      * @param second The second location
      * @param maxDistance The max distance apart

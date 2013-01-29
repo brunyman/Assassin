@@ -1,6 +1,5 @@
 package com.me.tft_02.assassin.Listeners;
 
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,25 +12,25 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public class TagListener implements Listener {
 
-	Assassin plugin;
+    Assassin plugin;
 
-	public TagListener(Assassin instance) {
-		plugin = instance;
-	}
+    public TagListener(Assassin instance) {
+        plugin = instance;
+    }
 
-	private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData(plugin);
 
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onNameTag(PlayerReceiveNameTagEvent event) {
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onNameTag(PlayerReceiveNameTagEvent event) {
 //		Player player = event.getPlayer();
-		Player namedPlayer = event.getNamedPlayer();
-		if (data.isAssassin(namedPlayer)) {
-			event.setTag(ChatColor.DARK_RED + "[ASSASSIN]");
-			if (plugin.debug_mode) System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
-		} else {
-			event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
-			if (plugin.debug_mode) System.out.println("Reset player tag for " + namedPlayer.getName());
-		}
+        Player namedPlayer = event.getNamedPlayer();
+        if (data.isAssassin(namedPlayer)) {
+            event.setTag(ChatColor.DARK_RED + "[ASSASSIN]");
+            if (plugin.debug_mode) System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
+        } else {
+            event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
+            if (plugin.debug_mode) System.out.println("Reset player tag for " + namedPlayer.getName());
+        }
 
 //		if (!data.isAssassin(player)) {
 //			event.setTag(ChatColor.DARK_GRAY + "PLAYER");
@@ -44,5 +43,5 @@ public class TagListener implements Listener {
 //		if (event.getPlayer().getName().equals(player)) {
 //			event.setTag(ChatColor.DARK_GRAY + "PLAYER");
 //		}
-	}
+    }
 }
