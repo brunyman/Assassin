@@ -141,37 +141,40 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
             int inHandID = inHand.getTypeId();
             if ((inHandID == 35) && BlockChecks.abilityBlockCheck(block)) {
-                ItemStack itemHand = player.getInventory().getItemInHand();
-                if (itemcheck.isMask(itemHand)) {
+                if (itemcheck.isMask(inHand)) {
                     if (!player.hasPermission("assassin.assassin")) {
                         player.sendMessage(ChatColor.RED + "You haven't got permission.");
-                    } else {
-                        if (!data.cooledDown(player)) {
-                            player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
+                        return;
+                    } 
+
+                    if (!data.cooledDown(player)) {
+                        player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
+                        return;
+                    }
+
+                    if (data.isAssassin(player)) {
+                        player.sendMessage(ChatColor.RED + "You already are an Assassin.");
+                        return;
+                    } 
+
+                    double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
+                    if (plugin.vaultEnabled && activation_cost > 0) {
+                        EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
+                        if (r.transactionSuccess()) {
+                            if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
+                            assassin.activateAssassin(player);
+                            long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+                            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+                            player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
                         } else {
-                            if (data.isAssassin(player)) {
-                                player.sendMessage(ChatColor.RED + "You already are an Assassin.");
-                            } else {
-                                double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
-                                if (plugin.vaultEnabled && activation_cost > 0) {
-                                    EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
-                                    if (r.transactionSuccess()) {
-                                        if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
-                                        assassin.activateAssassin(player);
-                                        long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
-                                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
-                                        player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
-                                    } else {
-                                        player.sendMessage(String.format("An error occured: %s", r.errorMessage));
-                                    }
-                                } else {
-                                    if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
-                                    assassin.activateAssassin(player);
-                                    long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
-                                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
-                                }
-                            }
+                            player.sendMessage(String.format("An error occured: %s", r.errorMessage));
                         }
+                    } else {
+                        if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
+                        assassin.activateAssassin(player);
+                        long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+
                     }
                     event.setCancelled(true);
                 }
@@ -211,7 +214,7 @@ public class PlayerListener implements Listener {
         String command = event.getMessage();
         List<String> blockedCmds = Assassin.getInstance().getConfig().getStringList("Assassin.blocked_commands");
         if (data.isAssassin(player) && blockedCmds.contains(command)) {
-            event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
+            player.sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
             event.setCancelled(true);
         }
     }
