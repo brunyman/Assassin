@@ -62,10 +62,8 @@ public class EntityListener implements Listener {
 
             if (attacker instanceof Player) {
                 if (data.bothNeutral(defendingPlayer, (Player) attacker) && Assassin.getInstance().getConfig().getBoolean("Assassin.prevent_neutral_pvp")) {
-                    if (!event.isCancelled()) {
-                        ((Player) attacker).sendMessage(ChatColor.DARK_RED + "You are not an Assassin.");
-                        event.setCancelled(true);
-                    }
+                    ((Player) attacker).sendMessage(ChatColor.DARK_RED + "You are not an Assassin.");
+                    event.setCancelled(true);
                     return;
                 } else {
                     if (event.isCancelled() && Assassin.getInstance().getConfig().getBoolean("Assassin.override_pvp_prevention")) {
