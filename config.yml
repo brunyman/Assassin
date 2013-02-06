@@ -18,6 +18,7 @@ Assassin:
   return_mask: false
   activation_cost: 0
   prevent_neutral_pvp: true
+  override_pvp_prevention: false
   particle_effects: true
   potion_effects: true
   warn_time_almost_up: 10
