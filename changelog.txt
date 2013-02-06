@@ -10,6 +10,7 @@ Version 1.1.1 | Tested on CB 1.4.6-R0.3
  ! Now uses TapAPI v1.9.3
  ! Refactoring package naming so its my email address
  + Added version checker
+ + Added config option to allow PvP in no-PvP zones set by other plugins (WorldGuard, Towny)
  
 Version 1.1 | Tested on CB 1.4.5-R1.0
  ! Compatible with 1.4.5-R1.0 & 1.4.6-R0.1
@@ -29,7 +30,6 @@ Version 1.1 | Tested on CB 1.4.5-R1.0
  + Added config option to allow neutral pvp (pvp between non assassins)
  + Added config option to disable teleportation when Assassin Mode deactivates
  + Added config option to disable (teleport) commands when an Assassin
- + Added config option to allow PvP in no-PvP zones set by other plugins (WorldGuard, Towny)
  - Removed status message when joining the game as a Neutral player
 
 
