@@ -1,14 +1,15 @@
 package com.me.tft_02.assassin;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.kitteh.tag.TagAPI;
-
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.commands.ChatCommand;
+import com.me.tft_02.assassin.commands.DeactivateCommand;
+import com.me.tft_02.assassin.commands.RefreshCommand;
+import com.me.tft_02.assassin.commands.SpawnMaskCommand;
+import com.me.tft_02.assassin.commands.StatusCommand;
 
 public class Commands implements CommandExecutor {
     Assassin plugin;
@@ -17,18 +18,21 @@ public class Commands implements CommandExecutor {
         plugin = instance;
     }
 
-    private AssassinMode assassin = new AssassinMode(plugin);
-    private PlayerData data = new PlayerData(plugin);
+    private CommandExecutor statusCommand = new StatusCommand(plugin);
+    private CommandExecutor chatCommand = new ChatCommand(plugin);
+    private CommandExecutor deactivateCommand = new DeactivateCommand(plugin);
+    private CommandExecutor refreshCommand = new RefreshCommand(plugin);
+    private CommandExecutor spawnMaskCommand = new SpawnMaskCommand(plugin);
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player player = null;
 
         if (sender instanceof Player) {
             player = (Player) sender;
         }
 
-        if (cmd.getName().equalsIgnoreCase("assassin")) {
+        if (command.getName().equalsIgnoreCase("assassin")) {
             if (player == null) {
                 sender.sendMessage("Assassin adds a new way of PVP.");
             } else {
@@ -45,28 +49,11 @@ public class Commands implements CommandExecutor {
                         return true;
                     case 1:
                         if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("status")) {
-                            String status = data.getStatus(player);
-                            player.sendMessage(ChatColor.GOLD + "Your status = " + ChatColor.RED + status);
-                            if (data.isAssassin(player)) {
-                                String timeleft = data.getStringTimeLeft(player);
-                                player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
-                            }
-                            return true;
+                            return statusCommand.onCommand(sender, command, label, args);
                         }
+
                         if (args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c")) {
-                            if (player.hasPermission("assassin.assassin")) {
-                                if (data.isAssassin(player)) {
-                                    if (!data.getAssassinChatMode(player)) {
-                                        data.enterAssassinChat(player);
-                                        player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
-                                    } else {
-                                        data.leaveAssassinChat(player);
-                                        player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
-                                    }
-                                } else
-                                    player.sendMessage(ChatColor.RED + "You must be an Assassin to use this.");
-                            }
-                            return true;
+                            return chatCommand.onCommand(sender, command, label, args);
                         }
                     case 2:
                         if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
@@ -83,55 +70,14 @@ public class Commands implements CommandExecutor {
                                 return true;
                             }
                         }
-                        if (args[0].equalsIgnoreCase("mask") && player.hasPermission("assassin.spawnmask")) {
-                            if (args.length == 2) {
-                                assassin.spawnMask(player, Integer.parseInt(args[1]));
-                                return true;
-                            } else {
-                                assassin.spawnMask(player, 1);
-                                return true;
-                            }
+                        if (args[0].equalsIgnoreCase("mask")) {
+                            return spawnMaskCommand.onCommand(sender, command, label, args);
                         }
-                        if (args[0].equalsIgnoreCase("refresh") && player.hasPermission("assassin.refresh")) {
-                            if (args.length == 2) {
-                                Player target = Bukkit.getServer().getPlayer(args[1]);
-                                if (target == null) {
-                                    sender.sendMessage(ChatColor.GOLD + args[1] + ChatColor.RED + " is not online!");
-                                    return false;
-                                } else {
-                                    TagAPI.refreshPlayer(target);
-                                    data.removeCooldown(target);
-                                    player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target.getName());
-                                    return true;
-                                }
-                            } else {
-                                TagAPI.refreshPlayer(player);
-                                data.removeCooldown(player);
-                                player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + player.getName());
-                                return true;
-                            }
+                        if (args[0].equalsIgnoreCase("refresh")) {
+                            return refreshCommand.onCommand(sender, command, label, args);
                         }
-                        if (args[0].equalsIgnoreCase("deactivate") && player.hasPermission("assassin.deactivate")) {
-                            if (args.length == 2) {
-                                Player target = Bukkit.getServer().getPlayer(args[1]);
-                                if (data.isAssassin(target)) {
-                                    assassin.deactivateAssassin(target);
-                                    data.resetActiveTime(target);
-                                    return true;
-                                } else {
-                                    player.sendMessage(ChatColor.RED + "Not an Assassin.");
-                                    return true;
-                                }
-                            } else {
-                                if (data.isAssassin(player)) {
-                                    assassin.deactivateAssassin(player);
-                                    data.resetActiveTime(player);
-                                    return true;
-                                } else {
-                                    player.sendMessage(ChatColor.RED + "You aren't an assassin.");
-                                    return true;
-                                }
-                            }
+                        if (args[0].equalsIgnoreCase("deactivate")) {
+                            return deactivateCommand.onCommand(sender, command, label, args);
                         }
                     }
                 }

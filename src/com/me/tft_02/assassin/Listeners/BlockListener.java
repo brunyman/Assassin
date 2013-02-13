@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.Listeners;
+package com.me.tft_02.assassin.listeners;
 
 import org.bukkit.event.Listener;
 

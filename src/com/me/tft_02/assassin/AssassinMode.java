@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.kitteh.tag.TagAPI;
 
+import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class AssassinMode {
@@ -26,6 +27,7 @@ public class AssassinMode {
     }
 
     private PlayerData data = new PlayerData(plugin);
+    private Misc misc = new Misc(plugin);
 
     /**
      * Applies all the Assassin traits,
@@ -39,7 +41,7 @@ public class AssassinMode {
             @Override
             public void run() {
                 player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
-                String timeleft = data.getStringTimeLeft(player);
+                String timeleft = misc.getStringTimeLeft(player);
                 player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
                 player.getWorld().playSound(player.getLocation(), Sound.PISTON_RETRACT, 1.0f, 1.0f);
             }

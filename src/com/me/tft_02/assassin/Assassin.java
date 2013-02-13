@@ -15,10 +15,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.me.tft_02.assassin.Listeners.ChatListener;
-import com.me.tft_02.assassin.Listeners.EntityListener;
-import com.me.tft_02.assassin.Listeners.PlayerListener;
-import com.me.tft_02.assassin.Listeners.TagListener;
+import com.me.tft_02.assassin.listeners.ChatListener;
+import com.me.tft_02.assassin.listeners.EntityListener;
+import com.me.tft_02.assassin.listeners.PlayerListener;
+import com.me.tft_02.assassin.listeners.TagListener;
 import com.me.tft_02.assassin.runnables.ActiveTimer;
 import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
 import com.me.tft_02.assassin.util.Data;
@@ -37,7 +37,6 @@ public class Assassin extends JavaPlugin {
     private AssassinMode assassin = new AssassinMode(this);
     private UpdateChecker update = new UpdateChecker(this);
 
-//	public boolean spoutEnabled;
     public boolean vaultEnabled;
     public boolean debug_mode = false;
     public boolean needsUpdate;
@@ -55,10 +54,6 @@ public class Assassin extends JavaPlugin {
     public void onEnable() {
         instance = this;
         PluginManager pm = getServer().getPluginManager();
-//		if (pm.getPlugin("Spout") != null)
-//			spoutEnabled = true;
-//		else
-//			spoutEnabled = false;
         if (pm.getPlugin("TagAPI") == null) {
             this.getLogger().log(Level.WARNING, "No TagAPI dependency found!");
             this.getLogger().log(Level.WARNING, "Downloading TagAPI now, hold on!");
@@ -77,20 +72,25 @@ public class Assassin extends JavaPlugin {
         }
         if (!setupEconomy()) {
             vaultEnabled = false;
-        } else
+        } else {
             vaultEnabled = true;
+        }
 
         setupConfiguration();
         checkConfiguration();
+
         addCustomRecipes();
+
         pm.registerEvents(tagListener, this);
         pm.registerEvents(entityListener, this);
         pm.registerEvents(playerListener, this);
         pm.registerEvents(chatListener, this);
 //		pm.registerEvents(blockListener, this);
+
         getCommand("assassin").setExecutor(new Commands(this));
 
         Data.loadData();
+
         if (getConfig().getBoolean("General.stats_tracking_enabled")) {
             try {
                 Metrics metrics = new Metrics(this);
@@ -99,6 +99,7 @@ public class Assassin extends JavaPlugin {
                 System.out.println("Failed to submit stats.");
             }
         }
+
         BukkitScheduler scheduler = getServer().getScheduler();
         if (getConfig().getBoolean("Assassin.warn_others_when_near")) {
             scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
