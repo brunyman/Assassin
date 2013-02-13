@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.Listeners;
+package com.me.tft_02.assassin.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -33,9 +33,6 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-//        if (event instanceof FakeEntityDamageByEntityEvent)
-//            return;
-
         if (event.getDamage() <= 0) return;
 
         Entity attacker = event.getDamager();
@@ -69,7 +66,7 @@ public class EntityListener implements Listener {
                     if (event.isCancelled() && Assassin.getInstance().getConfig().getBoolean("Assassin.override_pvp_prevention")) {
                         event.setCancelled(false);
                     }
-                    if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+                    if (!event.isCancelled() && Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
                         defendingPlayer.getWorld().playEffect(defendingPlayer.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
                     }
                 }

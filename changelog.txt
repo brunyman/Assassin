@@ -11,6 +11,7 @@ Version 1.1.1 | Tested on CB 1.4.6-R0.3
  ! Refactoring package naming so its my email address
  + Added version checker
  + Added config option to allow PvP in no-PvP zones set by other plugins (WorldGuard, Towny)
+ + Added kill count and bounties
  
 Version 1.1 | Tested on CB 1.4.5-R1.0
  ! Compatible with 1.4.5-R1.0 & 1.4.6-R0.1

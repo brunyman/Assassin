@@ -18,21 +18,24 @@ public class PlayerData {
     public PlayerData(Assassin instance) {
         plugin = instance;
     }
-
+    
+    // Persistent data
     public static HashMap<String, String> playerData = new HashMap<String, String>();
     public static HashSet<String> playerCooldown = new HashSet<String>();
     public static HashMap<String, Long> playerLoginTime = new HashMap<String, Long>();
     public static HashMap<String, Long> playerLogoutTime = new HashMap<String, Long>();
     public static HashMap<String, Long> playerActiveTime = new HashMap<String, Long>();
-
     public static List<String> assassins = new ArrayList<String>();
+    public static HashMap<String, String> playerLocationData = new HashMap<String, String>();
+    public static HashMap<String, Integer> killCount = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> bountyCollected = new HashMap<String, Integer>();
+
+    // Non persistent data
     public static HashSet<String> assassinChatSet = new HashSet<String>();
     public static HashMap<String, Integer> assassinNumber = new HashMap<String, Integer>();
     public static HashSet<Integer> takenNumbers = new HashSet<Integer>();
     public static HashSet<String> playerNear = new HashSet<String>();
-    public static HashMap<String, String> playerLocationData = new HashMap<String, String>();
 
-//	public ArrayList<String> assassinsList = new ArrayList<String>();
     private final Random random = new Random();
 
     public void addAssassin(Player player) {
@@ -80,20 +83,6 @@ public class PlayerData {
         long maxactive = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
         long activetimeleft = maxactive - activetime;
         return activetimeleft;
-    }
-
-    public String getStringTimeLeft(Player player) {
-        long time = getActiveTimeLeft(player);
-        int hours = (int) time / 3600;
-        int remainder = (int) time - hours * 3600;
-        int mins = remainder / 60;
-        remainder = remainder - mins * 60;
-        int secs = remainder;
-        if (mins == 0 && hours == 0) return secs + "s";
-        if (hours == 0)
-            return mins + "m " + secs + "s";
-        else
-            return hours + "h " + mins + "m " + secs + "s";
     }
 
     public void resetActiveTime(Player player) {
@@ -276,5 +265,43 @@ public class PlayerData {
             }
         }
         return false;
+    }
+    
+    public int getKillCount(Player player) {
+        String playerName = player.getName();
+        int kills = 0;
+        if (killCount.containsKey(playerName)) {
+            kills = killCount.get(playerName);
+        }
+        return kills;
+    }
+
+    public void increaseKillCount(Player player) {
+        String playerName = player.getName();
+        int kills = 0;
+        if (killCount.containsKey(playerName)) {
+            kills = killCount.get(playerName);
+        }
+        killCount.put(playerName, kills + 1);
+    }
+
+    public void resetKillCount(Player player) {
+        String playerName = player.getName();
+        int kills = 0;
+        if (killCount.containsKey(playerName)) {
+            kills = killCount.get(playerName);
+        }
+        if (kills > 0) {
+            killCount.put(playerName, 0);
+        }
+    }
+
+    public int getBountyCollected(Player player) {
+        String playerName = player.getName();
+        int bounty = 0;
+        if (bountyCollected.containsKey(playerName)) {
+            bounty = bountyCollected.get(playerName);
+        }
+        return bounty;
     }
 }

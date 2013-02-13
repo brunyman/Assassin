@@ -77,6 +77,8 @@ public class Data {
             oos.writeObject(PlayerData.playerActiveTime);
             oos.writeObject(PlayerData.assassins);
             oos.writeObject(PlayerData.playerLocationData);
+            oos.writeObject(PlayerData.killCount);
+            oos.writeObject(PlayerData.bountyCollected);
             oos.flush();
             oos.close();
             Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
@@ -100,6 +102,8 @@ public class Data {
                 PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
                 PlayerData.assassins = (ArrayList<String>) ois.readObject();
                 PlayerData.playerLocationData = (HashMap<String, String>) ois.readObject();
+                PlayerData.killCount = (HashMap<String, Integer>) ois.readObject();
+                PlayerData.bountyCollected = (HashMap<String, Integer>) ois.readObject();
                 Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
             } catch (Exception e) {
                 Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");
@@ -109,5 +113,4 @@ public class Data {
             }
         }
     }
-
 }

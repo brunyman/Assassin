@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.Listeners;
+package com.me.tft_02.assassin.listeners;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.kitteh.tag.TagAPI;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
@@ -198,12 +199,21 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
+        Player killer = event.getEntity().getKiller();
+
         if (data.isAssassin(player)) {
+            data.resetKillCount(player);
             for (ItemStack items : event.getDrops()) {
                 if (itemcheck.isMask(items)) {
                     event.getDrops().remove(items);
                     return;
                 }
+            }
+        }
+        if (data.isAssassin(killer) && player != killer) {
+            if (data.getKillCount(player) <= 0) { // Only increase bounty when attacking a different player without bounty
+                data.increaseKillCount(killer);
+                TagAPI.refreshPlayer(killer);
             }
         }
     }

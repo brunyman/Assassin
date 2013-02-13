@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.Listeners;
+package com.me.tft_02.assassin.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -25,7 +25,8 @@ public class TagListener implements Listener {
 //		Player player = event.getPlayer();
         Player namedPlayer = event.getNamedPlayer();
         if (data.isAssassin(namedPlayer)) {
-            event.setTag(ChatColor.DARK_RED + "[ASSASSIN]");
+            int kills = data.getKillCount(namedPlayer);
+            event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + kills);
             if (plugin.debug_mode) System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
         } else {
             event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
