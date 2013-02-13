@@ -1,6 +1,7 @@
 package com.me.tft_02.assassin.listeners;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -51,6 +52,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         if (plugin.needsUpdate && player.isOp()) {
             player.sendMessage(ChatColor.DARK_RED + "Assassin: " + ChatColor.GOLD + "New version available on BukkitDev!");
+            plugin.getLogger().log(Level.INFO, "New version available on BukkitDev!");
         }
 
         if (!data.isAssassin(player)) {
@@ -210,13 +212,26 @@ public class PlayerListener implements Listener {
                 }
             }
         }
-        if (data.isAssassin(killer) && player != killer) {
-            if (data.getKillCount(player) <= 0) { // Only increase bounty when attacking a different player without bounty
+
+        if (player == killer) {
+            return;
+        }
+
+        if (data.getKillCount(player) > 0) {
+            // Collect bounty from target
+            data.addBountyCollected(killer, data.getKillCount(player));
+            data.resetKillCount(player);
+            killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + data.getBountyCollected(killer));
+            player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
+        } else {
+            if (data.isAssassin(killer) && killer != null) {
+                // Only increase bounty when attacking a different player without bounty
                 data.increaseKillCount(killer);
                 TagAPI.refreshPlayer(killer);
             }
         }
     }
+
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {

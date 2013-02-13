@@ -34,7 +34,9 @@ public class StatusCommand implements CommandExecutor {
             String timeleft = misc.getStringTimeLeft(player);
             player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
         }
+        player.sendMessage(ChatColor.DARK_GRAY + "=====================");
         player.sendMessage(ChatColor.GOLD + "Current bounty = " + ChatColor.DARK_RED + data.getKillCount(player));
+        player.sendMessage(ChatColor.GOLD + "Bounty collected = " + ChatColor.GREEN + data.getBountyCollected(player));
         return true;
     }
 }

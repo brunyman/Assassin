@@ -304,4 +304,13 @@ public class PlayerData {
         }
         return bounty;
     }
+
+    public void addBountyCollected(Player player, int amount) {
+        String playerName = player.getName();
+        int bounty = 0;
+        if (bountyCollected.containsKey(playerName)) {
+            bounty = bountyCollected.get(playerName);
+        }
+        bountyCollected.put(playerName, bounty + amount);
+    }
 }
