@@ -22,15 +22,20 @@ public class TagListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onNameTag(PlayerReceiveNameTagEvent event) {
-//		Player player = event.getPlayer();
         Player namedPlayer = event.getNamedPlayer();
+
         if (data.isAssassin(namedPlayer)) {
-            int kills = data.getKillCount(namedPlayer);
-            event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + kills);
-            if (plugin.debug_mode) System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
+            event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + data.getKillCount(namedPlayer));
+
+            if (plugin.debug_mode) {
+                System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
+            }
         } else {
             event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
-            if (plugin.debug_mode) System.out.println("Reset player tag for " + namedPlayer.getName());
+
+            if (plugin.debug_mode) {
+                System.out.println("Reset player tag for " + namedPlayer.getName());
+            }
         }
 
 //		if (!data.isAssassin(player)) {

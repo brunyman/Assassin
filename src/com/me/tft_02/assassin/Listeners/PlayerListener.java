@@ -24,7 +24,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -109,15 +108,8 @@ public class PlayerListener implements Listener {
 
         switch (slotType) {
         case ARMOR:
-            if (data.isAssassin((Player) player)) {
-                if (itemcheck.isMask(itemstack)) {
-                    event.setCancelled(true);
-                }
-            } else {
-                if (itemcheck.isMask(itemstack)) {
-                    PlayerInventory inventory = player.getInventory();
-                    inventory.setHelmet(new ItemStack(Material.AIR));
-                }
+            if (itemcheck.isMask(itemstack)) {
+                assassin.activateHostileMode((Player) player);
             }
         default:
             break;

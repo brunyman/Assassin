@@ -89,6 +89,25 @@ public class AssassinMode {
      * 
      * @param player Player who's mode will be changed.
      */
+    public void activateHostileMode(Player player) {
+        String playername = player.getName();
+        data.leaveAssassinChat(player);
+        data.setHostile(player);
+        player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
+
+        player.setDisplayName(playername);
+        player.setPlayerListName(playername);
+        TagAPI.refreshPlayer(player);
+        removeMask(player);
+        player.getWorld().playSound(player.getLocation(), Sound.PISTON_EXTEND, 1.0f, 1.0f);
+        player.getWorld().playSound(player.getLocation(), Sound.BREATH, 1.0f, 1.0f);
+    }
+
+    /**
+     * Deactivate Assassin mode.
+     * 
+     * @param player Player who's mode will be changed.
+     */
     public void deactivateAssassin(Player player) {
         String playername = player.getName();
         data.leaveAssassinChat(player);

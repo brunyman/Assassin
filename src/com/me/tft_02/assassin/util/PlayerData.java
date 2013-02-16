@@ -43,6 +43,11 @@ public class PlayerData {
         assassins.add(player.getName());
     }
 
+    public void setHostile(Player player) {
+        playerData.put(player.getName(), "Hostile");
+        assassins.remove(player.getName());
+    }
+
     public void setNeutral(Player player) {
         playerData.put(player.getName(), "Neutral");
         assassins.remove(player.getName());
