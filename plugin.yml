@@ -18,16 +18,20 @@ permissions:
             assassin.assassin: true
             assassin.info: true
             assassin.spawnmask: true
-            assassin.refresh: true
-            assassin.deactivate: true
-            assassin.chat: true
+            assassin.commands.refresh: true
+            assassin.commands.reload: true
     assassin.defaults:
         description: Gives access to default commands
         default: true
         children:
             assassin.assassin: true
-            assassin.info: true
-            assassin.chat: true
+            assassin.commands.*: true
+    assassin.commands.*:
+        description: Gives access to player commands
+        children:
+            assassin.commands.status: true
+            assassin.commands.chat: true
+            assassin.commands.deactivate: true
     assassin.assassin:
         description: Allows players to activate Assassin Mode.
         default: true
