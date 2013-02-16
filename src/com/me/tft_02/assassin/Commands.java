@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.me.tft_02.assassin.commands.ChatCommand;
 import com.me.tft_02.assassin.commands.DeactivateCommand;
 import com.me.tft_02.assassin.commands.RefreshCommand;
+import com.me.tft_02.assassin.commands.ReloadCommand;
 import com.me.tft_02.assassin.commands.SpawnMaskCommand;
 import com.me.tft_02.assassin.commands.StatusCommand;
 
@@ -23,6 +24,7 @@ public class Commands implements CommandExecutor {
     private CommandExecutor deactivateCommand = new DeactivateCommand(plugin);
     private CommandExecutor refreshCommand = new RefreshCommand(plugin);
     private CommandExecutor spawnMaskCommand = new SpawnMaskCommand(plugin);
+    private CommandExecutor reloadCommand = new ReloadCommand(plugin);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -54,6 +56,10 @@ public class Commands implements CommandExecutor {
 
                         if (args[0].equalsIgnoreCase("chat") || args[0].equalsIgnoreCase("c")) {
                             return chatCommand.onCommand(sender, command, label, args);
+                        }
+
+                        if (args[0].equalsIgnoreCase("reload")) {
+                            return reloadCommand.onCommand(sender, command, label, args);
                         }
                     case 2:
                         if (args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?")) {
