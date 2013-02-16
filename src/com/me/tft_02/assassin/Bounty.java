@@ -17,12 +17,11 @@ public class Bounty {
     private PlayerData data = new PlayerData(plugin);
     
     public void handleBounties(Player player, Player killer) {
-        System.out.println(player.getName() + " data.getKillCount(player) " + data.getKillCount(player));
-        System.out.println(killer.getName() + " data.getKillCount(killer) " + data.getKillCount(killer));
+        int killCount = data.getKillCount(player);
 
-        if (data.getKillCount(player) > 0) {
+        if (killCount > 0) {
             // Collect bounty from target
-            data.addBountyCollected(killer, data.getKillCount(player));
+            data.addBountyCollected(killer, killCount);
             data.resetKillCount(player);
             killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + data.getBountyCollected(killer));
             player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");

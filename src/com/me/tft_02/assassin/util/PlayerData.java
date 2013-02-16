@@ -283,7 +283,8 @@ public class PlayerData {
         String playerName = player.getName();
         int kills = getKillCount(player);
 
-        killCount.put(playerName, kills + 1);
+        kills = kills + 1;
+        killCount.put(playerName, kills);
     }
 
     public void resetKillCount(Player player) {
@@ -297,19 +298,21 @@ public class PlayerData {
 
     public int getBountyCollected(Player player) {
         String playerName = player.getName();
-        int bounty = 0;
+        int bounty;
         if (bountyCollected.containsKey(playerName)) {
             bounty = bountyCollected.get(playerName);
+        } else {
+            bounty = 0;
         }
         return bounty;
     }
 
     public void addBountyCollected(Player player, int amount) {
         String playerName = player.getName();
-        int bounty = 0;
-        if (bountyCollected.containsKey(playerName)) {
-            bounty = bountyCollected.get(playerName);
-        }
-        bountyCollected.put(playerName, bounty + amount);
+        int bounty = getBountyCollected(player);
+
+        bounty = bounty + amount;
+
+        bountyCollected.put(playerName, bounty);
     }
 }

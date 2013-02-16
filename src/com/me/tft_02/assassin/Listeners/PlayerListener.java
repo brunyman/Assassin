@@ -209,7 +209,6 @@ public class PlayerListener implements Listener {
         Player killer = event.getEntity().getKiller();
 
         if (data.isAssassin(player)) {
-            data.resetKillCount(player);
             for (ItemStack items : event.getDrops()) {
                 if (itemcheck.isMask(items)) {
                     event.getDrops().remove(items);
