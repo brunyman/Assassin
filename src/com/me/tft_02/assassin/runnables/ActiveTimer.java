@@ -63,9 +63,7 @@ public class ActiveTimer implements Runnable {
                         System.out.println(assassins + " has received a warning because his Assassin mode is running out.");
                     }
                 } else {
-                    if (hasBeenWarned(assassins)) {
-                        warned.remove(assassins.getName());
-                    }
+                    warned.remove(assassins.getName());
                 }
             }
         }
