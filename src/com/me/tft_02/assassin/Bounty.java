@@ -17,11 +17,9 @@ public class Bounty {
     private PlayerData data = new PlayerData(plugin);
     
     public void handleBounties(Player player, Player killer) {
-        int killCount = data.getKillCount(player);
-
-        if (killCount > 0) {
+        if (hasBounty(player)) {
             // Collect bounty from target
-            data.addBountyCollected(killer, killCount);
+            data.addBountyCollected(killer, data.getKillCount(player));
             data.resetKillCount(player);
             killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + data.getBountyCollected(killer));
             player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
@@ -32,5 +30,13 @@ public class Bounty {
                 TagAPI.refreshPlayer(killer);
             }
         }
+    }
+
+    public boolean hasBounty(Player player) {
+        int killCount = data.getKillCount(player);
+        if (killCount > 0) {
+            return true;
+        }
+        return false;
     }
 }

@@ -40,18 +40,25 @@ public class ActiveTimer implements Runnable {
             long activetime = data.getActiveTime(players);
             long maxactivetime = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
             long warntime = Assassin.getInstance().getConfig().getLong("Assassin.warn_time_almost_up");
+
             if (activetime >= maxactivetime) {
                 if (data.isAssassin(players)) {
                     assassin.deactivateAssassin(players);
                     data.resetActiveTime(players);
-                    if (plugin.debug_mode) System.out.println(players + " status set to Neutral. Active time reached max.");
+                    if (plugin.debug_mode) {
+                        System.out.println(players + " status set to Neutral. Active time reached max.");
+                    }
                 }
             } else if (warntime > 0) {
                 if (activetime + warntime >= maxactivetime) {
                     if (data.isAssassin(players)) {
                         players.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
-                        if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) players.getWorld().playEffect(players.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
-                        if (plugin.debug_mode) System.out.println(players + " has received a warning because his Assassin mode is running out.");
+                        if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+                            players.getWorld().playEffect(players.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+                        }
+                        if (plugin.debug_mode) {
+                            System.out.println(players + " has received a warning because his Assassin mode is running out.");
+                        }
                     }
                 }
             }
