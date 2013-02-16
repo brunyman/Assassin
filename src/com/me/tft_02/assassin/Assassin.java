@@ -117,7 +117,10 @@ public class Assassin extends JavaPlugin {
             needsUpdate = false;
         }
         if (needsUpdate) {
-            this.getLogger().log(Level.INFO, "New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/");
+            this.getLogger().log(Level.INFO, "***********************************************************************************");
+            this.getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
+            this.getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
+            this.getLogger().log(Level.INFO, "***********************************************************************************");
         }
     }
 

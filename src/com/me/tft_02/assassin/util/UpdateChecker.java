@@ -29,7 +29,7 @@ public class UpdateChecker {
         int lineNum = 0;
         while ((line = in.readLine()) != null) {
             if (line.length() != line.replace("<title>", "").length()) {
-                line = line.replaceAll("<title>", "").replaceAll("</title>", "").replaceAll("   ", "").substring(1); //Substring 1 for me, takes off the beginning v on my file name "v1.3.2"
+                line = line.replaceAll("[\\D]", "");
                 if (lineNum == 1) {
                     Integer newVer = Integer.parseInt(line.replace(".", ""));
                     Integer oldVer = Integer.parseInt(version.replace(".", ""));
