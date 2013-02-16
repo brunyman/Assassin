@@ -27,4 +27,24 @@ public final class AssassinAPI {
         }
         return false;
     }
+
+    /**
+     * Get the Bounty collected by a player
+     *
+     * @param player The player to check
+     * @return bounty collected
+     */
+    public int getBountyCollected(Player player) {
+        return data.getBountyCollected(player);
+    }
+
+    /**
+     * Get the Kill count of a player
+     *
+     * @param player The player to check
+     * @return kill count
+     */
+    public int getKillCount(Player player) {
+        return data.getKillCount(player);
+    }
 }
