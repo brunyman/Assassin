@@ -269,28 +269,27 @@ public class PlayerData {
     
     public int getKillCount(Player player) {
         String playerName = player.getName();
-        int kills = 0;
+        int kills;
+
         if (killCount.containsKey(playerName)) {
             kills = killCount.get(playerName);
+        } else {
+            kills = 0;
         }
         return kills;
     }
 
     public void increaseKillCount(Player player) {
         String playerName = player.getName();
-        int kills = 0;
-        if (killCount.containsKey(playerName)) {
-            kills = killCount.get(playerName);
-        }
+        int kills = getKillCount(player);
+
         killCount.put(playerName, kills + 1);
     }
 
     public void resetKillCount(Player player) {
         String playerName = player.getName();
-        int kills = 0;
-        if (killCount.containsKey(playerName)) {
-            kills = killCount.get(playerName);
-        }
+        int kills = getKillCount(player);
+
         if (kills > 0) {
             killCount.put(playerName, 0);
         }

@@ -27,10 +27,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.kitteh.tag.TagAPI;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
@@ -44,6 +44,7 @@ public class PlayerListener implements Listener {
     }
 
     private AssassinMode assassin = new AssassinMode(plugin);
+    private Bounty bounty = new Bounty(plugin);
     private PlayerData data = new PlayerData(plugin);
     private ItemChecks itemcheck = new ItemChecks(plugin);
 
@@ -51,8 +52,9 @@ public class PlayerListener implements Listener {
     private void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (plugin.needsUpdate && player.isOp()) {
-            player.sendMessage(ChatColor.DARK_RED + "Assassin: " + ChatColor.GOLD + "New version available on BukkitDev!");
-            plugin.getLogger().log(Level.INFO, "New version available on BukkitDev!");
+            player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.GOLD + "New version available on BukkitDev!");
+            player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.AQUA + "http://dev.bukkit.org/server-mods/Assassin/");
+            plugin.getLogger().log(Level.INFO, "New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/");
         }
 
         if (!data.isAssassin(player)) {
@@ -73,15 +75,18 @@ public class PlayerListener implements Listener {
         final Player player = event.getPlayer();
         if (data.isAssassin(player)) {
             assassin.applyMaskForce(player);
-            if (Assassin.getInstance().getConfig().getBoolean("Assassin.potion_effects")) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 30, 1));
-                    }
-                }, 5);
+
+            if (!Assassin.getInstance().getConfig().getBoolean("Assassin.potion_effects")) {
+                return;
             }
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 30, 1));
+                }
+            }, 5);
         }
     }
 
@@ -158,7 +163,7 @@ public class PlayerListener implements Listener {
                     if (data.isAssassin(player)) {
                         player.sendMessage(ChatColor.RED + "You already are an Assassin.");
                         return;
-                    } 
+                    }
 
                     double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
                     if (plugin.vaultEnabled && activation_cost > 0) {
@@ -213,22 +218,9 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (player == killer) {
+        if (killer != null && player != killer) {
+            bounty.handleBounties(player, killer);
             return;
-        }
-
-        if (data.getKillCount(player) > 0) {
-            // Collect bounty from target
-            data.addBountyCollected(killer, data.getKillCount(player));
-            data.resetKillCount(player);
-            killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + data.getBountyCollected(killer));
-            player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
-        } else {
-            if (data.isAssassin(killer) && killer != null) {
-                // Only increase bounty when attacking a different player without bounty
-                data.increaseKillCount(killer);
-                TagAPI.refreshPlayer(killer);
-            }
         }
     }
 

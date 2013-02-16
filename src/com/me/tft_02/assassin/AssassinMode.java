@@ -167,7 +167,7 @@ public class AssassinMode {
     public void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
-        if (itemHead.getTypeId() != 0) inventory.setHelmet(new ItemStack(0));
+        if (itemHead.getTypeId() != 0) inventory.setHelmet(null);
         //Gives back the mask if config says so
         if (Assassin.getInstance().getConfig().getBoolean("Assassin.return_mask")) spawnMask(player, 1);
 
@@ -182,7 +182,7 @@ public class AssassinMode {
         else if (inventory.contains(Material.LEATHER_HELMET)) helmetindex = inventory.first(Material.LEATHER_HELMET);
         if (helmetindex >= 0) {
             ItemStack helmet = inventory.getItem(helmetindex);
-            inventory.setItem(helmetindex, new ItemStack(0));
+            inventory.setItem(helmetindex, null);
             inventory.setHelmet(helmet);
         }
         player.updateInventory();
