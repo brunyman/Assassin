@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 
 import com.me.tft_02.assassin.Assassin;
 
@@ -29,17 +31,19 @@ public class UpdateChecker {
         int lineNum = 0;
         while ((line = in.readLine()) != null) {
             if (line.length() != line.replace("<title>", "").length()) {
-                line = line.replaceAll("[\\D]", "");
+                line = line.replaceAll("\\s+(?i)(<title.*?>)(.+?)(</title>)", "$2").substring(1);
                 if (lineNum == 1) {
-                    Integer newVer = Integer.parseInt(line.replace(".", ""));
-                    Integer oldVer = Integer.parseInt(version.replace(".", ""));
-                    if (oldVer < newVer) {
-                        return true; //They are using an old version
-                    } else if (oldVer > newVer) {
-                        return false; //They are using a FUTURE version!
-                    } else {
-                        return false; //They are up to date!
+                    String[] newTokens = line.split("[.]");
+                    String[] oldTokens = version.split("[.]");
+
+                    for (int i = 0; i < 3; i++) {
+                        Integer newVer = Integer.parseInt(newTokens[i]);
+                        Integer oldVer = Integer.parseInt(oldTokens[i]);
+                        if (oldVer < newVer) {
+                            return true; //They are using an old version
+                        }
                     }
+                    return false; //They are up to date!
                 }
                 lineNum = lineNum + 1;
             }

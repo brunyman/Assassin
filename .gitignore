@@ -31,6 +31,8 @@
 *.ipr
 *.iws
 .idea/
+out/
+src/META-INF/MANIFEST.MF
 
 # Project Stuff
 /src/main/resources/mcMMO

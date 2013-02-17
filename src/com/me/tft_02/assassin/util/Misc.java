@@ -53,7 +53,7 @@ public class Misc {
             return hours + "h " + mins + "m " + secs + "s";
     }
 
-    static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
+    public static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
 
         List<Entry<K, V>> sortedEntries = new ArrayList<Entry<K, V>>(map.entrySet());
 
