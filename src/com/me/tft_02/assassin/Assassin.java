@@ -103,6 +103,8 @@ public class Assassin extends JavaPlugin {
         }
         //Active check timer (Runs every two seconds)
         scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 2 * 20);
+        //Save data timer (Runs every 15 minutes)
+        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 15 * 60 * 20);
 
         try {
             needsUpdate = getConfig().getBoolean("General.update_check_enabled") && update.getUpdate();

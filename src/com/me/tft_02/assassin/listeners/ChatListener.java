@@ -65,7 +65,7 @@ public class ChatListener implements Listener {
                                 //Show scrambled chat messages
                                 String scrambled = message.Scrambled(msg);
 //								event.setFormat(pName + scrambled);
-                                players.sendMessage(pName + scrambled);//TODO FINISH Assassin chat
+                                players.sendMessage(pName + scrambled);
                                 event.setCancelled(true);
                             }
                         }
