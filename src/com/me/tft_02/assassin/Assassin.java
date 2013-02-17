@@ -15,10 +15,10 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.me.tft_02.assassin.listeners.ChatListener;
-import com.me.tft_02.assassin.listeners.EntityListener;
-import com.me.tft_02.assassin.listeners.PlayerListener;
-import com.me.tft_02.assassin.listeners.TagListener;
+import com.me.tft_02.assassin.isteners.ChatListener;
+import com.me.tft_02.assassin.isteners.EntityListener;
+import com.me.tft_02.assassin.isteners.PlayerListener;
+import com.me.tft_02.assassin.isteners.TagListener;
 import com.me.tft_02.assassin.runnables.ActiveTimer;
 import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
 import com.me.tft_02.assassin.util.Data;
