@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.isteners;
+package com.me.tft_02.assassin.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
