@@ -12,9 +12,8 @@ public class LocationData {
     }
 
     public String convertToString() {
-        String locationData = location.getWorld().getName() + ", " + String.valueOf(location.getX()) + ", " + String.valueOf(location.getY()) + ", " + String.valueOf(location.getZ());
 
-        return locationData;
+        return location.getWorld().getName() + ", " + String.valueOf(location.getX()) + ", " + String.valueOf(location.getY()) + ", " + String.valueOf(location.getZ());
     }
 
     public static LocationData convertFromString(String locationData) {

@@ -40,39 +40,45 @@ public class ActiveTimer implements Runnable {
     }
 
     private void updateAssassinStatus() {
-        for (Player assassins : data.getOnlineAssassins()) {
-            long activetime = data.getActiveTime(assassins);
-            long maxactivetime = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
-            long warntime = Assassin.getInstance().getConfig().getLong("Assassin.warn_time_almost_up");
+        long maxactivetime = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
+        long warntime = Assassin.getInstance().getConfig().getLong("Assassin.warn_time_almost_up");
+
+
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            long activetime = data.getActiveTime(player);
 
             if (activetime >= maxactivetime) {
-                assassin.deactivateAssassin(assassins);
-                data.resetActiveTime(assassins);
-                if (plugin.debug_mode) {
-                    System.out.println(assassins + " status set to Neutral. Active time reached max.");
+                if (data.isAssassin(player)) {
+                    assassin.deactivateAssassin(player);
+                } else if (data.isHostile(player)) {
+                    data.setNeutral(player);
                 }
-
+                data.resetActiveTime(player);
+                if (plugin.debug_mode) {
+                    System.out.println(player + " status set to Neutral. Active time reached max.");
+                }
             } else {
-                if (warntime > 0 && (activetime + warntime >= maxactivetime) && !hasBeenWarned(assassins)) {
-                    assassins.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
-                    warned.add(assassins.getName());
-                    if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
-                        assassins.getWorld().playEffect(assassins.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+                if ((data.isAssassin(player) || data.isHostile(player)) && warntime > 0) {
+                    if (activetime + warntime >= maxactivetime) {
+                        if (!hasBeenWarned(player)) {
+                            player.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
+                            warned.add(player.getName());
+                            if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+                                player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+                            }
+                            if (plugin.debug_mode) {
+                                System.out.println(player + " has received a warning because his Assassin mode is running out.");
+                            }
+                        }
+                    } else {
+                        warned.remove(player.getName());
                     }
-                    if (plugin.debug_mode) {
-                        System.out.println(assassins + " has received a warning because his Assassin mode is running out.");
-                    }
-                } else {
-                    warned.remove(assassins.getName());
                 }
             }
         }
     }
 
     private boolean hasBeenWarned(Player player) {
-        if (warned.contains(player.getName())) {
-            return true;
-        }
-        return false;
+        return warned.contains(player.getName());
     }
 }

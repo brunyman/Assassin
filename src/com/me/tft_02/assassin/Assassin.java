@@ -70,11 +70,7 @@ public class Assassin extends JavaPlugin {
             this.getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
             debug_mode = true;
         }
-        if (!setupEconomy()) {
-            vaultEnabled = false;
-        } else {
-            vaultEnabled = true;
-        }
+        vaultEnabled = setupEconomy();
 
         setupConfiguration();
         checkConfiguration();
@@ -102,17 +98,14 @@ public class Assassin extends JavaPlugin {
 
         BukkitScheduler scheduler = getServer().getScheduler();
         if (getConfig().getBoolean("Assassin.warn_others_when_near")) {
+            //Range check timer (Runs every 10 seconds)
             scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
         }
         //Active check timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 40);
+        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 2 * 20);
 
         try {
-            if (getConfig().getBoolean("General.update_check_enabled")) {
-                needsUpdate = update.getUpdate();
-            } else {
-                needsUpdate = false;
-            }
+            needsUpdate = getConfig().getBoolean("General.update_check_enabled") && update.getUpdate();
         } catch (Exception e) {
             needsUpdate = false;
         }
@@ -127,7 +120,8 @@ public class Assassin extends JavaPlugin {
     private void addCustomRecipes() {
         MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
         ShapedRecipe AssassinMask = new ShapedRecipe(assassin.getMask(1));
-        AssassinMask.shape(new String[] { "XXX", "X X" });
+//        AssassinMask.shape(new String[] { "XXX", "X X" });
+        AssassinMask.shape("XXX", "X X");
         AssassinMask.setIngredient('X', blackWool);
         getServer().addRecipe(AssassinMask);
     }
@@ -138,6 +132,7 @@ public class Assassin extends JavaPlugin {
         config.addDefault("General.stats_tracking_enabled", true);
         config.addDefault("General.update_check_enabled", true);
         config.addDefault("General.config_version", "1.1.1");
+
         config.addDefault("Assassin.active_length", 3600);
         config.addDefault("Assassin.teleport_on_deactivate", true);
         config.addDefault("Assassin.cooldown_length", 600);
@@ -153,6 +148,9 @@ public class Assassin extends JavaPlugin {
 //		config.addDefault("Assassin.max_allowed", 5);
         String[] defaultBlockedcmds = { "/spawn", "/home", "/tp", "/tphere", "/tpa", "/tpahere", "/tpall", "/tpaall" };
         config.addDefault("Assassin.blocked_commands", Arrays.asList(defaultBlockedcmds));
+
+        config.addDefault("Assassin.bounty_increase_amount", 10);
+        config.addDefault("Assassin.bounty_currency", "$");
 
 //		config.addDefault("Assassin.hide_neutral_names", false);
 

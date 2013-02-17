@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -54,14 +55,12 @@ public class PlayerData {
     }
 
     public void addLoginTime(Player player) {
-        long currenttime = System.currentTimeMillis() / 1000L;
-        long timestamp = currenttime;
+        long timestamp = System.currentTimeMillis() / 1000L;
         playerLoginTime.put(player.getName(), timestamp);
     }
 
     public void addLogoutTime(Player player) {
-        long currenttime = System.currentTimeMillis() / 1000L;
-        long timestamp = currenttime;
+        long timestamp = System.currentTimeMillis() / 1000L;
         playerLogoutTime.put(player.getName(), timestamp);
     }
 
@@ -86,8 +85,7 @@ public class PlayerData {
     public Long getActiveTimeLeft(Player player) {
         long activetime = getActiveTime(player);
         long maxactive = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
-        long activetimeleft = maxactive - activetime;
-        return activetimeleft;
+        return maxactive - activetime;
     }
 
     public void resetActiveTime(Player player) {
@@ -104,10 +102,7 @@ public class PlayerData {
     }
 
     public boolean cooledDown(Player player) {
-        if (playerCooldown.contains(player.getName())) {
-            return false;
-        }
-        return true;
+        return !playerCooldown.contains(player.getName());
     }
 
     public void addLocation(Player player, Location location) {
@@ -117,8 +112,7 @@ public class PlayerData {
     public Location getLocation(Player player) {
         if (playerLocationData.containsKey(player.getName())) {
             String locationdata = playerLocationData.get(player.getName());
-            Location location = LocationData.convertFromString(locationdata).getLocation();
-            return location;
+            return LocationData.convertFromString(locationdata).getLocation();
         } else {
             System.out.println("No location data found for " + player + "!");
             System.out.println("Perhaps 'Assassin/data.dat' has been deleted?");
@@ -135,45 +129,56 @@ public class PlayerData {
     }
 
     public boolean firstTimeNear(Player player) {
-        if (playerNear.contains(player.getName())) {
-            return false;
-        }
-        return true;
+        return !playerNear.contains(player.getName());
     }
 
     public boolean isAssassin(Player player) {
-        if (playerData.containsKey(player.getName())) {
-            if (playerData.get(player.getName()) == null) {
-            } else if (playerData.get(player.getName()).equalsIgnoreCase("Assassin")) {
-                return true;
-            }
+        String playername = player.getName();
+
+        if (!playerData.containsKey(playername) || playerData.get(playername) == null) {
+            return false;
         }
-        return false;
+        return playerData.get(playername).equalsIgnoreCase("Assassin");
+    }
+
+    public boolean isHostile(Player player) {
+        String playername = player.getName();
+
+        if (!playerData.containsKey(playername) || playerData.get(playername) == null) {
+            return false;
+        }
+        return playerData.get(playername).equalsIgnoreCase("Hostile");
     }
 
     public boolean isNeutral(Player player) {
         String playername = player.getName();
-        if (playerData.containsKey(playername)) {
-            if (playerData.get(playername) == null) {
-            } else if (playerData.get(playername).equalsIgnoreCase("Neutral")) {
-                return true;
-            }
+
+        if (!playerData.containsKey(playername) || playerData.get(playername) == null) {
+            return false;
         }
-        return false;
+        return playerData.get(playername).equalsIgnoreCase("Neutral");
     }
 
     public String getStatus(Player player) {
         String playername = player.getName();
         String status = "null";
-        if (playerData.containsKey(playername)) {
-            if (playerData.get(playername) == null) {
-                status = "null";
-            } else {
-                if (playerData.get(playername).equalsIgnoreCase("Neutral"))
-                    status = "Neutral";
-                else if (playerData.get(playername).equalsIgnoreCase("Assassin")) status = "Assassin";
-            }
+        if (!playerData.containsKey(playername)) {
+            return status;
         }
+        if (playerData.get(playername) == null) {
+            status = "null";
+            return status;
+        } 
+
+        if (playerData.get(playername).equalsIgnoreCase("Neutral")) {
+            return status = ChatColor.GREEN + "Neutral";
+        } else
+            if (playerData.get(playername).equalsIgnoreCase("Assassin")) {
+                return status = ChatColor.DARK_RED + "Assassin";
+            }
+            else if (playerData.get(playername).equalsIgnoreCase("Hostile")) {
+                return status = ChatColor.RED + "Hostile";
+            }
         return status;
     }
 
@@ -188,10 +193,7 @@ public class PlayerData {
         boolean statusfirst = isNeutral(firstPlayer);
         boolean statussecond = isNeutral(secondPlayer);
 
-        if (statusfirst && statussecond) {
-            return true;
-        }
-        return false;
+        return statusfirst && statussecond;
     }
 
     public List<String> getAssassins() {
@@ -219,10 +221,7 @@ public class PlayerData {
     }
 
     public boolean getAssassinChatMode(Player player) {
-        if (assassinChatSet.contains(player.getName())) {
-            return true;
-        }
-        return false;
+        return assassinChatSet.contains(player.getName());
     }
 
     public int getAssassinNumber(Player player) {
@@ -245,7 +244,7 @@ public class PlayerData {
     public int generateRandomNumber() {
         int randomNumber = random.nextInt(1000);
         boolean check = false;
-        while (check == false) {
+        while (!check) {
             if (takenNumbers.contains(randomNumber)) {
                 randomNumber = random.nextInt(1000);
             } else {

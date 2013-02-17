@@ -35,11 +35,8 @@ public class Misc {
             return false;
         }
 
-        if (first.distanceSquared(second) < (maxDistance * maxDistance)) {
-            return true;
-        }
+        return first.distanceSquared(second) < (maxDistance * maxDistance);
 
-        return false;
     }
 
     public String getStringTimeLeft(Player player) {

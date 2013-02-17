@@ -85,7 +85,6 @@ public class Data {
         } catch (Exception e) {
             Assassin.getInstance().getLogger().log(Level.INFO, "Failed to save data.");
             e.printStackTrace();
-            return;
         }
     }
 
@@ -109,7 +108,6 @@ public class Data {
                 Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");
                 e.printStackTrace();
                 Bukkit.getServer().getPluginManager().disablePlugin(Assassin.getInstance());
-                return;
             }
         }
     }

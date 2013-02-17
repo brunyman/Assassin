@@ -211,7 +211,6 @@ public class PlayerListener implements Listener {
 
         if (killer != null && player != killer) {
             bounty.handleBounties(player, killer);
-            return;
         }
     }
 

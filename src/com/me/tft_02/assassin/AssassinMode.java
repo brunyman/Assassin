@@ -45,7 +45,7 @@ public class AssassinMode {
                 player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
                 player.getWorld().playSound(player.getLocation(), Sound.PISTON_RETRACT, 1.0f, 1.0f);
             }
-        }, 20 * 1);
+        }, 20);
 
         player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
         int number = data.getAssassinNumber(player);
@@ -85,7 +85,7 @@ public class AssassinMode {
     }
 
     /**
-     * Deactivate Assassin mode.
+     * Activate Hostile mode.
      * 
      * @param player Player who's mode will be changed.
      */

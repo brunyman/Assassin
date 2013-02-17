@@ -68,7 +68,6 @@ public class MessageScrambler {
             sb.insert(start2 + 4, ChatColor.MAGIC);
             sb.insert(end2 + 6, ChatColor.RESET);
         }
-        String scrambled = sb.toString();
-        return scrambled;
+        return sb.toString();
     }
 }

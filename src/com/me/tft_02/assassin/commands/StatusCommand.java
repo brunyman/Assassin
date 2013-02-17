@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
 
@@ -18,6 +19,7 @@ public class StatusCommand implements CommandExecutor {
     }
 
     private PlayerData data = new PlayerData(plugin);
+    private Bounty bounty = new Bounty(plugin);
     private Misc misc = new Misc(plugin);
 
     @Override
@@ -28,13 +30,14 @@ public class StatusCommand implements CommandExecutor {
             return true;
         }
 
-        player.sendMessage(ChatColor.GOLD + "Your status = " + ChatColor.RED + data.getStatus(player));
+        player.sendMessage(ChatColor.DARK_GRAY + "==========[ " + ChatColor.YELLOW + "Assassin Info" + ChatColor.DARK_GRAY + " ]===========");
+        player.sendMessage(ChatColor.GOLD + "Your status = " + data.getStatus(player));
         if (data.isAssassin(player)) {
             player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + misc.getStringTimeLeft(player));
         }
-        player.sendMessage(ChatColor.DARK_GRAY + "=====================");
+        player.sendMessage(ChatColor.DARK_GRAY + "------------------------------------");
         player.sendMessage(ChatColor.GOLD + "Current bounty = " + ChatColor.DARK_RED + data.getKillCount(player));
-        player.sendMessage(ChatColor.GOLD + "Bounty collected = " + ChatColor.GREEN + data.getBountyCollected(player));
+        player.sendMessage(ChatColor.GOLD + "Bounty collected = " + ChatColor.GREEN + bounty.getBountyCollectedString(player));
         return true;
     }
 }

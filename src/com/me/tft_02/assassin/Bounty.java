@@ -34,9 +34,14 @@ public class Bounty {
 
     public boolean hasBounty(Player player) {
         int killCount = data.getKillCount(player);
-        if (killCount > 0) {
-            return true;
-        }
-        return false;
+        return killCount > 0;
+    }
+    
+    public String getBountyCollectedString(Player player) {
+        int bounty_collected = data.getBountyCollected(player);
+        int increase_amount = Assassin.getInstance().getConfig().getInt("Assassin.bounty_increase_amount");
+        String currency = Assassin.getInstance().getConfig().getString("Assassin.bounty_currency");
+
+        return bounty_collected * increase_amount + currency;
     }
 }
