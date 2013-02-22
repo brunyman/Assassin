@@ -22,7 +22,6 @@ import com.me.tft_02.assassin.listeners.TagListener;
 import com.me.tft_02.assassin.runnables.ActiveTimer;
 import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
 import com.me.tft_02.assassin.util.Data;
-import com.me.tft_02.assassin.util.DependencyDownload;
 import com.me.tft_02.assassin.util.Metrics;
 import com.me.tft_02.assassin.util.UpdateChecker;
 
@@ -57,9 +56,7 @@ public class Assassin extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         if (pm.getPlugin("TagAPI") == null) {
             this.getLogger().log(Level.WARNING, "No TagAPI dependency found!");
-            this.getLogger().log(Level.WARNING, "Downloading TagAPI now, hold on!");
-            DependencyDownload.download();
-            this.getLogger().log(Level.WARNING, "TagAPI downloaded! Restart server to enable [Assassin].");
+            this.getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
             pm.disablePlugin(this);
             return;
         } else if (!pm.isPluginEnabled("TagAPI")) {

@@ -6,16 +6,13 @@ Key:
   ! Change
   - Removal
 
-Version 1.1.2 | Tested on CB 1.4.7-R1.0
-
-
 Version 1.1.1 | Tested on CB 1.4.7-R1.0
- ! Now automatically downloads the latest TagAPI from BukkitDev
  ! Refactoring package naming so its my email address
  ! Cleanup loads of code
  + Added version checker
  + Added config option to allow PvP in no-PvP zones set by other plugins (WorldGuard, Towny)
  + Added kill count and bounties
+ - Automatically downloading of TagAPI has been removed.
  
 Version 1.1 | Tested on CB 1.4.5-R1.0
  ! Compatible with 1.4.5-R1.0 & 1.4.6-R0.1
