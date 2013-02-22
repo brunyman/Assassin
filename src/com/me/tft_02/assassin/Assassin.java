@@ -35,11 +35,12 @@ public class Assassin extends JavaPlugin {
     private ChatListener chatListener = new ChatListener(this);
 
     private AssassinMode assassin = new AssassinMode(this);
-    private UpdateChecker update = new UpdateChecker(this);
 
     public boolean vaultEnabled;
     public boolean debug_mode = false;
-    public boolean needsUpdate;
+
+    // Update Check
+    public boolean updateAvailable;
 
     public static Economy econ = null;
 
@@ -106,16 +107,24 @@ public class Assassin extends JavaPlugin {
         //Save data timer (Runs every 15 minutes)
         scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 15 * 60 * 20);
 
-        try {
-            needsUpdate = getConfig().getBoolean("General.update_check_enabled") && update.getUpdate();
-        } catch (Exception e) {
-            needsUpdate = false;
-        }
-        if (needsUpdate) {
-            this.getLogger().log(Level.INFO, "***********************************************************************************");
-            this.getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
-            this.getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
-            this.getLogger().log(Level.INFO, "***********************************************************************************");
+        checkForUpdates();
+    }
+
+    private void checkForUpdates() {
+        if (getConfig().getBoolean("General.update_check_enabled")) {
+            try {
+                updateAvailable = UpdateChecker.updateAvailable();
+            }
+            catch (Exception e) {
+                updateAvailable = false;
+            }
+
+            if (updateAvailable) {
+                this.getLogger().log(Level.INFO, "***********************************************************************************");
+                this.getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
+                this.getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
+                this.getLogger().log(Level.INFO, "***********************************************************************************");
+            }
         }
     }
 
@@ -133,6 +142,7 @@ public class Assassin extends JavaPlugin {
         config.addDefault("General.debug_mode_enabled", false);
         config.addDefault("General.stats_tracking_enabled", true);
         config.addDefault("General.update_check_enabled", true);
+        config.addDefault("General.prefer_beta", false);
         config.addDefault("General.config_version", "1.1.1");
 
         config.addDefault("Assassin.active_length", 3600);
