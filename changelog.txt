@@ -6,6 +6,9 @@ Key:
   ! Change
   - Removal
 
+Version 1.1.2 | Tested on CB 1.4.7-R1.0
+
+
 Version 1.1.1 | Tested on CB 1.4.7-R1.0
  ! Refactoring package naming so its my email address
  ! Cleanup loads of code
