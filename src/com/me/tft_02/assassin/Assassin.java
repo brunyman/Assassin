@@ -59,7 +59,8 @@ public class Assassin extends JavaPlugin {
             this.getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
             pm.disablePlugin(this);
             return;
-        } else if (!pm.isPluginEnabled("TagAPI")) {
+        }
+        else if (!pm.isPluginEnabled("TagAPI")) {
             this.getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
             pm.disablePlugin(this);
             return;
@@ -79,7 +80,7 @@ public class Assassin extends JavaPlugin {
         pm.registerEvents(entityListener, this);
         pm.registerEvents(playerListener, this);
         pm.registerEvents(chatListener, this);
-//		pm.registerEvents(blockListener, this);
+        //		pm.registerEvents(blockListener, this);
 
         getCommand("assassin").setExecutor(new Commands(this));
 
@@ -89,7 +90,8 @@ public class Assassin extends JavaPlugin {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 System.out.println("Failed to submit stats.");
             }
         }
@@ -128,7 +130,7 @@ public class Assassin extends JavaPlugin {
     private void addCustomRecipes() {
         MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
         ShapedRecipe AssassinMask = new ShapedRecipe(assassin.getMask(1));
-//        AssassinMask.shape(new String[] { "XXX", "X X" });
+        //        AssassinMask.shape(new String[] { "XXX", "X X" });
         AssassinMask.shape("XXX", "X X");
         AssassinMask.setIngredient('X', blackWool);
         getServer().addRecipe(AssassinMask);
@@ -154,14 +156,14 @@ public class Assassin extends JavaPlugin {
         config.addDefault("Assassin.particle_effects", true);
         config.addDefault("Assassin.potion_effects", true);
         config.addDefault("Assassin.warn_time_almost_up", 10);
-//		config.addDefault("Assassin.max_allowed", 5);
+        //		config.addDefault("Assassin.max_allowed", 5);
         String[] defaultBlockedcmds = { "/spawn", "/home", "/tp", "/tphere", "/tpa", "/tpahere", "/tpall", "/tpaall" };
         config.addDefault("Assassin.blocked_commands", Arrays.asList(defaultBlockedcmds));
 
         config.addDefault("Assassin.bounty_increase_amount", 10);
         config.addDefault("Assassin.bounty_currency", "$");
 
-//		config.addDefault("Assassin.hide_neutral_names", false);
+        //		config.addDefault("Assassin.hide_neutral_names", false);
 
         config.options().copyDefaults(true);
         saveConfig();

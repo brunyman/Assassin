@@ -34,7 +34,8 @@ public class ChatCommand implements CommandExecutor {
         if (!data.getAssassinChatMode(player)) {
             data.enterAssassinChat(player);
             player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
-        } else {
+        }
+        else {
             data.leaveAssassinChat(player);
             player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
         }

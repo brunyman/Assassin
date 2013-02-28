@@ -37,7 +37,8 @@ public class Data {
             }
             out.close();
             in.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -82,7 +83,8 @@ public class Data {
             oos.flush();
             oos.close();
             Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Assassin.getInstance().getLogger().log(Level.INFO, "Failed to save data.");
             e.printStackTrace();
         }
@@ -93,7 +95,8 @@ public class Data {
         File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
         if (f.exists()) {
             try {
-                @SuppressWarnings("resource") ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+                @SuppressWarnings("resource")
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
                 PlayerData.playerData = (HashMap<String, String>) ois.readObject();
                 PlayerData.playerCooldown = (HashSet<String>) ois.readObject();
                 PlayerData.playerLoginTime = (HashMap<String, Long>) ois.readObject();
@@ -104,7 +107,8 @@ public class Data {
                 PlayerData.killCount = (HashMap<String, Integer>) ois.readObject();
                 PlayerData.bountyCollected = (HashMap<String, Integer>) ois.readObject();
                 Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");
                 e.printStackTrace();
                 Bukkit.getServer().getPluginManager().disablePlugin(Assassin.getInstance());

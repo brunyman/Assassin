@@ -27,7 +27,7 @@ public class ChatListener implements Listener {
     private PlayerData data = new PlayerData(plugin);
     private MessageScrambler message = new MessageScrambler(plugin);
 
-//	private final Random random = new Random();
+    //	private final Random random = new Random();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
@@ -36,7 +36,8 @@ public class ChatListener implements Listener {
         String pName = ChatColor.DARK_RED + "[ASSASSIN " + number + "]: " + ChatColor.RESET;
         String msg = event.getMessage();
 
-        if (msg == null) return;
+        if (msg == null)
+            return;
         if (data.isAssassin(player)) {
             if (data.getAssassinChatMode(player)) {
                 String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
@@ -47,24 +48,25 @@ public class ChatListener implements Listener {
 
                 //When in chatting in Assassin chat, other players who are near can hear scrambled chat.
 
-//				float diceroll = random.nextInt(100);
-//				int chance = plugin.getConfig().getInt("Assassin.messages_chance");
-//				if (chance > 0 && chance < diceroll){
+                //				float diceroll = random.nextInt(100);
+                //				int chance = plugin.getConfig().getInt("Assassin.messages_chance");
+                //				if (chance > 0 && chance < diceroll){
                 double chatDistance = 250;
                 if (chatDistance > 0) {
                     for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
                         if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
                             event.getRecipients().remove(players);
-                        } else {
+                        }
+                        else {
                             if (!data.isAssassin(players)) {
                                 //Assassins have already received unscrambled message
                                 //But this isn't nessecary here... I think
-//								for (Player assassin : data.getOnlineAssassins()) {
-//									event.getRecipients().remove(assassin);
-//								}
+                                //								for (Player assassin : data.getOnlineAssassins()) {
+                                //									event.getRecipients().remove(assassin);
+                                //								}
                                 //Show scrambled chat messages
                                 String scrambled = message.Scrambled(msg);
-//								event.setFormat(pName + scrambled);
+                                //								event.setFormat(pName + scrambled);
                                 players.sendMessage(pName + scrambled);
                                 event.setCancelled(true);
                             }
@@ -73,7 +75,8 @@ public class ChatListener implements Listener {
 
                 }
                 //If an Assassin chats, but not in Assassin chat, show normal message with pName formatting
-            } else {
+            }
+            else {
                 event.setFormat(pName + msg);
             }
         }
@@ -93,7 +96,8 @@ public class ChatListener implements Listener {
         if (isEntityInvolved) {
             EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
             Entity damager = edbe.getDamager();
-            if (damager instanceof Projectile) damager = ((Projectile) damager).getShooter();
+            if (damager instanceof Projectile)
+                damager = ((Projectile) damager).getShooter();
             if (damager instanceof Player) {
                 if (data.isAssassin(player)) {
                     String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
@@ -105,12 +109,14 @@ public class ChatListener implements Listener {
                     if (data.isAssassin(player)) {
                         String newmsg2 = newmsg1.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
                         event.setDeathMessage(newmsg2);
-                    } else {
+                    }
+                    else {
                         event.setDeathMessage(newmsg1);
                     }
                 }
             }
-        } else if (data.isAssassin(player)) {
+        }
+        else if (data.isAssassin(player)) {
             String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
             event.setDeathMessage(newmsg);
         }

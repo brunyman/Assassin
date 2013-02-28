@@ -9,6 +9,7 @@ public class SaveTimer implements Runnable {
     public SaveTimer(Assassin instance) {
         plugin = instance;
     }
+
     @Override
     public void run() {
         saveData();

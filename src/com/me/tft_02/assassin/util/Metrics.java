@@ -247,7 +247,8 @@ public class Metrics {
                         // After the first post we set firstPost to false
                         // Each post thereafter will be a ping
                         firstPost = false;
-                    } catch (final IOException e) {
+                    }
+                    catch (final IOException e) {
                         Bukkit.getLogger().log(Level.INFO, "[Metrics] " + e.getMessage());
                     }
                 }
@@ -267,10 +268,12 @@ public class Metrics {
             try {
                 // Reload the metrics file
                 configuration.load(CONFIG_FILE);
-            } catch (final IOException ex) {
+            }
+            catch (final IOException ex) {
                 Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
                 return true;
-            } catch (final InvalidConfigurationException ex) {
+            }
+            catch (final InvalidConfigurationException ex) {
                 Bukkit.getLogger().log(Level.INFO, "[Metrics] " + ex.getMessage());
                 return true;
             }
@@ -379,7 +382,8 @@ public class Metrics {
         // It does not reroute POST requests so we need to go around it
         if (isMineshafterPresent()) {
             connection = url.openConnection(Proxy.NO_PROXY);
-        } else {
+        }
+        else {
             connection = url.openConnection();
         }
 
@@ -400,7 +404,8 @@ public class Metrics {
 
         if (response == null || response.startsWith("ERR")) {
             throw new IOException(response); //Throw the exception
-        } else {
+        }
+        else {
             // Is this the first update this hour?
             if (response.contains("OK This is your first update this hour")) {
                 synchronized (graphs) {
@@ -428,7 +433,8 @@ public class Metrics {
         try {
             Class.forName("mineshafter.MineServer");
             return true;
-        } catch (final Exception e) {
+        }
+        catch (final Exception e) {
             return false;
         }
     }
@@ -580,8 +586,7 @@ public class Metrics {
         /**
          * Called after the website graphs have been updated
          */
-        public void reset() {
-        }
+        public void reset() {}
 
         @Override
         public int hashCode() {

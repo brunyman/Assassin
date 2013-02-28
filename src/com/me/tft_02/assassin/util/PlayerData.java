@@ -19,7 +19,7 @@ public class PlayerData {
     public PlayerData(Assassin instance) {
         plugin = instance;
     }
-    
+
     // Persistent data
     public static HashMap<String, String> playerData = new HashMap<String, String>();
     public static HashSet<String> playerCooldown = new HashSet<String>();
@@ -78,7 +78,8 @@ public class PlayerData {
 
     public Long getActiveTime(Player player) {
         long activetime = 0;
-        if (PlayerData.playerActiveTime.containsKey(player.getName())) activetime = PlayerData.playerActiveTime.get(player.getName());
+        if (PlayerData.playerActiveTime.containsKey(player.getName()))
+            activetime = PlayerData.playerActiveTime.get(player.getName());
         return activetime;
     }
 
@@ -113,7 +114,8 @@ public class PlayerData {
         if (playerLocationData.containsKey(player.getName())) {
             String locationdata = playerLocationData.get(player.getName());
             return LocationData.convertFromString(locationdata).getLocation();
-        } else {
+        }
+        else {
             System.out.println("No location data found for " + player + "!");
             System.out.println("Perhaps 'Assassin/data.dat' has been deleted?");
             return null;
@@ -168,17 +170,17 @@ public class PlayerData {
         if (playerData.get(playername) == null) {
             status = "null";
             return status;
-        } 
+        }
 
         if (playerData.get(playername).equalsIgnoreCase("Neutral")) {
             return status = ChatColor.GREEN + "Neutral";
-        } else
-            if (playerData.get(playername).equalsIgnoreCase("Assassin")) {
-                return status = ChatColor.DARK_RED + "Assassin";
-            }
-            else if (playerData.get(playername).equalsIgnoreCase("Hostile")) {
-                return status = ChatColor.RED + "Hostile";
-            }
+        }
+        else if (playerData.get(playername).equalsIgnoreCase("Assassin")) {
+            return status = ChatColor.DARK_RED + "Assassin";
+        }
+        else if (playerData.get(playername).equalsIgnoreCase("Hostile")) {
+            return status = ChatColor.RED + "Hostile";
+        }
         return status;
     }
 
@@ -231,10 +233,12 @@ public class PlayerData {
         if (assassinNumber.containsKey(playername)) {
             if (assassinNumber.get(playername) == null) {
                 number = 0;
-            } else {
+            }
+            else {
                 number = assassinNumber.get(playername);
             }
-        } else {
+        }
+        else {
             assassinNumber.put(playername, generateRandomNumber());
             number = assassinNumber.get(playername);
         }
@@ -247,7 +251,8 @@ public class PlayerData {
         while (!check) {
             if (takenNumbers.contains(randomNumber)) {
                 randomNumber = random.nextInt(1000);
-            } else {
+            }
+            else {
                 check = true;
                 takenNumbers.add(randomNumber);
             }
@@ -270,14 +275,15 @@ public class PlayerData {
         }
         return false;
     }
-    
+
     public int getKillCount(Player player) {
         String playerName = player.getName();
         int kills;
 
         if (killCount.containsKey(playerName)) {
             kills = killCount.get(playerName);
-        } else {
+        }
+        else {
             kills = 0;
         }
         return kills;
@@ -305,7 +311,8 @@ public class PlayerData {
         int bounty;
         if (bountyCollected.containsKey(playerName)) {
             bounty = bountyCollected.get(playerName);
-        } else {
+        }
+        else {
             bounty = 0;
         }
         return bounty;

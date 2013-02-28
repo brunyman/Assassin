@@ -35,16 +35,19 @@ public class DeactivateCommand implements CommandExecutor {
                 assassin.deactivateAssassin(target);
                 data.resetActiveTime(target);
                 return true;
-            } else {
+            }
+            else {
                 player.sendMessage(ChatColor.RED + "Not an Assassin.");
                 return true;
             }
-        } else {
+        }
+        else {
             if (data.isAssassin(player)) {
                 assassin.deactivateAssassin(player);
                 data.resetActiveTime(player);
                 return true;
-            } else {
+            }
+            else {
                 player.sendMessage(ChatColor.RED + "You aren't an assassin.");
                 return true;
             }

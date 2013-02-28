@@ -33,13 +33,15 @@ public class RefreshCommand implements CommandExecutor {
             if (target == null) {
                 sender.sendMessage(ChatColor.GOLD + args[1] + ChatColor.RED + " is not online!");
                 return false;
-            } else {
+            }
+            else {
                 TagAPI.refreshPlayer(target);
                 data.removeCooldown(target);
                 player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target.getName());
                 return true;
             }
-        } else {
+        }
+        else {
             TagAPI.refreshPlayer(player);
             data.removeCooldown(player);
             player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + player.getName());

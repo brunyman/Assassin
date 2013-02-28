@@ -28,7 +28,7 @@ public class LeaderboardCommand implements CommandExecutor {
         }
 
         player.sendMessage(ChatColor.DARK_GRAY + "==========[ " + ChatColor.YELLOW + "Bounty Leaderboard" + ChatColor.DARK_GRAY + " ]===========");
-        List<Map.Entry<String,Integer>> entries = Misc.entriesSortedByValues(PlayerData.bountyCollected);
+        List<Map.Entry<String, Integer>> entries = Misc.entriesSortedByValues(PlayerData.bountyCollected);
 
         for (Map.Entry<String, Integer> entry : entries) {
             player.sendMessage(entry + "" + entry.getKey());

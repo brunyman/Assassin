@@ -36,17 +36,20 @@ public class MessageScrambler {
         int length = msg.length();
         if (length == 0) {
             //This is not possible, but hey! You never know, right? :D
-        } else if (length == 1) {
+        }
+        else if (length == 1) {
             int scramble = random.nextInt(100);
             if (scramble > 50) {
                 sb.insert(0, ChatColor.MAGIC);
             }
-        } else if (length <= 3) {
+        }
+        else if (length <= 3) {
             start1 = random.nextInt(length);
             end1 = random.nextInt(length + 1);
             sb.insert(start1, ChatColor.MAGIC);
             sb.insert(end1 + 2, ChatColor.RESET);
-        } else if (length >= 4) {
+        }
+        else if (length >= 4) {
             halfLength = length / 2;
             scrambleLength1 = random.nextInt(5) + 3;
             scrambleLength2 = random.nextInt(5) + 3;

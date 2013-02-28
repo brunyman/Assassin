@@ -43,21 +43,22 @@ public class ActiveTimer implements Runnable {
         long maxactivetime = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
         long warntime = Assassin.getInstance().getConfig().getLong("Assassin.warn_time_almost_up");
 
-
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             long activetime = data.getActiveTime(player);
 
             if (activetime >= maxactivetime) {
                 if (data.isAssassin(player)) {
                     assassin.deactivateAssassin(player);
-                } else if (data.isHostile(player)) {
+                }
+                else if (data.isHostile(player)) {
                     data.setNeutral(player);
                 }
                 data.resetActiveTime(player);
                 if (plugin.debug_mode) {
                     System.out.println(player + " status set to Neutral. Active time reached max.");
                 }
-            } else {
+            }
+            else {
                 if ((data.isAssassin(player) || data.isHostile(player)) && warntime > 0) {
                     if (activetime + warntime >= maxactivetime) {
                         if (!hasBeenWarned(player)) {
@@ -70,7 +71,8 @@ public class ActiveTimer implements Runnable {
                                 System.out.println(player + " has received a warning because his Assassin mode is running out.");
                             }
                         }
-                    } else {
+                    }
+                    else {
                         warned.remove(player.getName());
                     }
                 }

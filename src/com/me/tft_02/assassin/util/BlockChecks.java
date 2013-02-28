@@ -15,33 +15,33 @@ public class BlockChecks {
             return true;
         }
         switch (block.getType()) {
-        case BED_BLOCK:
-        case BREWING_STAND:
-        case BOOKSHELF:
-        case BURNING_FURNACE:
-        case CAKE_BLOCK:
-        case CHEST:
-        case SIGN:
-        case DISPENSER:
-        case ENCHANTMENT_TABLE:
-        case ENDER_CHEST:
-        case FENCE_GATE:
-        case FURNACE:
-        case IRON_DOOR_BLOCK:
-        case JUKEBOX:
-        case LEVER:
-        case NOTE_BLOCK:
-        case STONE_BUTTON:
-        case WOOD_BUTTON:
-        case TRAP_DOOR:
-        case WALL_SIGN:
-        case WOODEN_DOOR:
-        case WORKBENCH:
-        case BEACON:
-        case ANVIL:
-            return false;
-        default:
-            return true;
+            case BED_BLOCK:
+            case BREWING_STAND:
+            case BOOKSHELF:
+            case BURNING_FURNACE:
+            case CAKE_BLOCK:
+            case CHEST:
+            case SIGN:
+            case DISPENSER:
+            case ENCHANTMENT_TABLE:
+            case ENDER_CHEST:
+            case FENCE_GATE:
+            case FURNACE:
+            case IRON_DOOR_BLOCK:
+            case JUKEBOX:
+            case LEVER:
+            case NOTE_BLOCK:
+            case STONE_BUTTON:
+            case WOOD_BUTTON:
+            case TRAP_DOOR:
+            case WALL_SIGN:
+            case WOODEN_DOOR:
+            case WORKBENCH:
+            case BEACON:
+            case ANVIL:
+                return false;
+            default:
+                return true;
         }
     }
 }

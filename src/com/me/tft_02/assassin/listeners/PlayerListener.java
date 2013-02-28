@@ -58,7 +58,8 @@ public class PlayerListener implements Listener {
 
         if (!data.isAssassin(player)) {
             data.setNeutral(player);
-        } else if (data.isAssassin(player)) {
+        }
+        else if (data.isAssassin(player)) {
             event.setJoinMessage(ChatColor.DARK_RED + "AN ASSASSIN JOINED THE GAME");
             assassin.applyTraits(player);
             assassin.applyMaskForce(player);
@@ -107,12 +108,12 @@ public class PlayerListener implements Listener {
         SlotType slotType = event.getSlotType();
 
         switch (slotType) {
-        case ARMOR:
-            if (itemcheck.isMask(itemstack)) {
-                assassin.activateHostileMode((Player) player);
-            }
-        default:
-            break;
+            case ARMOR:
+                if (itemcheck.isMask(itemstack)) {
+                    assassin.activateHostileMode((Player) player);
+                }
+            default:
+                break;
         }
     }
 
@@ -127,73 +128,79 @@ public class PlayerListener implements Listener {
         Action action = event.getAction();
         Block block = event.getClickedBlock();
         ItemStack inHand = player.getItemInHand();
-        @SuppressWarnings("unused") Material material;
+        @SuppressWarnings("unused")
+        Material material;
 
         /* Fix for NPE on interacting with air */
         if (block == null) {
             material = Material.AIR;
-        } else {
+        }
+        else {
             material = block.getType();
         }
 
         switch (action) {
-        case RIGHT_CLICK_BLOCK:
-        case RIGHT_CLICK_AIR:
-            int inHandID = inHand.getTypeId();
-            if ((inHandID == 35) && BlockChecks.abilityBlockCheck(block)) {
-                if (itemcheck.isMask(inHand)) {
-                    if (!player.hasPermission("assassin.assassin")) {
-                        player.sendMessage(ChatColor.RED + "You haven't got permission.");
-                        return;
-                    } 
+            case RIGHT_CLICK_BLOCK:
+            case RIGHT_CLICK_AIR:
+                int inHandID = inHand.getTypeId();
+                if ((inHandID == 35) && BlockChecks.abilityBlockCheck(block)) {
+                    if (itemcheck.isMask(inHand)) {
+                        if (!player.hasPermission("assassin.assassin")) {
+                            player.sendMessage(ChatColor.RED + "You haven't got permission.");
+                            return;
+                        }
 
-                    if (!data.cooledDown(player)) {
-                        player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
-                        return;
-                    }
+                        if (!data.cooledDown(player)) {
+                            player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
+                            return;
+                        }
 
-                    if (data.isAssassin(player)) {
-                        player.sendMessage(ChatColor.RED + "You already are an Assassin.");
-                        return;
-                    }
+                        if (data.isAssassin(player)) {
+                            player.sendMessage(ChatColor.RED + "You already are an Assassin.");
+                            return;
+                        }
 
-                    double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
-                    if (plugin.vaultEnabled && activation_cost > 0) {
-                        EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
-                        if (r.transactionSuccess()) {
-                            if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
+                        double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
+                        if (plugin.vaultEnabled && activation_cost > 0) {
+                            EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
+                            if (r.transactionSuccess()) {
+                                if (plugin.debug_mode)
+                                    System.out.println("Activating assassin for " + player.getName());
+                                assassin.activateAssassin(player);
+                                long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+                                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+                                player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
+                            }
+                            else {
+                                player.sendMessage(String.format("An error occured: %s", r.errorMessage));
+                            }
+                        }
+                        else {
+                            if (plugin.debug_mode)
+                                System.out.println("Activating assassin for " + player.getName());
                             assassin.activateAssassin(player);
                             long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
                             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
-                            player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
-                        } else {
-                            player.sendMessage(String.format("An error occured: %s", r.errorMessage));
-                        }
-                    } else {
-                        if (plugin.debug_mode) System.out.println("Activating assassin for " + player.getName());
-                        assassin.activateAssassin(player);
-                        long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
-                        plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 
+                        }
+                        event.setCancelled(true);
                     }
-                    event.setCancelled(true);
                 }
-            }
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
     }
 
-//
-//	@EventHandler
-//	public void onItemDrop(PlayerDropItemEvent event) {
-//		ItemStack droppeditem = event.getItemDrop().getItemStack();
-//		if (itemcheck.isMask(droppeditem)) {
-//			event.setCancelled(true);
-//			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to drop masks.");
-//		}
-//	}
+    //
+    //	@EventHandler
+    //	public void onItemDrop(PlayerDropItemEvent event) {
+    //		ItemStack droppeditem = event.getItemDrop().getItemStack();
+    //		if (itemcheck.isMask(droppeditem)) {
+    //			event.setCancelled(true);
+    //			event.getPlayer().sendMessage(ChatColor.RED + "You're not allowed to drop masks.");
+    //		}
+    //	}
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
@@ -213,7 +220,6 @@ public class PlayerListener implements Listener {
             bounty.handleBounties(player, killer);
         }
     }
-
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {

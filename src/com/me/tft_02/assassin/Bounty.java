@@ -15,7 +15,7 @@ public class Bounty {
     }
 
     private PlayerData data = new PlayerData(plugin);
-    
+
     public void handleBounties(Player player, Player killer) {
         if (hasBounty(player)) {
             // Collect bounty from target
@@ -23,7 +23,8 @@ public class Bounty {
             data.resetKillCount(player);
             killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + data.getBountyCollected(killer));
             player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
-        } else {
+        }
+        else {
             if (data.isAssassin(killer)) {
                 // Only increase bounty when attacking a different player without bounty
                 data.increaseKillCount(killer);
@@ -36,7 +37,7 @@ public class Bounty {
         int killCount = data.getKillCount(player);
         return killCount > 0;
     }
-    
+
     public String getBountyCollectedString(Player player) {
         int bounty_collected = data.getBountyCollected(player);
         int increase_amount = Assassin.getInstance().getConfig().getInt("Assassin.bounty_increase_amount");

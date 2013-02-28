@@ -28,7 +28,8 @@ public class SpawnMaskCommand implements CommandExecutor {
         if (args.length == 2) {
             assassin.spawnMask(player, Integer.parseInt(args[1]));
             return true;
-        } else {
+        }
+        else {
             assassin.spawnMask(player, 1);
             return true;
         }

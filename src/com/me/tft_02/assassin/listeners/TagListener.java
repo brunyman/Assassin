@@ -30,7 +30,8 @@ public class TagListener implements Listener {
             if (plugin.debug_mode) {
                 System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
             }
-        } else {
+        }
+        else {
             event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
 
             if (plugin.debug_mode) {
@@ -38,16 +39,16 @@ public class TagListener implements Listener {
             }
         }
 
-//		if (!data.isAssassin(player)) {
-//			event.setTag(ChatColor.DARK_GRAY + "PLAYER");
-//			System.out.println("Changed player tag to Player for " + player.getName());
-//		} else {
-//			event.setTag(ChatColor.RESET + player.getDisplayName());
-//			System.out.println("Reset player tag for " + player.getName());
-//		}
-//		for(Player p : getServer().getOnlinePlayers()){
-//		if (event.getPlayer().getName().equals(player)) {
-//			event.setTag(ChatColor.DARK_GRAY + "PLAYER");
-//		}
+        //		if (!data.isAssassin(player)) {
+        //			event.setTag(ChatColor.DARK_GRAY + "PLAYER");
+        //			System.out.println("Changed player tag to Player for " + player.getName());
+        //		} else {
+        //			event.setTag(ChatColor.RESET + player.getDisplayName());
+        //			System.out.println("Reset player tag for " + player.getName());
+        //		}
+        //		for(Player p : getServer().getOnlinePlayers()){
+        //		if (event.getPlayer().getName().equals(player)) {
+        //			event.setTag(ChatColor.DARK_GRAY + "PLAYER");
+        //		}
     }
 }

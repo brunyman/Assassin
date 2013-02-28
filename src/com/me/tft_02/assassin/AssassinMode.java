@@ -72,8 +72,8 @@ public class AssassinMode {
                 if (messageDistance > 0) {
                     if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
                         players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
-                    } else {
                     }
+                    else {}
                 }
             }
         }
@@ -122,7 +122,8 @@ public class AssassinMode {
             Location previousLocation = data.getLocation(player);
             if (previousLocation == null) {
                 player.sendMessage(ChatColor.RED + "Location not found!");
-            } else {
+            }
+            else {
                 player.teleport(previousLocation);
             }
         }
@@ -146,7 +147,8 @@ public class AssassinMode {
         int amount;
         if (amountInHand > 1) {
             amount = amountInHand - 1;
-        } else {
+        }
+        else {
             amount = 0;
         }
         ItemStack assassinMasks = getMask(amount);
@@ -155,7 +157,8 @@ public class AssassinMode {
         if (itemHead != null) {
             inventory.setItem(emptySlot, itemHead);
             inventory.setItemInHand(assassinMasks);
-        } else
+        }
+        else
             inventory.setItemInHand(assassinMasks);
 
         inventory.setHelmet(assassinMask);
@@ -186,9 +189,11 @@ public class AssassinMode {
     public void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
-        if (itemHead.getTypeId() != 0) inventory.setHelmet(null);
+        if (itemHead.getTypeId() != 0)
+            inventory.setHelmet(null);
         //Gives back the mask if config says so
-        if (Assassin.getInstance().getConfig().getBoolean("Assassin.return_mask")) spawnMask(player, 1);
+        if (Assassin.getInstance().getConfig().getBoolean("Assassin.return_mask"))
+            spawnMask(player, 1);
 
         //If the player was wearing a helmet, put it back on
         int helmetindex = -1;
@@ -198,7 +203,8 @@ public class AssassinMode {
             helmetindex = inventory.first(Material.IRON_HELMET);
         else if (inventory.contains(Material.GOLD_HELMET))
             helmetindex = inventory.first(Material.GOLD_HELMET);
-        else if (inventory.contains(Material.LEATHER_HELMET)) helmetindex = inventory.first(Material.LEATHER_HELMET);
+        else if (inventory.contains(Material.LEATHER_HELMET))
+            helmetindex = inventory.first(Material.LEATHER_HELMET);
         if (helmetindex >= 0) {
             ItemStack helmet = inventory.getItem(helmetindex);
             inventory.setItem(helmetindex, null);

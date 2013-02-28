@@ -33,16 +33,19 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getDamage() <= 0) return;
+        if (event.getDamage() <= 0)
+            return;
 
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
 
-        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
+        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC"))
+            return; // Check if either players is are Citizens NPCs
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
-        } else if (attacker instanceof Tameable) {
+        }
+        else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
 
             if (animalTamer instanceof Entity) {
@@ -61,7 +64,8 @@ public class EntityListener implements Listener {
                 if (data.bothNeutral(defendingPlayer, (Player) attacker) && Assassin.getInstance().getConfig().getBoolean("Assassin.prevent_neutral_pvp")) {
                     ((Player) attacker).sendMessage(ChatColor.DARK_RED + "You are not an Assassin.");
                     event.setCancelled(true);
-                } else {
+                }
+                else {
                     if (event.isCancelled() && Assassin.getInstance().getConfig().getBoolean("Assassin.override_pvp_prevention")) {
                         event.setCancelled(false);
                     }

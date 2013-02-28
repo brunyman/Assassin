@@ -46,7 +46,8 @@ public class Misc {
         int mins = remainder / 60;
         remainder = remainder - mins * 60;
         int secs = remainder;
-        if (mins == 0 && hours == 0) return secs + "s";
+        if (mins == 0 && hours == 0)
+            return secs + "s";
         if (hours == 0)
             return mins + "m " + secs + "s";
         else
