@@ -7,13 +7,9 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public final class AssassinAPI {
 
-    Assassin plugin;
+    private AssassinAPI() {}
 
-    private AssassinAPI(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData(Assassin.getInstance());
 
     /**
      * Check if the player is an Assassin.
