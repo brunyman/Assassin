@@ -56,18 +56,18 @@ public class Assassin extends JavaPlugin {
         instance = this;
         PluginManager pm = getServer().getPluginManager();
         if (pm.getPlugin("TagAPI") == null) {
-            this.getLogger().log(Level.WARNING, "No TagAPI dependency found!");
-            this.getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
+            getLogger().log(Level.WARNING, "No TagAPI dependency found!");
+            getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
             pm.disablePlugin(this);
             return;
         }
         else if (!pm.isPluginEnabled("TagAPI")) {
-            this.getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
+            getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
             pm.disablePlugin(this);
             return;
         }
         if (getConfig().getBoolean("General.debug_mode_enabled")) {
-            this.getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
+            getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
             debug_mode = true;
         }
         vaultEnabled = setupEconomy();
@@ -87,13 +87,13 @@ public class Assassin extends JavaPlugin {
 
         Data.loadData();
 
-        if (getConfig().getBoolean("General.stats_tracking_enabled")) {
+        if (Config.getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
             }
             catch (IOException e) {
-                System.out.println("Failed to submit stats.");
+                getLogger().log(Level.INFO, "Failed to submit stats.");
             }
         }
         scheduleTasks();
@@ -102,7 +102,7 @@ public class Assassin extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if (getConfig().getBoolean("General.update_check_enabled")) {
+        if (Config.getUpdateCheckEnabled()) {
             try {
                 updateAvailable = UpdateChecker.updateAvailable();
             }
@@ -111,10 +111,10 @@ public class Assassin extends JavaPlugin {
             }
 
             if (updateAvailable) {
-                this.getLogger().log(Level.INFO, "***********************************************************************************");
-                this.getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
-                this.getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
-                this.getLogger().log(Level.INFO, "***********************************************************************************");
+                getLogger().log(Level.INFO, "***********************************************************************************");
+                getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
+                getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
+                getLogger().log(Level.INFO, "***********************************************************************************");
             }
         }
     }
@@ -164,8 +164,8 @@ public class Assassin extends JavaPlugin {
     }
 
     private void checkConfiguration() {
-        if (getConfig().getDouble("Assassin.activation_cost") > 0 && !vaultEnabled) {
-            this.getLogger().log(Level.WARNING, "Vault dependency needed if you want to use currency!");
+        if (Config.getActivationCost() > 0 && !vaultEnabled) {
+            getLogger().log(Level.WARNING, "Vault dependency needed if you want to use currency!");
         }
     }
 
@@ -187,7 +187,7 @@ public class Assassin extends JavaPlugin {
     @Override
     public void onDisable() {
         Data.saveData();
-        this.getServer().getScheduler().cancelTasks(this);
+        getServer().getScheduler().cancelTasks(this);
     }
 
     private void scheduleTasks() {

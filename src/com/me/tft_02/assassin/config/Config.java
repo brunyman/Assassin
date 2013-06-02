@@ -28,7 +28,7 @@ public class Config {
     public static boolean getReturnMask() { return config.getBoolean("Assassin.Return_Mask", false); }
 
     public static int getCooldownLength() { return config.getInt("Assassin.Cooldown_Length", 600); }
-    public static int getActivationCost() { return config.getInt("Assassin.Activation_Cost", 0); }
+    public static double getActivationCost() { return config.getDouble("Assassin.Activation_Cost", 0); }
 
     public static boolean getWarnOnActivate() { return config.getBoolean("Assassin.Warn_Others_On_Activation", true); }
     public static boolean getWarnWhenNear() { return config.getBoolean("Assassin.Warn_Others_When_Near", true); }
