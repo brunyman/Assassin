@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.runnables;
+package com.me.tft_02.assassin.runnables.database;
 
 import org.bukkit.scheduler.BukkitRunnable;
 

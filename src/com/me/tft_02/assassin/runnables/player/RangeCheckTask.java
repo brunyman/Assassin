@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.runnables;
+package com.me.tft_02.assassin.runnables.player;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

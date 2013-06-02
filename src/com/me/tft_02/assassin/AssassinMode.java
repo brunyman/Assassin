@@ -2,7 +2,6 @@ package com.me.tft_02.assassin;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -15,7 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 import org.kitteh.tag.TagAPI;
 
-import com.me.tft_02.assassin.util.Misc;
+import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class AssassinMode {
@@ -27,7 +26,6 @@ public class AssassinMode {
     }
 
     private PlayerData data = new PlayerData(plugin);
-    private Misc misc = new Misc(plugin);
 
     /**
      * Applies all the Assassin traits,
@@ -37,15 +35,8 @@ public class AssassinMode {
      */
     public void applyTraits(final Player player) {
         data.addLoginTime(player);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                player.sendMessage(ChatColor.DARK_RED + "YOU ARE NOW AN ASSASSIN");
-                String timeleft = misc.getStringTimeLeft(player);
-                player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + timeleft);
-                player.getWorld().playSound(player.getLocation(), Sound.PISTON_RETRACT, 1.0f, 1.0f);
-            }
-        }, 20);
+
+        new AssassinModeActivateTask(player).runTaskLater(Assassin.getInstance(), 20); // Start 1 seconds later.
 
         player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
         int number = data.getAssassinNumber(player);

@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.runnables;
+package com.me.tft_02.assassin.runnables.player;
 
 import java.util.HashSet;
 
@@ -39,7 +39,7 @@ public class ActivityTimerTask extends BukkitRunnable {
         long warntime = Assassin.getInstance().getConfig().getLong("Assassin.warn_time_almost_up");
 
         for (Player player : Assassin.getInstance().getServer().getOnlinePlayers()) {
-            long activetime = data.getActiveTime(player);
+            long activetime = PlayerData.getActiveTime(player);
 
             if (activetime >= maxactivetime) {
                 if (data.isAssassin(player)) {
