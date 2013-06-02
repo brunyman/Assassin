@@ -13,15 +13,14 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
 import com.me.tft_02.assassin.listeners.TagListener;
-import com.me.tft_02.assassin.runnables.ActiveTimer;
-import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
+import com.me.tft_02.assassin.runnables.ActivityTimerTask;
+import com.me.tft_02.assassin.runnables.RangeCheckTask;
 import com.me.tft_02.assassin.runnables.SaveTimerTask;
 import com.me.tft_02.assassin.util.Data;
 import com.me.tft_02.assassin.util.Metrics;
@@ -192,14 +191,13 @@ public class Assassin extends JavaPlugin {
     }
 
     private void scheduleTasks() {
-
-        BukkitScheduler scheduler = getServer().getScheduler();
         // Range check timer (Runs every 10 seconds)
         if (Config.getWarnWhenNear()) {
-            scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
+            new RangeCheckTask().runTaskTimer(this, 10 * 20, 10 * 20);
         }
-        // Active check timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 2 * 20);
+
+        // Activity timer task (Runs every two seconds)
+        new ActivityTimerTask().runTaskTimer(this, 2 * 20, 2 * 20);
 
         // Periodic save timer (Saves every 15 minutes by default)
         long saveIntervalTicks = Config.getSaveInterval() * 60 * 20;

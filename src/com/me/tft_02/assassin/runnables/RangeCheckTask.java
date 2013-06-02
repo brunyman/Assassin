@@ -2,18 +2,14 @@ package com.me.tft_02.assassin.runnables;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.PlayerData;
 
-public class AssassinRangeTimer implements Runnable {
-    Assassin plugin;
+public class RangeCheckTask extends BukkitRunnable {
 
-    public AssassinRangeTimer(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData(Assassin.getInstance());
 
     @Override
     public void run() {
@@ -24,11 +20,11 @@ public class AssassinRangeTimer implements Runnable {
         double distance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
         for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
             for (Player assassin : data.getOnlineAssassins()) {
-                if (plugin.debug_mode)
+                if (Assassin.getInstance().debug_mode)
                     System.out.println("Checking if Assassin near.");
                 if (distance > 0) {
                     if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) < distance) {
-                        if (plugin.debug_mode) {
+                        if (Assassin.getInstance().debug_mode) {
                             System.out.println("data.isAssassin(players) " + data.isAssassin(players));
                             System.out.println("data.firstTimeNear(players) " + data.firstTimeNear(players));
                         }
@@ -43,9 +39,6 @@ public class AssassinRangeTimer implements Runnable {
                     if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) > distance) {
                         if (!data.isAssassin(players) && !data.firstTimeNear(players)) {
                             data.removeNearSent(players);
-                        }
-                        else {
-
                         }
                     }
                 }
