@@ -15,12 +15,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
 import com.me.tft_02.assassin.listeners.TagListener;
 import com.me.tft_02.assassin.runnables.ActiveTimer;
 import com.me.tft_02.assassin.runnables.AssassinRangeTimer;
+import com.me.tft_02.assassin.runnables.SaveTimerTask;
 import com.me.tft_02.assassin.util.Data;
 import com.me.tft_02.assassin.util.Metrics;
 import com.me.tft_02.assassin.util.UpdateChecker;
@@ -95,16 +97,7 @@ public class Assassin extends JavaPlugin {
                 System.out.println("Failed to submit stats.");
             }
         }
-
-        BukkitScheduler scheduler = getServer().getScheduler();
-        if (getConfig().getBoolean("Assassin.warn_others_when_near")) {
-            //Range check timer (Runs every 10 seconds)
-            scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
-        }
-        //Active check timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 2 * 20);
-        //Save data timer (Runs every 15 minutes)
-        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 15 * 60 * 20);
+        scheduleTasks();
 
         checkForUpdates();
     }
@@ -138,32 +131,34 @@ public class Assassin extends JavaPlugin {
 
     private void setupConfiguration() {
         FileConfiguration config = this.getConfig();
-        config.addDefault("General.debug_mode_enabled", false);
-        config.addDefault("General.stats_tracking_enabled", true);
-        config.addDefault("General.update_check_enabled", true);
-        config.addDefault("General.prefer_beta", false);
-        config.addDefault("General.config_version", "1.1.1");
+        config.addDefault("General.Stats_Tracking_Enabled", true);
+        config.addDefault("General.Update_Check_Enabled", true);
+        config.addDefault("General.Update_Prefer_Beta", false);
+        config.addDefault("General.Debug_Mode_Enabled", false);
 
-        config.addDefault("Assassin.active_length", 3600);
-        config.addDefault("Assassin.teleport_on_deactivate", true);
-        config.addDefault("Assassin.cooldown_length", 600);
-        config.addDefault("Assassin.messages_distance", 250);
-        config.addDefault("Assassin.warn_others_on_activation", true);
-        config.addDefault("Assassin.warn_others_when_near", true);
-        config.addDefault("Assassin.return_mask", false);
-        config.addDefault("Assassin.activation_cost", 0);
-        config.addDefault("Assassin.prevent_neutral_pvp", true);
-        config.addDefault("Assassin.particle_effects", true);
-        config.addDefault("Assassin.potion_effects", true);
-        config.addDefault("Assassin.warn_time_almost_up", 10);
-        //		config.addDefault("Assassin.max_allowed", 5);
+        config.addDefault("Assassin.Prevent_Neutral_PVP", true);
+        config.addDefault("Assassin.Assassin_Mode_Duration", 3600);
         String[] defaultBlockedcmds = { "/spawn", "/home", "/tp", "/tphere", "/tpa", "/tpahere", "/tpall", "/tpaall" };
         config.addDefault("Assassin.blocked_commands", Arrays.asList(defaultBlockedcmds));
+        //      config.addDefault("Assassin.Max_Allowed", 5);
+        //      config.addDefault("Assassin.Hide_Neutral_Names", false);
 
-        config.addDefault("Assassin.bounty_increase_amount", 10);
-        config.addDefault("Assassin.bounty_currency", "$");
+        config.addDefault("Assassin.Warn_Time_Almost_Up", 10);
+        config.addDefault("Assassin.Teleport_On_Deactivate", true);
+        config.addDefault("Assassin.Return_Mask", false);
 
-        //		config.addDefault("Assassin.hide_neutral_names", false);
+        config.addDefault("Assassin.Cooldown_Length", 600);
+        config.addDefault("Assassin.Activation_Cost", 0);
+
+        config.addDefault("Assassin.Warn_Others_On_Activation", true);
+        config.addDefault("Assassin.Warn_Others_When_Near", true);
+        config.addDefault("Assassin.Message_Distance", 250);
+
+        config.addDefault("Assassin.Particle_Effects_Enabled", true);
+        config.addDefault("Assassin.Potion_Effects_Enabled", true);
+
+        config.addDefault("Assassin.Bounty_Increase_Amount", 10);
+        config.addDefault("Assassin.Bounty_Currency", "$");
 
         config.options().copyDefaults(true);
         saveConfig();
@@ -194,5 +189,20 @@ public class Assassin extends JavaPlugin {
     public void onDisable() {
         Data.saveData();
         this.getServer().getScheduler().cancelTasks(this);
+    }
+
+    private void scheduleTasks() {
+
+        BukkitScheduler scheduler = getServer().getScheduler();
+        // Range check timer (Runs every 10 seconds)
+        if (Config.getWarnWhenNear()) {
+            scheduler.scheduleSyncRepeatingTask(this, new AssassinRangeTimer(this), 0, 10 * 20);
+        }
+        // Active check timer (Runs every two seconds)
+        scheduler.scheduleSyncRepeatingTask(this, new ActiveTimer(this), 0, 2 * 20);
+
+        // Periodic save timer (Saves every 15 minutes by default)
+        long saveIntervalTicks = Config.getSaveInterval() * 60 * 20;
+        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
     }
 }
