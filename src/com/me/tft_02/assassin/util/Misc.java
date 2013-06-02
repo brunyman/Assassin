@@ -10,17 +10,7 @@ import java.util.Map.Entry;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.Assassin;
-
 public class Misc {
-
-    Assassin plugin;
-
-    public Misc(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
 
     /**
      * Determine if two locations are near each other.
@@ -39,8 +29,8 @@ public class Misc {
 
     }
 
-    public String getStringTimeLeft(Player player) {
-        long time = data.getActiveTimeLeft(player);
+    public static String getStringTimeLeft(Player player) {
+        long time = PlayerData.getActiveTimeLeft(player);
         int hours = (int) time / 3600;
         int remainder = (int) time - hours * 3600;
         int mins = remainder / 60;

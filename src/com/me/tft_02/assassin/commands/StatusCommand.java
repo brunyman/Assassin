@@ -20,7 +20,6 @@ public class StatusCommand implements CommandExecutor {
 
     private PlayerData data = new PlayerData(plugin);
     private Bounty bounty = new Bounty(plugin);
-    private Misc misc = new Misc(plugin);
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -33,7 +32,7 @@ public class StatusCommand implements CommandExecutor {
         player.sendMessage(ChatColor.DARK_GRAY + "==========[ " + ChatColor.YELLOW + "Assassin Info" + ChatColor.DARK_GRAY + " ]===========");
         player.sendMessage(ChatColor.GOLD + "Your status = " + data.getStatus(player));
         if (data.isAssassin(player)) {
-            player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + misc.getStringTimeLeft(player));
+            player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + Misc.getStringTimeLeft(player));
         }
         player.sendMessage(ChatColor.DARK_GRAY + "------------------------------------");
         player.sendMessage(ChatColor.GOLD + "Current bounty = " + ChatColor.DARK_RED + data.getKillCount(player));

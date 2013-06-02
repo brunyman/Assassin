@@ -76,14 +76,14 @@ public class PlayerData {
         playerActiveTime.put(player.getName(), timeStamp);
     }
 
-    public Long getActiveTime(Player player) {
+    public static Long getActiveTime(Player player) {
         long activetime = 0;
         if (PlayerData.playerActiveTime.containsKey(player.getName()))
             activetime = PlayerData.playerActiveTime.get(player.getName());
         return activetime;
     }
 
-    public Long getActiveTimeLeft(Player player) {
+    public static Long getActiveTimeLeft(Player player) {
         long activetime = getActiveTime(player);
         long maxactive = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
         return maxactive - activetime;
