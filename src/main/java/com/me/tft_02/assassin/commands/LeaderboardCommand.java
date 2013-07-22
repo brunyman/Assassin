@@ -1,16 +1,17 @@
 package com.me.tft_02.assassin.commands;
 
-import com.me.tft_02.assassin.Assassin;
-import com.me.tft_02.assassin.util.Misc;
-import com.me.tft_02.assassin.util.PlayerData;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.Map;
+import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.util.Misc;
+import com.me.tft_02.assassin.util.PlayerData;
 
 public class LeaderboardCommand implements CommandExecutor {
     Assassin plugin;

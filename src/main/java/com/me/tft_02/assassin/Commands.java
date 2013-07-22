@@ -1,11 +1,18 @@
 package com.me.tft_02.assassin;
 
-import com.me.tft_02.assassin.commands.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.me.tft_02.assassin.commands.ChatCommand;
+import com.me.tft_02.assassin.commands.DeactivateCommand;
+import com.me.tft_02.assassin.commands.LeaderboardCommand;
+import com.me.tft_02.assassin.commands.RefreshCommand;
+import com.me.tft_02.assassin.commands.ReloadCommand;
+import com.me.tft_02.assassin.commands.SpawnMaskCommand;
+import com.me.tft_02.assassin.commands.StatusCommand;
 
 public class Commands implements CommandExecutor {
     Assassin plugin;

@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.me.tft_02.assassin.util.Misc;
 
-public class AssassinModeActivateTask  extends BukkitRunnable {
+public class AssassinModeActivateTask extends BukkitRunnable {
     private Player player;
 
     public AssassinModeActivateTask(Player player) {
