@@ -13,6 +13,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.Metrics;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.listeners.ChatListener;
@@ -23,7 +24,6 @@ import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
 import com.me.tft_02.assassin.util.Data;
-import com.me.tft_02.assassin.util.Metrics;
 import com.me.tft_02.assassin.util.UpdateChecker;
 
 public class Assassin extends JavaPlugin {
