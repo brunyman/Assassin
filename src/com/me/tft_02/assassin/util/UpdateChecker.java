@@ -11,15 +11,11 @@ import org.json.simple.parser.ParseException;
 import com.me.tft_02.assassin.Assassin;
 
 public class UpdateChecker {
-    Assassin plugin;
-
-    public UpdateChecker(Assassin instance) {
-        plugin = instance;
-    }
+    private UpdateChecker() {}
 
     public static boolean updateAvailable() throws Exception {
-        String checkType = Assassin.getInstance().getConfig().getBoolean("General.prefer_beta") ? "latest" : "release";
-        String version = Assassin.getInstance().getDescription().getVersion();
+        String checkType = Assassin.p.getConfig().getBoolean("General.prefer_beta") ? "latest" : "release";
+        String version = Assassin.p.getDescription().getVersion();
         InputStreamReader isr;
 
         try {
@@ -39,10 +35,10 @@ public class UpdateChecker {
             JSONObject versions = (JSONObject) ((JSONObject) o).get("versions");
             String newVersion = (String) versions.get("version");
 
-            String[] oldTokens = version.split("[.]");
-            String[] newTokens = newVersion.split("[.]");
+            String[] oldTokens = version.replaceAll("(?i)(-)(.+?)(-)", "-").split("[.]|-b");
+            String[] newTokens = newVersion.replaceAll("(?i)(-)(.+?)(-)", "-").split("[.]|-b");
 
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 4; i++) {
                 Integer newVer = Integer.parseInt(newTokens[i]);
                 Integer oldVer;
 
