@@ -13,8 +13,8 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public class ActivityTimerTask extends BukkitRunnable {
 
-    private PlayerData data = new PlayerData(Assassin.getInstance());
-    private AssassinMode assassin = new AssassinMode(Assassin.getInstance());
+    private PlayerData data = new PlayerData(Assassin.p);
+    private AssassinMode assassin = new AssassinMode(Assassin.p);
 
     private static HashSet<String> warned = new HashSet<String>();
 
@@ -25,7 +25,7 @@ public class ActivityTimerTask extends BukkitRunnable {
     }
 
     private void updateActiveTime() {
-        for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
+        for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
             if (data.isAssassin(players)) {
                 data.addLogoutTime(players);
                 data.saveActiveTime(players);
@@ -35,10 +35,10 @@ public class ActivityTimerTask extends BukkitRunnable {
     }
 
     private void updateAssassinStatus() {
-        long maxactivetime = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
-        long warntime = Assassin.getInstance().getConfig().getLong("Assassin.warn_time_almost_up");
+        long maxactivetime = Assassin.p.getConfig().getLong("Assassin.active_length");
+        long warntime = Assassin.p.getConfig().getLong("Assassin.warn_time_almost_up");
 
-        for (Player player : Assassin.getInstance().getServer().getOnlinePlayers()) {
+        for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
             long activetime = PlayerData.getActiveTime(player);
 
             if (activetime >= maxactivetime) {
@@ -49,7 +49,7 @@ public class ActivityTimerTask extends BukkitRunnable {
                     data.setNeutral(player);
                 }
                 data.resetActiveTime(player);
-                if (Assassin.getInstance().debug_mode) {
+                if (Assassin.p.debug_mode) {
                     System.out.println(player + " status set to Neutral. Active time reached max.");
                 }
             }
@@ -59,10 +59,10 @@ public class ActivityTimerTask extends BukkitRunnable {
                         if (!hasBeenWarned(player)) {
                             player.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
                             warned.add(player.getName());
-                            if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+                            if (Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
                                 player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
                             }
-                            if (Assassin.getInstance().debug_mode) {
+                            if (Assassin.p.debug_mode) {
                                 System.out.println(player + " has received a warning because his Assassin mode is running out.");
                             }
                         }

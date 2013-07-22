@@ -61,15 +61,15 @@ public class EntityListener implements Listener {
             }
 
             if (attacker instanceof Player) {
-                if (data.bothNeutral(defendingPlayer, (Player) attacker) && Assassin.getInstance().getConfig().getBoolean("Assassin.prevent_neutral_pvp")) {
+                if (data.bothNeutral(defendingPlayer, (Player) attacker) && Assassin.p.getConfig().getBoolean("Assassin.prevent_neutral_pvp")) {
                     ((Player) attacker).sendMessage(ChatColor.DARK_RED + "You are not an Assassin.");
                     event.setCancelled(true);
                 }
                 else {
-                    if (event.isCancelled() && Assassin.getInstance().getConfig().getBoolean("Assassin.override_pvp_prevention")) {
+                    if (event.isCancelled() && Assassin.p.getConfig().getBoolean("Assassin.override_pvp_prevention")) {
                         event.setCancelled(false);
                     }
-                    if (!event.isCancelled() && Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+                    if (!event.isCancelled() && Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
                         defendingPlayer.getWorld().playEffect(defendingPlayer.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
                     }
                 }

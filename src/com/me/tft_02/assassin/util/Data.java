@@ -54,20 +54,20 @@ public class Data {
     }
 
     public static void createFiles() throws Exception {
-        File configFile = new File(Assassin.getInstance().getDataFolder(), "config.yml");
+        File configFile = new File(Assassin.p.getDataFolder(), "config.yml");
 
         if (!configFile.exists()) {
             configFile.getParentFile().mkdirs();
-            copy(Assassin.getInstance().getResource("config.yml"), configFile);
-            Assassin.getInstance().getLogger().log(Level.INFO, "'config.yml' didn't exist. Created it.");
+            copy(Assassin.p.getResource("config.yml"), configFile);
+            Assassin.p.getLogger().log(Level.INFO, "'config.yml' didn't exist. Created it.");
         }
     }
 
     public static void saveData() {
-        File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
+        File f = new File(Assassin.p.getDataFolder(), "data.dat");
         try {
             if (!f.exists()) {
-                Assassin.getInstance().getDataFolder().mkdirs();
+                Assassin.p.getDataFolder().mkdirs();
                 f.createNewFile();
             }
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
@@ -82,17 +82,17 @@ public class Data {
             oos.writeObject(PlayerData.bountyCollected);
             oos.flush();
             oos.close();
-            Assassin.getInstance().getLogger().log(Level.INFO, "Saved data successfully.");
+            Assassin.p.getLogger().log(Level.INFO, "Saved data successfully.");
         }
         catch (Exception e) {
-            Assassin.getInstance().getLogger().log(Level.INFO, "Failed to save data.");
+            Assassin.p.getLogger().log(Level.INFO, "Failed to save data.");
             e.printStackTrace();
         }
     }
 
     @SuppressWarnings({ "unchecked" })
     public static void loadData() {
-        File f = new File(Assassin.getInstance().getDataFolder(), "data.dat");
+        File f = new File(Assassin.p.getDataFolder(), "data.dat");
         if (f.exists()) {
             try {
                 @SuppressWarnings("resource")
@@ -106,12 +106,12 @@ public class Data {
                 PlayerData.playerLocationData = (HashMap<String, String>) ois.readObject();
                 PlayerData.killCount = (HashMap<String, Integer>) ois.readObject();
                 PlayerData.bountyCollected = (HashMap<String, Integer>) ois.readObject();
-                Assassin.getInstance().getLogger().log(Level.INFO, "Loaded data successfully.");
+                Assassin.p.getLogger().log(Level.INFO, "Loaded data successfully.");
             }
             catch (Exception e) {
-                Assassin.getInstance().getLogger().log(Level.INFO, "Failed to load data.");
+                Assassin.p.getLogger().log(Level.INFO, "Failed to load data.");
                 e.printStackTrace();
-                Bukkit.getServer().getPluginManager().disablePlugin(Assassin.getInstance());
+                Bukkit.getServer().getPluginManager().disablePlugin(Assassin.p);
             }
         }
     }

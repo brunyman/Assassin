@@ -36,7 +36,7 @@ public class AssassinMode {
     public void applyTraits(final Player player) {
         data.addLoginTime(player);
 
-        new AssassinModeActivateTask(player).runTaskLater(Assassin.getInstance(), 20); // Start 1 seconds later.
+        new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 20); // Start 1 seconds later.
 
         player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
         int number = data.getAssassinNumber(player);
@@ -57,8 +57,8 @@ public class AssassinMode {
         Location loc = player.getLocation();
         loc.setY(player.getWorld().getMaxHeight() + 30D);
         player.getWorld().strikeLightningEffect(loc);
-        if (Assassin.getInstance().getConfig().getBoolean("Assassin.warn_others_on_activation")) {
-            double messageDistance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
+        if (Assassin.p.getConfig().getBoolean("Assassin.warn_others_on_activation")) {
+            double messageDistance = Assassin.p.getConfig().getDouble("Assassin.messages_distance");
             for (Player players : player.getWorld().getPlayers()) {
                 if (messageDistance > 0) {
                     if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
@@ -70,7 +70,7 @@ public class AssassinMode {
         }
         applyMask(player);
         data.addCooldownTimer(player);
-        if (Assassin.getInstance().getConfig().getBoolean("Assassin.particle_effects")) {
+        if (Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
             player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1);
         }
     }
@@ -109,7 +109,7 @@ public class AssassinMode {
         player.setPlayerListName(playername);
         TagAPI.refreshPlayer(player);
         removeMask(player);
-        if (Assassin.getInstance().getConfig().getBoolean("Assassin.teleport_on_deactivate")) {
+        if (Assassin.p.getConfig().getBoolean("Assassin.teleport_on_deactivate")) {
             Location previousLocation = data.getLocation(player);
             if (previousLocation == null) {
                 player.sendMessage(ChatColor.RED + "Location not found!");
@@ -183,7 +183,7 @@ public class AssassinMode {
         if (itemHead.getTypeId() != 0)
             inventory.setHelmet(null);
         //Gives back the mask if config says so
-        if (Assassin.getInstance().getConfig().getBoolean("Assassin.return_mask"))
+        if (Assassin.p.getConfig().getBoolean("Assassin.return_mask"))
             spawnMask(player, 1);
 
         //If the player was wearing a helmet, put it back on

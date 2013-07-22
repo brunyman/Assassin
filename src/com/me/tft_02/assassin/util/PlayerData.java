@@ -85,7 +85,7 @@ public class PlayerData {
 
     public static Long getActiveTimeLeft(Player player) {
         long activetime = getActiveTime(player);
-        long maxactive = Assassin.getInstance().getConfig().getLong("Assassin.active_length");
+        long maxactive = Assassin.p.getConfig().getLong("Assassin.active_length");
         return maxactive - activetime;
     }
 
@@ -203,7 +203,7 @@ public class PlayerData {
     }
 
     public List<Player> getOnlineAssassins() {
-        Player[] onlinePlayers = Assassin.getInstance().getServer().getOnlinePlayers();
+        Player[] onlinePlayers = Assassin.p.getServer().getOnlinePlayers();
         List<Player> onlineAssassins = new ArrayList<Player>();
 
         for (Player onlinePlayer : onlinePlayers) {
@@ -266,7 +266,7 @@ public class PlayerData {
      * @return true if maximum is reached, false otherwise
      */
     public boolean assassinMaximumReached() {
-        int maxamount = Assassin.getInstance().getConfig().getInt("Assassin.max_allowed");
+        int maxamount = Assassin.p.getConfig().getInt("Assassin.max_allowed");
         int amount = assassins.size();
         if (maxamount > 0) {
             if (maxamount >= amount) {

@@ -9,7 +9,7 @@ public final class AssassinAPI {
 
     private AssassinAPI() {}
 
-    private PlayerData data = new PlayerData(Assassin.getInstance());
+    private PlayerData data = new PlayerData(Assassin.p);
 
     /**
      * Check if the player is an Assassin.

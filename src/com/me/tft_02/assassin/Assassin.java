@@ -27,7 +27,7 @@ import com.me.tft_02.assassin.util.Metrics;
 import com.me.tft_02.assassin.util.UpdateChecker;
 
 public class Assassin extends JavaPlugin {
-    public static Assassin instance;
+    public static Assassin p;
 
     private TagListener tagListener = new TagListener(this);
     private EntityListener entityListener = new EntityListener(this);
@@ -44,16 +44,12 @@ public class Assassin extends JavaPlugin {
 
     public static Economy econ = null;
 
-    public static Assassin getInstance() {
-        return instance;
-    }
-
     /**
      * Run things on enable.
      */
     @Override
     public void onEnable() {
-        instance = this;
+        p = this;
         PluginManager pm = getServer().getPluginManager();
         if (pm.getPlugin("TagAPI") == null) {
             getLogger().log(Level.WARNING, "No TagAPI dependency found!");

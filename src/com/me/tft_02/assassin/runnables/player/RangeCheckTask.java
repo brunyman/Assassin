@@ -9,7 +9,7 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public class RangeCheckTask extends BukkitRunnable {
 
-    private PlayerData data = new PlayerData(Assassin.getInstance());
+    private PlayerData data = new PlayerData(Assassin.p);
 
     @Override
     public void run() {
@@ -17,14 +17,14 @@ public class RangeCheckTask extends BukkitRunnable {
     }
 
     public void checkIfAssassinNear() {
-        double distance = Assassin.getInstance().getConfig().getDouble("Assassin.messages_distance");
-        for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
+        double distance = Assassin.p.getConfig().getDouble("Assassin.messages_distance");
+        for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
             for (Player assassin : data.getOnlineAssassins()) {
-                if (Assassin.getInstance().debug_mode)
+                if (Assassin.p.debug_mode)
                     System.out.println("Checking if Assassin near.");
                 if (distance > 0) {
                     if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) < distance) {
-                        if (Assassin.getInstance().debug_mode) {
+                        if (Assassin.p.debug_mode) {
                             System.out.println("data.isAssassin(players) " + data.isAssassin(players));
                             System.out.println("data.firstTimeNear(players) " + data.firstTimeNear(players));
                         }

@@ -8,7 +8,7 @@ import com.me.tft_02.assassin.Assassin;
 
 public class Config {
 
-    static FileConfiguration config = Assassin.getInstance().getConfig();
+    static FileConfiguration config = Assassin.p.getConfig();
 
     /* @formatter:off */
     /* GENERAL SETTINGS */

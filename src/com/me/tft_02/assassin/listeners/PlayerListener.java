@@ -65,7 +65,7 @@ public class PlayerListener implements Listener {
             assassin.applyMaskForce(player);
         }
         if (!data.cooledDown(player)) {
-            long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+            long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
         }
     }
@@ -76,11 +76,11 @@ public class PlayerListener implements Listener {
         if (data.isAssassin(player)) {
             assassin.applyMaskForce(player);
 
-            if (!Assassin.getInstance().getConfig().getBoolean("Assassin.potion_effects")) {
+            if (!Assassin.p.getConfig().getBoolean("Assassin.potion_effects")) {
                 return;
             }
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.getInstance(), new Runnable() {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.p, new Runnable() {
                 @Override
                 public void run() {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
@@ -160,14 +160,14 @@ public class PlayerListener implements Listener {
                             return;
                         }
 
-                        double activation_cost = Assassin.getInstance().getConfig().getDouble("Assassin.activation_cost");
+                        double activation_cost = Assassin.p.getConfig().getDouble("Assassin.activation_cost");
                         if (plugin.vaultEnabled && activation_cost > 0) {
                             EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
                             if (r.transactionSuccess()) {
                                 if (plugin.debug_mode)
                                     System.out.println("Activating assassin for " + player.getName());
                                 assassin.activateAssassin(player);
-                                long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+                                long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
                                 plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
                                 player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
                             }
@@ -179,7 +179,7 @@ public class PlayerListener implements Listener {
                             if (plugin.debug_mode)
                                 System.out.println("Activating assassin for " + player.getName());
                             assassin.activateAssassin(player);
-                            long cooldowntime = Assassin.getInstance().getConfig().getLong("Assassin.cooldown_length");
+                            long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
                             plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
 
                         }
@@ -225,7 +225,7 @@ public class PlayerListener implements Listener {
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage();
-        List<String> blockedCmds = Assassin.getInstance().getConfig().getStringList("Assassin.blocked_commands");
+        List<String> blockedCmds = Assassin.p.getConfig().getStringList("Assassin.blocked_commands");
         if (data.isAssassin(player) && blockedCmds.contains(command)) {
             player.sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
             event.setCancelled(true);

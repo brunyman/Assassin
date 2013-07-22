@@ -53,7 +53,7 @@ public class ChatListener implements Listener {
                 //				if (chance > 0 && chance < diceroll){
                 double chatDistance = 250;
                 if (chatDistance > 0) {
-                    for (Player players : Assassin.getInstance().getServer().getOnlinePlayers()) {
+                    for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
                         if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
                             event.getRecipients().remove(players);
                         }
