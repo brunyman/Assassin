@@ -1,4 +1,4 @@
-# Eclipse stuffs
+# Eclipse stuff
 /.classpath
 /.project
 /.settings
@@ -24,24 +24,19 @@
 /world
 
 # Mac filesystem dust
-/.DS_Store
+*.DS_Store
 
 # intellij
 *.iml
 *.ipr
 *.iws
 .idea/
-out/
-src/META-INF/MANIFEST.MF
 
 # Project Stuff
-/src/main/resources/mcMMO
+/src/main/resources/Assassin
 
 # Other Libraries
 *.jar
 
 # Atlassian Stuff
 /atlassian-ide-plugin.xml
-src/.DS_Store
-
-src/main/.DS_Store
