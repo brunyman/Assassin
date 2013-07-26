@@ -8,6 +8,7 @@ import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
@@ -29,11 +30,6 @@ import com.me.tft_02.assassin.util.UpdateChecker;
 public class Assassin extends JavaPlugin {
     public static Assassin p;
 
-    private TagListener tagListener = new TagListener(this);
-    private EntityListener entityListener = new EntityListener(this);
-    private PlayerListener playerListener = new PlayerListener(this);
-    private ChatListener chatListener = new ChatListener(this);
-
     private AssassinMode assassin = new AssassinMode(this);
 
     public boolean vaultEnabled;
@@ -50,6 +46,47 @@ public class Assassin extends JavaPlugin {
     @Override
     public void onEnable() {
         p = this;
+
+        if (getConfig().getBoolean("General.debug_mode_enabled")) {
+            getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
+            debug_mode = true;
+        }
+
+        setupTagAPI();
+        vaultEnabled = setupEconomy();
+
+        setupConfiguration();
+        checkConfiguration();
+
+        addCustomRecipes();
+
+        registerEvents();
+        registerCommands();
+
+        Data.loadData();
+
+        setupMetrics();
+        scheduleTasks();
+
+        checkForUpdates();
+    }
+
+    private void setupMetrics() {
+        if (Config.getStatsTrackingEnabled()) {
+            try {
+                Metrics metrics = new Metrics(this);
+                metrics.start();
+            }
+            catch (IOException e) {
+            }
+        }
+    }
+
+    private void registerCommands() {
+        getCommand("assassin").setExecutor(new Commands(this));
+    }
+
+    private void setupTagAPI() {
         PluginManager pm = getServer().getPluginManager();
         if (pm.getPlugin("TagAPI") == null) {
             getLogger().log(Level.WARNING, "No TagAPI dependency found!");
@@ -62,39 +99,15 @@ public class Assassin extends JavaPlugin {
             pm.disablePlugin(this);
             return;
         }
-        if (getConfig().getBoolean("General.debug_mode_enabled")) {
-            getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
-            debug_mode = true;
-        }
-        vaultEnabled = setupEconomy();
+    }
 
-        setupConfiguration();
-        checkConfiguration();
-
-        addCustomRecipes();
-
-        pm.registerEvents(tagListener, this);
-        pm.registerEvents(entityListener, this);
-        pm.registerEvents(playerListener, this);
-        pm.registerEvents(chatListener, this);
+    private void registerEvents() {
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new TagListener(this), this);
+        pm.registerEvents(new EntityListener(this), this);
+        pm.registerEvents(new PlayerListener(this), this);
+        pm.registerEvents(new ChatListener(this), this);
         //		pm.registerEvents(blockListener, this);
-
-        getCommand("assassin").setExecutor(new Commands(this));
-
-        Data.loadData();
-
-        if (Config.getStatsTrackingEnabled()) {
-            try {
-                Metrics metrics = new Metrics(this);
-                metrics.start();
-            }
-            catch (IOException e) {
-                getLogger().log(Level.INFO, "Failed to submit stats.");
-            }
-        }
-        scheduleTasks();
-
-        checkForUpdates();
     }
 
     private void checkForUpdates() {
