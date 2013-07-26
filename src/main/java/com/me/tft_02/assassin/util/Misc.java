@@ -8,9 +8,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class Misc {
+
+    public static boolean isNPCEntity(Entity entity) {
+        return (entity == null || entity.hasMetadata("NPC"));
+    }
 
     /**
      * Determine if two locations are near each other.
