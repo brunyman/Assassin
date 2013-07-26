@@ -18,14 +18,9 @@ import com.me.tft_02.assassin.util.MessageScrambler;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class ChatListener implements Listener {
-    Assassin plugin;
 
-    public ChatListener(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
-    private MessageScrambler message = new MessageScrambler(plugin);
+    private PlayerData data = new PlayerData(Assassin.p);
+    private MessageScrambler message = new MessageScrambler(Assassin.p);
 
     //	private final Random random = new Random();
 

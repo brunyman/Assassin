@@ -12,13 +12,7 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public class TagListener implements Listener {
 
-    Assassin plugin;
-
-    public TagListener(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData(Assassin.p);
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onNameTag(PlayerReceiveNameTagEvent event) {
@@ -27,14 +21,14 @@ public class TagListener implements Listener {
         if (data.isAssassin(namedPlayer)) {
             event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + data.getKillCount(namedPlayer));
 
-            if (plugin.debug_mode) {
+            if (Assassin.p.debug_mode) {
                 System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
             }
         }
         else {
             event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
 
-            if (plugin.debug_mode) {
+            if (Assassin.p.debug_mode) {
                 System.out.println("Reset player tag for " + namedPlayer.getName());
             }
         }

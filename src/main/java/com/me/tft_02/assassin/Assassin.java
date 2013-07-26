@@ -108,11 +108,12 @@ public class Assassin extends JavaPlugin {
 
     private void registerEvents() {
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new TagListener(this), this);
-        pm.registerEvents(new EntityListener(this), this);
-        pm.registerEvents(new PlayerListener(this), this);
-        pm.registerEvents(new ChatListener(this), this);
-        //		pm.registerEvents(blockListener, this);
+
+        //      pm.registerEvents(new BlockListener(), this);
+        pm.registerEvents(new ChatListener(), this);
+        pm.registerEvents(new EntityListener(), this);
+        pm.registerEvents(new PlayerListener(), this);
+        pm.registerEvents(new TagListener(), this);
     }
 
     private void checkForUpdates() {

@@ -33,27 +33,36 @@ import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
+import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class PlayerListener implements Listener {
-    Assassin plugin;
 
-    public PlayerListener(Assassin instance) {
-        plugin = instance;
-    }
+    private AssassinMode assassin = new AssassinMode(Assassin.p);
+    private Bounty bounty = new Bounty(Assassin.p);
+    private PlayerData data = new PlayerData(Assassin.p);
+    private ItemChecks itemcheck = new ItemChecks(Assassin.p);
 
-    private AssassinMode assassin = new AssassinMode(plugin);
-    private Bounty bounty = new Bounty(plugin);
-    private PlayerData data = new PlayerData(plugin);
-    private ItemChecks itemcheck = new ItemChecks(plugin);
-
+    /**
+     * Monitor PlayerJoin events.
+     *
+     * @param event The event to watch
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (plugin.updateAvailable && player.isOp()) {
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        UserManager.addUser(player);
+
+        if (Assassin.p.updateAvailable && player.isOp()) {
             player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.GOLD + "New version available on BukkitDev!");
             player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.AQUA + "http://dev.bukkit.org/server-mods/Assassin/");
-            plugin.getLogger().log(Level.INFO, "New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/");
+            Assassin.p.getLogger().log(Level.INFO, "New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/");
         }
 
         if (!data.isAssassin(player)) {
@@ -66,7 +75,7 @@ public class PlayerListener implements Listener {
         }
         if (!data.cooledDown(player)) {
             long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+            Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
         }
     }
 
@@ -161,14 +170,14 @@ public class PlayerListener implements Listener {
                         }
 
                         double activation_cost = Assassin.p.getConfig().getDouble("Assassin.activation_cost");
-                        if (plugin.vaultEnabled && activation_cost > 0) {
+                        if (Assassin.p.vaultEnabled && activation_cost > 0) {
                             EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
                             if (r.transactionSuccess()) {
-                                if (plugin.debug_mode)
+                                if (Assassin.p.debug_mode)
                                     System.out.println("Activating assassin for " + player.getName());
                                 assassin.activateAssassin(player);
                                 long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
-                                plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+                                Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
                                 player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
                             }
                             else {
@@ -176,11 +185,12 @@ public class PlayerListener implements Listener {
                             }
                         }
                         else {
-                            if (plugin.debug_mode)
+                            if (Assassin.p.debug_mode) {
                                 System.out.println("Activating assassin for " + player.getName());
+                            }
                             assassin.activateAssassin(player);
                             long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
-                            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new EndCooldownTimer(player.getName()), cooldowntime);
+                            Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
 
                         }
                         event.setCancelled(true);

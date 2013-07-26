@@ -5,11 +5,6 @@ import org.bukkit.event.Listener;
 import com.me.tft_02.assassin.Assassin;
 
 public class BlockListener implements Listener {
-    Assassin plugin;
-
-    public BlockListener(Assassin instance) {
-        plugin = instance;
-    }
 
     //	@EventHandler(priority = EventPriority.HIGHEST)
     //	public void onBlockPlace(BlockPlaceEvent event) {

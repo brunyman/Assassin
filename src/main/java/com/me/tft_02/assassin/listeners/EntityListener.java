@@ -18,13 +18,7 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public class EntityListener implements Listener {
 
-    Assassin plugin;
-
-    public EntityListener(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData(Assassin.p);
 
     /**
      * Monitor EntityDamageByEntity events.
