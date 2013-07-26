@@ -26,6 +26,7 @@ import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
 import com.me.tft_02.assassin.util.Data;
 import com.me.tft_02.assassin.util.UpdateChecker;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class Assassin extends JavaPlugin {
     public static Assassin p;
@@ -64,6 +65,10 @@ public class Assassin extends JavaPlugin {
         registerCommands();
 
         Data.loadData();
+
+        for (Player player : getServer().getOnlinePlayers()) {
+            UserManager.addUser(player); // In case of reload add all users back into UserManager
+        }
 
         setupMetrics();
         scheduleTasks();
