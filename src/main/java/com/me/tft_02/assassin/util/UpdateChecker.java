@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.config.Config;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,7 +15,7 @@ public class UpdateChecker {
     }
 
     public static boolean updateAvailable() throws Exception {
-        String checkType = Assassin.p.getConfig().getBoolean("General.prefer_beta") ? "latest" : "release";
+        String checkType = Config.getInstance().getPreferBeta() ? "latest" : "release";
         String version = Assassin.p.getDescription().getVersion();
         InputStreamReader isr;
 
@@ -46,7 +47,8 @@ public class UpdateChecker {
                     oldVer = Integer.parseInt(oldTokens[i]);
                 }
                 catch (NumberFormatException e) {
-                    oldVer = 0;
+                    Assassin.p.getLogger().warning("Could not get information about this Assassin version; perhaps you are running a custom one?");
+                    return false;
                 }
 
                 if (oldVer < newVer) {
