@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
+import com.me.tft_02.assassin.util.Misc;
 
 public final class UserManager {
     private final static Map<String, AssassinPlayer> players = new HashMap<String, AssassinPlayer>();
@@ -55,14 +56,15 @@ public final class UserManager {
         players.clear();
     }
 
-    /**
-     * Save all users.
-     */
+//    /**
+//     * Save all users.
+//     */
     //    public static void saveAll() {
     //        for (AssassinPlayer assassinPlayer : players.values()) {
     //            assassinPlayer.getProfile().save();
     //        }
     //    }
+
     public static Set<String> getPlayerNames() {
         return players.keySet();
     }
@@ -78,12 +80,26 @@ public final class UserManager {
      * @return the player's AssassinPlayer object
      */
     public static AssassinPlayer getPlayer(String playerName) {
-        List<Player> matches = Assassin.p.getServer().matchPlayer(playerName);
+        List<String> matches = Misc.matchPlayer(playerName);
 
+        for (String match : matches) {
+            System.out.println(match);
+        }
         if (matches.size() == 1) {
-            playerName = matches.get(0).getName();
+            playerName = matches.get(0);
         }
 
+        return players.get(playerName);
+    }
+
+    /**
+     * +     * Get the AssassinPlayer of a player by the exact name.
+     * +     *
+     * +     * @param playerName The exact name of the player whose AssassinPlayer to retrieve
+     * +     * @return the player's {@link AssassinPlayer} object
+     * +
+     */
+    public static AssassinPlayer getPlayerExact(String playerName) {
         return players.get(playerName);
     }
 
@@ -91,7 +107,7 @@ public final class UserManager {
      * Get the AssassinPlayer of a player.
      *
      * @param player The player whose AssassinPlayer to retrieve
-     * @return the player's AssassinPlayer object
+     * @return the player's {@link AssassinPlayer} object
      */
     public static AssassinPlayer getPlayer(OfflinePlayer player) {
         return players.get(player.getName());

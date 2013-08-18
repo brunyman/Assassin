@@ -7,12 +7,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -28,7 +32,10 @@ import org.bukkit.potion.PotionEffectType;
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
 import com.me.tft_02.assassin.Bounty;
+import com.me.tft_02.assassin.config.Config;
+import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
+import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
@@ -64,8 +71,8 @@ public class PlayerListener implements Listener {
             Assassin.p.getLogger().log(Level.INFO, "New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/");
         }
 
-        if (!data.isAssassin(player)) {
-            data.setNeutral(player);
+        if (!data.isAssassin(player) || !data.isHostile(player)) {
+            UserManager.getPlayer(player).setStatus(Status.NORMAL);
         }
         else if (data.isAssassin(player)) {
             event.setJoinMessage(ChatColor.DARK_RED + "AN ASSASSIN JOINED THE GAME");
@@ -73,8 +80,8 @@ public class PlayerListener implements Listener {
             assassin.applyMaskForce(player);
         }
         if (!data.cooledDown(player)) {
-            long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
-            Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
+            long cooldowntime = Config.getInstance().getCooldownLength();
+            new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
         }
     }
 
@@ -113,15 +120,9 @@ public class PlayerListener implements Listener {
     void onInventoryClick(InventoryClickEvent event) {
         HumanEntity player = event.getWhoClicked();
         ItemStack itemstack = event.getCurrentItem();
-        SlotType slotType = event.getSlotType();
 
-        switch (slotType) {
-            case ARMOR:
-                if (itemcheck.isMask(itemstack)) {
-                    assassin.activateHostileMode((Player) player);
-                }
-            default:
-                break;
+        if (event.getSlotType() == SlotType.ARMOR && itemcheck.isMask(itemstack)){
+            assassin.activateHostileMode((Player) player);
         }
     }
 
@@ -137,62 +138,52 @@ public class PlayerListener implements Listener {
         Block block = event.getClickedBlock();
         ItemStack inHand = player.getItemInHand();
 
-        Material material;
-
-        /* Fix for NPE on interacting with air */
-        if (block == null) {
-            material = Material.AIR;
-        }
-        else {
-            material = block.getType();
-        }
-
         switch (action) {
             case RIGHT_CLICK_BLOCK:
             case RIGHT_CLICK_AIR:
-                int inHandID = inHand.getTypeId();
-                if ((inHandID == 35) && BlockChecks.abilityBlockCheck(block)) {
-                    if (itemcheck.isMask(inHand)) {
-                        if (!player.hasPermission("assassin.assassin")) {
-                            player.sendMessage(ChatColor.RED + "You haven't got permission.");
-                            return;
-                        }
+                if ((inHand.getTypeId() != 35) || !BlockChecks.abilityBlockCheck(block)) {
+                    return;
+                }
 
-                        if (!data.cooledDown(player)) {
-                            player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
-                            return;
-                        }
+                if (!itemcheck.isMask(inHand)) {
+                    return;
+                }
 
-                        if (data.isAssassin(player)) {
-                            player.sendMessage(ChatColor.RED + "You already are an Assassin.");
-                            return;
-                        }
+                if (!player.hasPermission("assassin.assassin")) {
+                    player.sendMessage(ChatColor.RED + "You haven't got permission.");
+                    return;
+                }
 
-                        double activation_cost = Assassin.p.getConfig().getDouble("Assassin.activation_cost");
-                        if (Assassin.p.vaultEnabled && activation_cost > 0) {
-                            EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
-                            if (r.transactionSuccess()) {
-                                Assassin.p.debug("Activating assassin for " + player.getName());
-                                assassin.activateAssassin(player);
-                                long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
-                                Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
-                                player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
-                            }
-                            else {
-                                player.sendMessage(String.format("An error occured: %s", r.errorMessage));
-                            }
-                        }
-                        else {
-                            Assassin.p.debug("Activating assassin for " + player.getName());
-                            assassin.activateAssassin(player);
-                            long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
-                            Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
+                if (!data.cooledDown(player)) {
+                    player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
+                    return;
+                }
 
-                        }
-                        event.setCancelled(true);
+                if (data.isAssassin(player)) {
+                    player.sendMessage(ChatColor.RED + "You already are an Assassin.");
+                    return;
+                }
+
+                double activation_cost = Assassin.p.getConfig().getDouble("Assassin.activation_cost");
+                if (Assassin.p.vaultEnabled && activation_cost > 0) {
+                    EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
+
+                    if (r.transactionSuccess()) {
+                        player.sendMessage(String.format(ChatColor.RED + "You were charged %s %s", Assassin.econ.format(r.amount), Assassin.econ.currencyNamePlural()));
+                    }
+                    else {
+                        player.sendMessage(String.format("An error occured: %s", r.errorMessage));
+                        return;
                     }
                 }
-                break;
+
+                Assassin.p.debug("Activating AssassinMode for " + player.getName());
+                assassin.activateAssassin(player);
+                long cooldowntime = Config.getInstance().getCooldownLength();
+                new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
+
+                event.setCancelled(true);
+                return;
             default:
                 break;
         }
@@ -208,19 +199,55 @@ public class PlayerListener implements Listener {
     //		}
     //	}
 
-    @EventHandler
-    public void onPlayerDeathEvent(PlayerDeathEvent event) {
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerDeathLowest(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Player killer = event.getEntity().getKiller();
+
+        if (!data.isAssassin(player)) {
+            return;
+        }
+
+        List<ItemStack> drops = event.getDrops();
+        for (ItemStack drop : drops) {
+            if (itemcheck.isMask(drop)) {
+                drops.remove(drop);
+                return;
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerDeathHighest(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        EntityDamageEvent lastDamageCause = player.getLastDamageCause();
+        String deathmessage = event.getDeathMessage();
 
         if (data.isAssassin(player)) {
-            for (ItemStack items : event.getDrops()) {
-                if (itemcheck.isMask(items)) {
-                    event.getDrops().remove(items);
-                    return;
+            deathmessage = deathmessage.replaceAll(player.getName(), ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+        }
+
+        if (lastDamageCause instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent entityDamageByEntityEvent = (EntityDamageByEntityEvent) lastDamageCause;
+            Entity damager = entityDamageByEntityEvent.getDamager();
+
+            if (damager instanceof Projectile) {
+                damager = ((Projectile) damager).getShooter();
+            }
+
+            if (damager instanceof Player) {
+                if (data.isAssassin((Player) damager)) {
+                    String damagername = ((Player) damager).getName();
+                    deathmessage = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
                 }
             }
         }
+        event.setDeathMessage(deathmessage);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        Player killer = event.getEntity().getKiller();
 
         if (killer != null && player != killer) {
             bounty.handleBounties(player, killer);
@@ -232,6 +259,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         String command = event.getMessage();
         List<String> blockedCmds = Assassin.p.getConfig().getStringList("Assassin.blocked_commands");
+
         if (data.isAssassin(player) && blockedCmds.contains(command)) {
             player.sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
             event.setCancelled(true);

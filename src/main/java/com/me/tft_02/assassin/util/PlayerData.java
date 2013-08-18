@@ -11,6 +11,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.datatypes.Status;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class PlayerData {
 
@@ -38,21 +40,6 @@ public class PlayerData {
     public static HashSet<String> playerNear = new HashSet<String>();
 
     private final Random random = new Random();
-
-    public void addAssassin(Player player) {
-        playerData.put(player.getName(), "Assassin");
-        assassins.add(player.getName());
-    }
-
-    public void setHostile(Player player) {
-        playerData.put(player.getName(), "Hostile");
-        assassins.remove(player.getName());
-    }
-
-    public void setNeutral(Player player) {
-        playerData.put(player.getName(), "Neutral");
-        assassins.remove(player.getName());
-    }
 
     public void addLoginTime(Player player) {
         long timestamp = System.currentTimeMillis() / 1000L;
@@ -136,53 +123,19 @@ public class PlayerData {
     }
 
     public boolean isAssassin(Player player) {
-        String playername = player.getName();
-
-        if (!playerData.containsKey(playername) || playerData.get(playername) == null) {
-            return false;
-        }
-        return playerData.get(playername).equalsIgnoreCase("Assassin");
+        return UserManager.getPlayer(player).getStatus() == Status.ASSASSIN;
     }
 
     public boolean isHostile(Player player) {
-        String playername = player.getName();
-
-        if (!playerData.containsKey(playername) || playerData.get(playername) == null) {
-            return false;
-        }
-        return playerData.get(playername).equalsIgnoreCase("Hostile");
+        return UserManager.getPlayer(player).getStatus() == Status.HOSTILE;
     }
 
     public boolean isNeutral(Player player) {
-        String playername = player.getName();
-
-        if (!playerData.containsKey(playername) || playerData.get(playername) == null) {
-            return false;
-        }
-        return playerData.get(playername).equalsIgnoreCase("Neutral");
+        return UserManager.getPlayer(player).getStatus() == Status.NORMAL;
     }
 
     public String getStatus(Player player) {
-        String playername = player.getName();
-        String status = "null";
-        if (!playerData.containsKey(playername)) {
-            return status;
-        }
-        if (playerData.get(playername) == null) {
-            status = "null";
-            return status;
-        }
-
-        if (playerData.get(playername).equalsIgnoreCase("Neutral")) {
-            return ChatColor.GREEN + "Neutral";
-        }
-        else if (playerData.get(playername).equalsIgnoreCase("Assassin")) {
-            return ChatColor.DARK_RED + "Assassin";
-        }
-        else if (playerData.get(playername).equalsIgnoreCase("Hostile")) {
-            return ChatColor.RED + "Hostile";
-        }
-        return status;
+        return StringUtils.getCapitalized(UserManager.getPlayer(player).getStatus().toString());
     }
 
     /**
@@ -193,10 +146,7 @@ public class PlayerData {
      * @return true if they are both Neutral, false otherwise
      */
     public boolean bothNeutral(Player firstPlayer, Player secondPlayer) {
-        boolean statusfirst = isNeutral(firstPlayer);
-        boolean statussecond = isNeutral(secondPlayer);
-
-        return statusfirst && statussecond;
+        return isNeutral(firstPlayer) && isNeutral(secondPlayer);
     }
 
     public List<String> getAssassins() {

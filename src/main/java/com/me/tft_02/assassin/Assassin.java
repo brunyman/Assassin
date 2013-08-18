@@ -1,22 +1,15 @@
 package com.me.tft_02.assassin;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 
-import com.me.tft_02.assassin.util.LogFilter;
-import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.mcstats.Metrics;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.listeners.ChatListener;
@@ -27,8 +20,11 @@ import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
 import com.me.tft_02.assassin.util.Data;
+import com.me.tft_02.assassin.util.LogFilter;
 import com.me.tft_02.assassin.util.UpdateChecker;
 import com.me.tft_02.assassin.util.player.UserManager;
+import net.milkbowl.vault.economy.Economy;
+import org.mcstats.Metrics;
 
 public class Assassin extends JavaPlugin {
     public static Assassin p;
@@ -133,7 +129,7 @@ public class Assassin extends JavaPlugin {
 
     private void addCustomRecipes() {
         MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
-        ShapedRecipe AssassinMask = new ShapedRecipe(assassin.getMask(1));
+        ShapedRecipe AssassinMask = new ShapedRecipe(assassin.getMask(1, false));
         //        AssassinMask.shape(new String[] { "XXX", "X X" });
         AssassinMask.shape("XXX", "X X");
         AssassinMask.setIngredient('X', blackWool);

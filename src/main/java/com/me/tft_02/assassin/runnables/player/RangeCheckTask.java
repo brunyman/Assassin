@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class RangeCheckTask extends BukkitRunnable {
@@ -17,25 +18,28 @@ public class RangeCheckTask extends BukkitRunnable {
     }
 
     public void checkIfAssassinNear() {
-        double distance = Assassin.p.getConfig().getDouble("Assassin.messages_distance");
-        for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
-            for (Player assassin : data.getOnlineAssassins()) {
-                Assassin.p.debug("Checking if Assassin near.");
-                if (distance > 0) {
-                    if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) < distance) {
-                        Assassin.p.debug("data.isAssassin(players) " + data.isAssassin(players));
-                        Assassin.p.debug("data.firstTimeNear(players) " + data.firstTimeNear(players));
+        double distance = Config.getInstance().getMessageDistance();
 
-                        if (!data.isAssassin(players) && data.firstTimeNear(players)) {
-                            players.sendMessage(ChatColor.DARK_RED + "ASSASSIN SIGHTED!");
-                            data.addNearSent(players);
-                        }
-                    }
-                    if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) > distance) {
-                        if (!data.isAssassin(players) && !data.firstTimeNear(players)) {
-                            data.removeNearSent(players);
-                        }
-                    }
+        if (distance <= 0) {
+            return;
+        }
+
+        for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
+            if (!data.isAssassin(player)) {
+                continue;
+            }
+
+            for (Player assassin : data.getOnlineAssassins()) {
+                if (!player.getWorld().equals(assassin.getWorld())) {
+                    continue;
+                }
+
+                if (player.getLocation().distance(assassin.getLocation()) < distance && data.firstTimeNear(player)) {
+                    player.sendMessage(ChatColor.DARK_RED + "ASSASSIN SIGHTED!");
+                    data.addNearSent(player);
+                }
+                else {
+                    data.removeNearSent(player);
                 }
             }
         }

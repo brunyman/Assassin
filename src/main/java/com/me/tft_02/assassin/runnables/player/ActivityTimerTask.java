@@ -9,7 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ActivityTimerTask extends BukkitRunnable {
 
@@ -46,7 +48,7 @@ public class ActivityTimerTask extends BukkitRunnable {
                     assassin.deactivateAssassin(player);
                 }
                 else if (data.isHostile(player)) {
-                    data.setNeutral(player);
+                    UserManager.getPlayer(player).setStatus(Status.NORMAL);
                 }
                 data.resetActiveTime(player);
                 Assassin.p.debug(player + " status set to Neutral. Active time reached max.");

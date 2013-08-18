@@ -1,8 +1,10 @@
 package com.me.tft_02.assassin.runnables;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.me.tft_02.assassin.util.PlayerData;
 
-public class EndCooldownTimer implements Runnable {
+public class EndCooldownTimer extends BukkitRunnable {
     private final String playerName;
 
     public EndCooldownTimer(String playerName) {

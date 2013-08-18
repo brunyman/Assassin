@@ -77,45 +77,4 @@ public class ChatListener implements Listener {
             }
         }
     }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onDeath(PlayerDeathEvent event) {
-        Player player = event.getEntity();
-        String name = player.getName();
-        EntityDamageEvent de = player.getLastDamageCause();
-        String deathmessage = event.getDeathMessage();
-
-        boolean isEntityInvolved = false;
-        if (de instanceof EntityDamageByEntityEvent) {
-            isEntityInvolved = true;
-        }
-        if (isEntityInvolved) {
-            EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
-            Entity damager = edbe.getDamager();
-            if (damager instanceof Projectile) {
-                damager = ((Projectile) damager).getShooter();
-            }
-            if (damager instanceof Player) {
-                if (data.isAssassin(player)) {
-                    String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-                    event.setDeathMessage(newmsg);
-                }
-                if (data.isAssassin((Player) damager)) {
-                    String damagername = ((HumanEntity) damager).getName();
-                    String newmsg1 = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-                    if (data.isAssassin(player)) {
-                        String newmsg2 = newmsg1.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-                        event.setDeathMessage(newmsg2);
-                    }
-                    else {
-                        event.setDeathMessage(newmsg1);
-                    }
-                }
-            }
-        }
-        else if (data.isAssassin(player)) {
-            String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-            event.setDeathMessage(newmsg);
-        }
-    }
 }

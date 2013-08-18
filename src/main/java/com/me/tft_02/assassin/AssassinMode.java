@@ -14,6 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.config.Config;
+import com.me.tft_02.assassin.datatypes.Status;
+import com.me.tft_02.assassin.util.player.UserManager;
 import org.kitteh.tag.TagAPI;
 
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
@@ -32,7 +34,7 @@ public class AssassinMode {
     /**
      * Applies all the Assassin traits,
      * such as a different display name, nametag and helmet item.
-     * 
+     *
      * @param player Player whom will be given the traits.
      */
     public void applyTraits(final Player player) {
@@ -48,29 +50,33 @@ public class AssassinMode {
 
     /**
      * Activate Assassin mode.
-     * 
+     *
      * @param player Player who's mode will be changed.
      */
     public void activateAssassin(Player player) {
-        data.addAssassin(player);
+        UserManager.getPlayer(player).setStatus(Status.ASSASSIN);
+
         applyTraits(player);
         Location location = player.getLocation();
         data.addLocation(player, location);
         Location loc = player.getLocation();
         loc.setY(player.getWorld().getMaxHeight() + 30D);
         player.getWorld().strikeLightningEffect(loc);
+
         if (Config.getInstance().getWarnOnActivate()) {
             double messageDistance = Config.getInstance().getMessageDistance();
             for (Player players : player.getWorld().getPlayers()) {
                 if (messageDistance > 0) {
                     if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
-                        players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
+                        players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT A MASK ON!");
                     }
                 }
             }
         }
+
         applyMask(player);
         data.addCooldownTimer(player);
+
         if (Config.getInstance().getParticleEffectsEnabled()) {
             player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1);
         }
@@ -78,39 +84,50 @@ public class AssassinMode {
 
     /**
      * Activate Hostile mode.
-     * 
+     *
      * @param player Player who's mode will be changed.
      */
     public void activateHostileMode(Player player) {
-        String playername = player.getName();
         data.leaveAssassinChat(player);
-        data.setHostile(player);
+        UserManager.getPlayer(player).setStatus(Status.HOSTILE);
         player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
-        player.setDisplayName(playername);
-        player.setPlayerListName(playername);
-        TagAPI.refreshPlayer(player);
+        resetName(player);
+
         removeMask(player);
         player.getWorld().playSound(player.getLocation(), Sound.PISTON_EXTEND, 1.0f, 1.0f);
         player.getWorld().playSound(player.getLocation(), Sound.BREATH, 1.0f, 1.0f);
     }
 
+
     /**
-     * Deactivate Assassin mode.
-     * 
-     * @param player Player who's mode will be changed.
+     * Reset a players display name and TagAPI nameplate.
+     *
+     * @param player Player who's name will be reset.
      */
-    public void deactivateAssassin(Player player) {
+    private void resetName(Player player) {
         String playername = player.getName();
-        data.leaveAssassinChat(player);
-        data.setNeutral(player);
-        player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
         player.setDisplayName(playername);
         player.setPlayerListName(playername);
         TagAPI.refreshPlayer(player);
+    }
+
+    /**
+     * Deactivate Assassin mode.
+     *
+     * @param player Player who's mode will be changed.
+     */
+    public void deactivateAssassin(Player player) {
+        data.leaveAssassinChat(player);
+        UserManager.getPlayer(player).setStatus(Status.NORMAL);
+        player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
+
+        resetName(player);
+
         removeMask(player);
-        if (Assassin.p.getConfig().getBoolean("Assassin.teleport_on_deactivate")) {
+
+        if (Config.getInstance().getTeleportOnDeactivate()) {
             Location previousLocation = data.getLocation(player);
             if (previousLocation == null) {
                 player.sendMessage(ChatColor.RED + "Location not found!");
@@ -119,6 +136,7 @@ public class AssassinMode {
                 player.teleport(previousLocation);
             }
         }
+
         player.getWorld().playSound(player.getLocation(), Sound.PISTON_EXTEND, 1.0f, 1.0f);
         player.getWorld().playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
     }
@@ -126,10 +144,9 @@ public class AssassinMode {
     /**
      * Applies a mask on the players head.
      * Also gives back the helmet the player was wearing, if any.
-     * 
+     *
      * @param player Player who will get a mask.
      */
-    @SuppressWarnings("deprecation")
     public void applyMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack assassinMask = getMaskPlain();
@@ -143,7 +160,7 @@ public class AssassinMode {
         else {
             amount = 0;
         }
-        ItemStack assassinMasks = getMask(amount);
+        ItemStack assassinMasks = getMask(amount, false);
 
         int emptySlot = inventory.firstEmpty();
         if (itemHead != null) {
@@ -160,10 +177,9 @@ public class AssassinMode {
 
     /**
      * Applies a mask on the players head with force.
-     * 
+     *
      * @param player Player who will get a mask.
      */
-    @SuppressWarnings("deprecation")
     public void applyMaskForce(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack assassinMask = getMaskPlain();
@@ -175,10 +191,9 @@ public class AssassinMode {
     /**
      * Removes a mask on the players head.
      * Also puts back the helmet on the player, if any.
-     * 
+     *
      * @param player Player who will lose a mask.
      */
-    @SuppressWarnings("deprecation")
     public void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
@@ -214,41 +229,36 @@ public class AssassinMode {
 
     /**
      * Spawns a mask in inventory.
-     * 
+     *
      * @param player Player who will receive a mask.
      */
-    @SuppressWarnings("deprecation")
     public void spawnMask(Player player, int amount) {
         PlayerInventory inventory = player.getInventory();
-        ItemStack assassinMask = getMask(amount);
+        ItemStack assassinMask = getMask(amount, false);
         int emptySlot = inventory.firstEmpty();
         inventory.setItem(emptySlot, assassinMask);
         player.updateInventory();
     }
 
-    public ItemStack getMask(int amount) {
+    public ItemStack getMask(int amount, boolean plain) {
         MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
-        ItemStack is = blackWool.toItemStack(amount);
-        ItemMeta im = is.getItemMeta();
-        im.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
+        ItemStack itemStack = blackWool.toItemStack(amount);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
+
         ArrayList<String> lore = new ArrayList<String>();
         lore.add(ChatColor.GRAY + "Allows PVP");
-        lore.add("Hold in your hand and right-click");
-        lore.add("to activate assassin mode.");
-        im.setLore(lore);
-        is.setItemMeta(im);
-        return is;
+        if (!plain) {
+            lore.add("Hold in your hand and right-click");
+            lore.add("to activate assassin mode.");
+        }
+
+        itemMeta.setLore(lore);
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
     }
 
     public ItemStack getMaskPlain() {
-        MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
-        ItemStack is = blackWool.toItemStack();
-        ItemMeta im = is.getItemMeta();
-        im.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
-        ArrayList<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.GRAY + "Allows PVP");
-        im.setLore(lore);
-        is.setItemMeta(im);
-        return is;
+        return getMask(1, true);
     }
 }
