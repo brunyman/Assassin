@@ -21,16 +21,12 @@ public class TagListener implements Listener {
         if (data.isAssassin(namedPlayer)) {
             event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + data.getKillCount(namedPlayer));
 
-            if (Assassin.p.debug_mode) {
-                System.out.println("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
-            }
+            Assassin.p.debug("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
         }
         else {
             event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
 
-            if (Assassin.p.debug_mode) {
-                System.out.println("Reset player tag for " + namedPlayer.getName());
-            }
+            Assassin.p.debug("Reset player tag for " + namedPlayer.getName());
         }
 
         //		if (!data.isAssassin(player)) {
