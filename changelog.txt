@@ -6,8 +6,9 @@ Key:
   ! Change
   - Removal
 
-Version 1.1.2 | Tested on CB 1.5.2-R0.1
+Version 1.1.2 | Tested on CB 1.6.2-R0.1
  = Fixed bug with the Update Checker
+ ! Huge code cleanup and refactoring
 
 Version 1.1.1 | Tested on CB 1.4.7-R1.0
  ! Refactoring package naming so its my email address
