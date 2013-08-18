@@ -3,8 +3,6 @@ package com.me.tft_02.assassin.listeners;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.milkbowl.vault.economy.EconomyResponse;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -36,6 +34,7 @@ import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
+import net.milkbowl.vault.economy.EconomyResponse;
 
 public class PlayerListener implements Listener {
 
@@ -128,7 +127,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerInteract events.
-     * 
+     *
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.LOW)
@@ -137,7 +136,7 @@ public class PlayerListener implements Listener {
         Action action = event.getAction();
         Block block = event.getClickedBlock();
         ItemStack inHand = player.getItemInHand();
-        @SuppressWarnings("unused")
+
         Material material;
 
         /* Fix for NPE on interacting with air */
@@ -173,8 +172,7 @@ public class PlayerListener implements Listener {
                         if (Assassin.p.vaultEnabled && activation_cost > 0) {
                             EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
                             if (r.transactionSuccess()) {
-                                if (Assassin.p.debug_mode)
-                                    System.out.println("Activating assassin for " + player.getName());
+                                Assassin.p.debug("Activating assassin for " + player.getName());
                                 assassin.activateAssassin(player);
                                 long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
                                 Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);
@@ -185,9 +183,7 @@ public class PlayerListener implements Listener {
                             }
                         }
                         else {
-                            if (Assassin.p.debug_mode) {
-                                System.out.println("Activating assassin for " + player.getName());
-                            }
+                            Assassin.p.debug("Activating assassin for " + player.getName());
                             assassin.activateAssassin(player);
                             long cooldowntime = Assassin.p.getConfig().getLong("Assassin.cooldown_length");
                             Assassin.p.getServer().getScheduler().scheduleSyncDelayedTask(Assassin.p, new EndCooldownTimer(player.getName()), cooldowntime);

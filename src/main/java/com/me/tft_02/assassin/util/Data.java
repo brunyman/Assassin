@@ -27,42 +27,6 @@ public class Data {
      * Credits to BlahBerrys
      */
 
-    private static void copy(InputStream in, File file) {
-        try {
-            OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            out.close();
-            in.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void deleteDir(File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                deleteDir(new File(dir, children[i]));
-            }
-        }
-        dir.delete();
-    }
-
-    public static void createFiles() throws Exception {
-        File configFile = new File(Assassin.p.getDataFolder(), "config.yml");
-
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-            copy(Assassin.p.getResource("config.yml"), configFile);
-            Assassin.p.getLogger().log(Level.INFO, "'config.yml' didn't exist. Created it.");
-        }
-    }
-
     public static void saveData() {
         File f = new File(Assassin.p.getDataFolder(), "data.dat");
         try {
@@ -90,7 +54,7 @@ public class Data {
         }
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public static void loadData() {
         File f = new File(Assassin.p.getDataFolder(), "data.dat");
         if (f.exists()) {

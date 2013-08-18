@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class EntityListener implements Listener {
@@ -22,19 +23,21 @@ public class EntityListener implements Listener {
 
     /**
      * Monitor EntityDamageByEntity events.
-     * 
+     *
      * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event.getDamage() <= 0)
+        if (event.getDamage() <= 0) {
             return;
+        }
 
         Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
 
-        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC"))
+        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) {
             return; // Check if either players is are Citizens NPCs
+        }
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
@@ -55,15 +58,15 @@ public class EntityListener implements Listener {
             }
 
             if (attacker instanceof Player) {
-                if (data.bothNeutral(defendingPlayer, (Player) attacker) && Assassin.p.getConfig().getBoolean("Assassin.prevent_neutral_pvp")) {
+                if (data.bothNeutral(defendingPlayer, (Player) attacker) && Config.getInstance().getPreventPVP()) {
                     ((Player) attacker).sendMessage(ChatColor.DARK_RED + "You are not an Assassin.");
                     event.setCancelled(true);
                 }
                 else {
-                    if (event.isCancelled() && Assassin.p.getConfig().getBoolean("Assassin.override_pvp_prevention")) {
+                    if (event.isCancelled() && Config.getInstance().getOverridePVP()) {
                         event.setCancelled(false);
                     }
-                    if (!event.isCancelled() && Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
+                    if (!event.isCancelled() && Config.getInstance().getParticleEffectsEnabled()) {
                         defendingPlayer.getWorld().playEffect(defendingPlayer.getLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
                     }
                 }

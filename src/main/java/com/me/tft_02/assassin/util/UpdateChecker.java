@@ -4,14 +4,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import com.me.tft_02.assassin.Assassin;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.me.tft_02.assassin.Assassin;
-
 public class UpdateChecker {
-    private UpdateChecker() {}
+    private UpdateChecker() {
+    }
 
     public static boolean updateAvailable() throws Exception {
         String checkType = Assassin.p.getConfig().getBoolean("General.prefer_beta") ? "latest" : "release";

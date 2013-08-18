@@ -78,8 +78,9 @@ public class PlayerData {
 
     public static Long getActiveTime(Player player) {
         long activetime = 0;
-        if (PlayerData.playerActiveTime.containsKey(player.getName()))
+        if (PlayerData.playerActiveTime.containsKey(player.getName())) {
             activetime = PlayerData.playerActiveTime.get(player.getName());
+        }
         return activetime;
     }
 
@@ -173,21 +174,21 @@ public class PlayerData {
         }
 
         if (playerData.get(playername).equalsIgnoreCase("Neutral")) {
-            return status = ChatColor.GREEN + "Neutral";
+            return ChatColor.GREEN + "Neutral";
         }
         else if (playerData.get(playername).equalsIgnoreCase("Assassin")) {
-            return status = ChatColor.DARK_RED + "Assassin";
+            return ChatColor.DARK_RED + "Assassin";
         }
         else if (playerData.get(playername).equalsIgnoreCase("Hostile")) {
-            return status = ChatColor.RED + "Hostile";
+            return ChatColor.RED + "Hostile";
         }
         return status;
     }
 
     /**
      * Check if two players are both Neutral.
-     * 
-     * @param firstPlayer The first player
+     *
+     * @param firstPlayer  The first player
      * @param secondPlayer The second player
      * @return true if they are both Neutral, false otherwise
      */
@@ -262,7 +263,7 @@ public class PlayerData {
 
     /**
      * Check if the maximum amount of assassins is reached
-     * 
+     *
      * @return true if maximum is reached, false otherwise
      */
     public boolean assassinMaximumReached() {

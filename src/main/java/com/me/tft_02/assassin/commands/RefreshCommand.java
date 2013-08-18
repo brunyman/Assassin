@@ -6,10 +6,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.kitteh.tag.TagAPI;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.PlayerData;
+import org.kitteh.tag.TagAPI;
 
 public class RefreshCommand implements CommandExecutor {
     Assassin plugin;

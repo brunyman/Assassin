@@ -19,8 +19,11 @@ public class ItemChecks {
             ItemMeta im = is.getItemMeta();
             String name = im.getDisplayName();
             String mask = ChatColor.DARK_RED + "Assassin Mask";
-            if (name == null) {}
-            else if (name.equalsIgnoreCase(mask)) {
+            if (name == null) {
+                return false;
+            }
+
+            if (name.equalsIgnoreCase(mask)) {
                 return true;
             }
         }

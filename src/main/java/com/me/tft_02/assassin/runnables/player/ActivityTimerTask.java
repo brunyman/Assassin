@@ -49,9 +49,7 @@ public class ActivityTimerTask extends BukkitRunnable {
                     data.setNeutral(player);
                 }
                 data.resetActiveTime(player);
-                if (Assassin.p.debug_mode) {
-                    System.out.println(player + " status set to Neutral. Active time reached max.");
-                }
+                Assassin.p.debug(player + " status set to Neutral. Active time reached max.");
             }
             else {
                 if ((data.isAssassin(player) || data.isHostile(player)) && warntime > 0) {
@@ -62,9 +60,7 @@ public class ActivityTimerTask extends BukkitRunnable {
                             if (Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
                                 player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
                             }
-                            if (Assassin.p.debug_mode) {
-                                System.out.println(player + " has received a warning because his Assassin mode is running out.");
-                            }
+                            Assassin.p.debug(player + " has received a warning because his Assassin mode is running out.");
                         }
                     }
                     else {

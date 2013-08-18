@@ -2,8 +2,6 @@ package com.me.tft_02.assassin.listeners;
 
 import org.bukkit.event.Listener;
 
-import com.me.tft_02.assassin.Assassin;
-
 public class BlockListener implements Listener {
 
     //	@EventHandler(priority = EventPriority.HIGHEST)

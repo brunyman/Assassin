@@ -5,10 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.PlayerData;
+import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 public class TagListener implements Listener {
 

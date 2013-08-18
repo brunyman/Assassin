@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+
+import com.me.tft_02.assassin.config.Config;
 import org.kitteh.tag.TagAPI;
 
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
@@ -57,20 +59,19 @@ public class AssassinMode {
         Location loc = player.getLocation();
         loc.setY(player.getWorld().getMaxHeight() + 30D);
         player.getWorld().strikeLightningEffect(loc);
-        if (Assassin.p.getConfig().getBoolean("Assassin.warn_others_on_activation")) {
-            double messageDistance = Assassin.p.getConfig().getDouble("Assassin.messages_distance");
+        if (Config.getInstance().getWarnOnActivate()) {
+            double messageDistance = Config.getInstance().getMessageDistance();
             for (Player players : player.getWorld().getPlayers()) {
                 if (messageDistance > 0) {
                     if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
                         players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT ON HIS MASK!");
                     }
-                    else {}
                 }
             }
         }
         applyMask(player);
         data.addCooldownTimer(player);
-        if (Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
+        if (Config.getInstance().getParticleEffectsEnabled()) {
             player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1);
         }
     }
@@ -149,8 +150,9 @@ public class AssassinMode {
             inventory.setItem(emptySlot, itemHead);
             inventory.setItemInHand(assassinMasks);
         }
-        else
+        else {
             inventory.setItemInHand(assassinMasks);
+        }
 
         inventory.setHelmet(assassinMask);
         player.updateInventory();
@@ -180,22 +182,28 @@ public class AssassinMode {
     public void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
-        if (itemHead.getTypeId() != 0)
+        if (itemHead.getTypeId() != 0) {
             inventory.setHelmet(null);
+        }
         //Gives back the mask if config says so
-        if (Assassin.p.getConfig().getBoolean("Assassin.return_mask"))
+        if (Config.getInstance().getReturnMask()) {
             spawnMask(player, 1);
+        }
 
         //If the player was wearing a helmet, put it back on
         int helmetindex = -1;
-        if (inventory.contains(Material.DIAMOND_HELMET))
+        if (inventory.contains(Material.DIAMOND_HELMET)) {
             helmetindex = inventory.first(Material.DIAMOND_HELMET);
-        else if (inventory.contains(Material.IRON_HELMET))
+        }
+        else if (inventory.contains(Material.IRON_HELMET)) {
             helmetindex = inventory.first(Material.IRON_HELMET);
-        else if (inventory.contains(Material.GOLD_HELMET))
+        }
+        else if (inventory.contains(Material.GOLD_HELMET)) {
             helmetindex = inventory.first(Material.GOLD_HELMET);
-        else if (inventory.contains(Material.LEATHER_HELMET))
+        }
+        else if (inventory.contains(Material.LEATHER_HELMET)) {
             helmetindex = inventory.first(Material.LEATHER_HELMET);
+        }
         if (helmetindex >= 0) {
             ItemStack helmet = inventory.getItem(helmetindex);
             inventory.setItem(helmetindex, null);

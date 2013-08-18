@@ -18,7 +18,7 @@ public class MessageScrambler {
 
     /**
      * This will randomly add ChatColor.MAGIC so messages will get scrambled.
-     * 
+     *
      * @param msg Message that will get scrambled
      * @return Scrambled message
      */
@@ -34,10 +34,8 @@ public class MessageScrambler {
         int scrambleLength2;
 
         int length = msg.length();
-        if (length == 0) {
-            //This is not possible, but hey! You never know, right? :D
-        }
-        else if (length == 1) {
+
+        if (length == 1) {
             int scramble = random.nextInt(100);
             if (scramble > 50) {
                 sb.insert(0, ChatColor.MAGIC);

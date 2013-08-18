@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 
+import com.me.tft_02.assassin.util.LogFilter;
 import net.milkbowl.vault.economy.Economy;
 
 import org.bukkit.Material;
@@ -14,6 +15,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import org.mcstats.Metrics;
 
 import com.me.tft_02.assassin.config.Config;
@@ -34,7 +36,6 @@ public class Assassin extends JavaPlugin {
     private AssassinMode assassin = new AssassinMode(this);
 
     public boolean vaultEnabled;
-    public boolean debug_mode = false;
 
     // Update Check
     public boolean updateAvailable;
@@ -47,16 +48,11 @@ public class Assassin extends JavaPlugin {
     @Override
     public void onEnable() {
         p = this;
-
-        if (getConfig().getBoolean("General.debug_mode_enabled")) {
-            getLogger().log(Level.WARNING, "Debug mode is enabled, this is only for advanced users!");
-            debug_mode = true;
-        }
+        getLogger().setFilter(new LogFilter(this));
 
         setupTagAPI();
         vaultEnabled = setupEconomy();
 
-        setupConfiguration();
         checkConfiguration();
 
         addCustomRecipes();
@@ -77,12 +73,12 @@ public class Assassin extends JavaPlugin {
     }
 
     private void setupMetrics() {
-        if (Config.getStatsTrackingEnabled()) {
+        if (Config.getInstance().getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
                 metrics.start();
             }
-            catch (IOException e) {
+            catch (IOException ignored) {
             }
         }
     }
@@ -97,27 +93,28 @@ public class Assassin extends JavaPlugin {
             getLogger().log(Level.WARNING, "No TagAPI dependency found!");
             getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
             pm.disablePlugin(this);
-            return;
         }
         else if (!pm.isPluginEnabled("TagAPI")) {
             getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
             pm.disablePlugin(this);
-            return;
         }
     }
 
     private void registerEvents() {
-        PluginManager pm = getServer().getPluginManager();
+        PluginManager pluginManager = getServer().getPluginManager();
 
-        //      pm.registerEvents(new BlockListener(), this);
-        pm.registerEvents(new ChatListener(), this);
-        pm.registerEvents(new EntityListener(), this);
-        pm.registerEvents(new PlayerListener(), this);
-        pm.registerEvents(new TagListener(), this);
+        pluginManager.registerEvents(new ChatListener(), this);
+        pluginManager.registerEvents(new EntityListener(), this);
+        pluginManager.registerEvents(new PlayerListener(), this);
+        pluginManager.registerEvents(new TagListener(), this);
+    }
+
+    public void debug(String message) {
+        getLogger().info("[Debug] " + message);
     }
 
     private void checkForUpdates() {
-        if (Config.getUpdateCheckEnabled()) {
+        if (Config.getInstance().getUpdateCheckEnabled()) {
             try {
                 updateAvailable = UpdateChecker.updateAvailable();
             }
@@ -143,43 +140,8 @@ public class Assassin extends JavaPlugin {
         getServer().addRecipe(AssassinMask);
     }
 
-    private void setupConfiguration() {
-        FileConfiguration config = this.getConfig();
-        config.addDefault("General.Stats_Tracking_Enabled", true);
-        config.addDefault("General.Update_Check_Enabled", true);
-        config.addDefault("General.Update_Prefer_Beta", false);
-        config.addDefault("General.Debug_Mode_Enabled", false);
-
-        config.addDefault("Assassin.Prevent_Neutral_PVP", true);
-        config.addDefault("Assassin.Assassin_Mode_Duration", 3600);
-        String[] defaultBlockedcmds = { "/spawn", "/home", "/tp", "/tphere", "/tpa", "/tpahere", "/tpall", "/tpaall" };
-        config.addDefault("Assassin.blocked_commands", Arrays.asList(defaultBlockedcmds));
-        //      config.addDefault("Assassin.Max_Allowed", 5);
-        //      config.addDefault("Assassin.Hide_Neutral_Names", false);
-
-        config.addDefault("Assassin.Warn_Time_Almost_Up", 10);
-        config.addDefault("Assassin.Teleport_On_Deactivate", true);
-        config.addDefault("Assassin.Return_Mask", false);
-
-        config.addDefault("Assassin.Cooldown_Length", 600);
-        config.addDefault("Assassin.Activation_Cost", 0);
-
-        config.addDefault("Assassin.Warn_Others_On_Activation", true);
-        config.addDefault("Assassin.Warn_Others_When_Near", true);
-        config.addDefault("Assassin.Message_Distance", 250);
-
-        config.addDefault("Assassin.Particle_Effects_Enabled", true);
-        config.addDefault("Assassin.Potion_Effects_Enabled", true);
-
-        config.addDefault("Assassin.Bounty_Increase_Amount", 10);
-        config.addDefault("Assassin.Bounty_Currency", "$");
-
-        config.options().copyDefaults(true);
-        saveConfig();
-    }
-
     private void checkConfiguration() {
-        if (Config.getActivationCost() > 0 && !vaultEnabled) {
+        if (Config.getInstance().getActivationCost() > 0 && !vaultEnabled) {
             getLogger().log(Level.WARNING, "Vault dependency needed if you want to use currency!");
         }
     }
@@ -207,7 +169,7 @@ public class Assassin extends JavaPlugin {
 
     private void scheduleTasks() {
         // Range check timer (Runs every 10 seconds)
-        if (Config.getWarnWhenNear()) {
+        if (Config.getInstance().getWarnWhenNear()) {
             new RangeCheckTask().runTaskTimer(this, 10 * 20, 10 * 20);
         }
 
@@ -215,7 +177,7 @@ public class Assassin extends JavaPlugin {
         new ActivityTimerTask().runTaskTimer(this, 2 * 20, 2 * 20);
 
         // Periodic save timer (Saves every 15 minutes by default)
-        long saveIntervalTicks = Config.getSaveInterval() * 60 * 20;
+        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 60 * 20;
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
     }
 }

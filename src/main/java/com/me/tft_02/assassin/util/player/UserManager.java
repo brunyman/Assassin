@@ -15,7 +15,8 @@ import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 public final class UserManager {
     private final static Map<String, AssassinPlayer> players = new HashMap<String, AssassinPlayer>();
 
-    private UserManager() {};
+    private UserManager() {
+    }
 
     /**
      * Add a new user.
@@ -62,7 +63,6 @@ public final class UserManager {
     //            assassinPlayer.getProfile().save();
     //        }
     //    }
-
     public static Set<String> getPlayerNames() {
         return players.keySet();
     }

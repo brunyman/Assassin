@@ -31,8 +31,9 @@ public class ChatListener implements Listener {
         String pName = ChatColor.DARK_RED + "[ASSASSIN " + number + "]: " + ChatColor.RESET;
         String msg = event.getMessage();
 
-        if (msg == null)
+        if (msg == null) {
             return;
+        }
         if (data.isAssassin(player)) {
             if (data.getAssassinChatMode(player)) {
                 String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
@@ -91,8 +92,9 @@ public class ChatListener implements Listener {
         if (isEntityInvolved) {
             EntityDamageByEntityEvent edbe = (EntityDamageByEntityEvent) de;
             Entity damager = edbe.getDamager();
-            if (damager instanceof Projectile)
+            if (damager instanceof Projectile) {
                 damager = ((Projectile) damager).getShooter();
+            }
             if (damager instanceof Player) {
                 if (data.isAssassin(player)) {
                     String newmsg = deathmessage.replaceAll(name, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);

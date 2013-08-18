@@ -20,20 +20,15 @@ public class RangeCheckTask extends BukkitRunnable {
         double distance = Assassin.p.getConfig().getDouble("Assassin.messages_distance");
         for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
             for (Player assassin : data.getOnlineAssassins()) {
-                if (Assassin.p.debug_mode)
-                    System.out.println("Checking if Assassin near.");
+                Assassin.p.debug("Checking if Assassin near.");
                 if (distance > 0) {
                     if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) < distance) {
-                        if (Assassin.p.debug_mode) {
-                            System.out.println("data.isAssassin(players) " + data.isAssassin(players));
-                            System.out.println("data.firstTimeNear(players) " + data.firstTimeNear(players));
-                        }
+                        Assassin.p.debug("data.isAssassin(players) " + data.isAssassin(players));
+                        Assassin.p.debug("data.firstTimeNear(players) " + data.firstTimeNear(players));
+
                         if (!data.isAssassin(players) && data.firstTimeNear(players)) {
                             players.sendMessage(ChatColor.DARK_RED + "ASSASSIN SIGHTED!");
                             data.addNearSent(players);
-                        }
-                        else {
-                            //Message already been sent, dont send it again.
                         }
                     }
                     if (players.getWorld().equals(assassin.getWorld()) && players.getLocation().distance(assassin.getLocation()) > distance) {

@@ -19,9 +19,9 @@ public class Misc {
 
     /**
      * Determine if two locations are near each other.
-     * 
-     * @param first The first location
-     * @param second The second location
+     *
+     * @param first       The first location
+     * @param second      The second location
      * @param maxDistance The max distance apart
      * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
      */
@@ -41,12 +41,15 @@ public class Misc {
         int mins = remainder / 60;
         remainder = remainder - mins * 60;
         int secs = remainder;
-        if (mins == 0 && hours == 0)
+        if (mins == 0 && hours == 0) {
             return secs + "s";
-        if (hours == 0)
+        }
+        if (hours == 0) {
             return mins + "m " + secs + "s";
-        else
+        }
+        else {
             return hours + "h " + mins + "m " + secs + "s";
+        }
     }
 
     public static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {

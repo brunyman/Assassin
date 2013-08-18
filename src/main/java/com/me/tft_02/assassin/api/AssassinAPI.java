@@ -7,7 +7,8 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public final class AssassinAPI {
 
-    private AssassinAPI() {}
+    private AssassinAPI() {
+    }
 
     private PlayerData data = new PlayerData(Assassin.p);
 
