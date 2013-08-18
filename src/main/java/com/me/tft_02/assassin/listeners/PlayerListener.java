@@ -43,10 +43,10 @@ import net.milkbowl.vault.economy.EconomyResponse;
 
 public class PlayerListener implements Listener {
 
-    private AssassinMode assassin = new AssassinMode(Assassin.p);
-    private Bounty bounty = new Bounty(Assassin.p);
-    private PlayerData data = new PlayerData(Assassin.p);
-    private ItemChecks itemcheck = new ItemChecks(Assassin.p);
+    private AssassinMode assassin = new AssassinMode();
+    private Bounty bounty = new Bounty();
+    private PlayerData data = new PlayerData();
+    private ItemChecks itemcheck = new ItemChecks();
 
     /**
      * Monitor PlayerJoin events.

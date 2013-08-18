@@ -6,20 +6,14 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class StatusCommand implements CommandExecutor {
-    Assassin plugin;
 
-    public StatusCommand(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
-    private Bounty bounty = new Bounty(plugin);
+    private PlayerData data = new PlayerData();
+    private Bounty bounty = new Bounty();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

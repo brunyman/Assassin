@@ -15,19 +15,14 @@ import com.me.tft_02.assassin.commands.SpawnMaskCommand;
 import com.me.tft_02.assassin.commands.StatusCommand;
 
 public class Commands implements CommandExecutor {
-    Assassin plugin;
 
-    public Commands(Assassin instance) {
-        plugin = instance;
-    }
-
-    private CommandExecutor statusCommand = new StatusCommand(plugin);
-    private CommandExecutor chatCommand = new ChatCommand(plugin);
-    private CommandExecutor deactivateCommand = new DeactivateCommand(plugin);
-    private CommandExecutor refreshCommand = new RefreshCommand(plugin);
-    private CommandExecutor spawnMaskCommand = new SpawnMaskCommand(plugin);
-    private CommandExecutor reloadCommand = new ReloadCommand(plugin);
-    private CommandExecutor leaderboardCommand = new LeaderboardCommand(plugin);
+    private CommandExecutor statusCommand = new StatusCommand();
+    private CommandExecutor chatCommand = new ChatCommand();
+    private CommandExecutor deactivateCommand = new DeactivateCommand();
+    private CommandExecutor refreshCommand = new RefreshCommand();
+    private CommandExecutor spawnMaskCommand = new SpawnMaskCommand();
+    private CommandExecutor reloadCommand = new ReloadCommand();
+    private CommandExecutor leaderboardCommand = new LeaderboardCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -11,14 +11,14 @@ import com.me.tft_02.assassin.util.PlayerData;
 
 public class RangeCheckTask extends BukkitRunnable {
 
-    private PlayerData data = new PlayerData(Assassin.p);
+    private PlayerData data = new PlayerData();
 
     @Override
     public void run() {
         checkIfAssassinNear();
     }
 
-    public void checkIfAssassinNear() {
+    protected void checkIfAssassinNear() {
         double distance = Config.getInstance().getMessageDistance();
 
         if (distance <= 0) {

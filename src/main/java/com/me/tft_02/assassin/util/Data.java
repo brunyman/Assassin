@@ -15,11 +15,6 @@ import org.bukkit.Bukkit;
 import com.me.tft_02.assassin.Assassin;
 
 public class Data {
-    static Assassin plugin;
-
-    public Data(Assassin instance) {
-        plugin = instance;
-    }
 
     /*
      * Credits to BlahBerrys
@@ -61,9 +56,9 @@ public class Data {
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
                 PlayerData.playerData = (HashMap<String, String>) ois.readObject();
                 PlayerData.playerCooldown = (HashSet<String>) ois.readObject();
-                PlayerData.playerLoginTime = (HashMap<String, Long>) ois.readObject();
-                PlayerData.playerLogoutTime = (HashMap<String, Long>) ois.readObject();
-                PlayerData.playerActiveTime = (HashMap<String, Long>) ois.readObject();
+                PlayerData.playerLoginTime = (HashMap<String, Integer>) ois.readObject();
+                PlayerData.playerLogoutTime = (HashMap<String, Integer>) ois.readObject();
+                PlayerData.playerActiveTime = (HashMap<String, Integer>) ois.readObject();
                 PlayerData.assassins = (ArrayList<String>) ois.readObject();
                 PlayerData.playerLocationData = (HashMap<String, String>) ois.readObject();
                 PlayerData.killCount = (HashMap<String, Integer>) ois.readObject();

@@ -17,7 +17,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         super(relativePath, fileName);
     }
 
-    public AutoUpdateConfigLoader(String fileName) {
+    protected AutoUpdateConfigLoader(String fileName) {
         super(fileName);
     }
 

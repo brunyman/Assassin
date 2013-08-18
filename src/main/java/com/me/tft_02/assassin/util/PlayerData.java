@@ -16,12 +16,6 @@ import com.me.tft_02.assassin.util.player.UserManager;
 
 public class PlayerData {
 
-    Assassin plugin;
-
-    public PlayerData(Assassin instance) {
-        plugin = instance;
-    }
-
     // Persistent data
     public static HashMap<String, String> playerData = new HashMap<String, String>();
     public static HashSet<String> playerCooldown = new HashSet<String>();
@@ -34,10 +28,10 @@ public class PlayerData {
     public static HashMap<String, Integer> bountyCollected = new HashMap<String, Integer>();
 
     // Non persistent data
-    public static HashSet<String> assassinChatSet = new HashSet<String>();
-    public static HashMap<String, Integer> assassinNumber = new HashMap<String, Integer>();
-    public static HashSet<Integer> takenNumbers = new HashSet<Integer>();
-    public static HashSet<String> playerNear = new HashSet<String>();
+    private static HashSet<String> assassinChatSet = new HashSet<String>();
+    private static HashMap<String, Integer> assassinNumber = new HashMap<String, Integer>();
+    private static HashSet<Integer> takenNumbers = new HashSet<Integer>();
+    private static HashSet<String> playerNear = new HashSet<String>();
 
     private final Random random = new Random();
 
@@ -128,7 +122,7 @@ public class PlayerData {
         return UserManager.getPlayer(player).getStatus() == Status.HOSTILE;
     }
 
-    public boolean isNeutral(Player player) {
+    boolean isNeutral(Player player) {
         return UserManager.getPlayer(player).getStatus() == Status.NORMAL;
     }
 
@@ -185,7 +179,7 @@ public class PlayerData {
         return assassinNumber.get(playername);
     }
 
-    public int generateRandomNumber() {
+    int generateRandomNumber() {
         int randomNumber = random.nextInt(1000);
         boolean check = false;
         while (!check) {

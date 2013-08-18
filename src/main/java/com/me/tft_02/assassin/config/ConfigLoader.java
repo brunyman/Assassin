@@ -15,16 +15,16 @@ import com.me.tft_02.assassin.Assassin;
 public abstract class ConfigLoader {
     protected static final Assassin plugin = Assassin.p;
     protected String fileName;
-    protected File configFile;
+    private File configFile;
     protected FileConfiguration config;
 
-    public ConfigLoader(String relativePath, String fileName) {
+    protected ConfigLoader(String relativePath, String fileName) {
         this.fileName = fileName;
         configFile = new File(plugin.getDataFolder(), relativePath + File.separator + fileName);
         loadFile();
     }
 
-    public ConfigLoader(String fileName) {
+    protected ConfigLoader(String fileName) {
         this.fileName = fileName;
         configFile = new File(plugin.getDataFolder(), fileName);
         loadFile();

@@ -16,8 +16,8 @@ import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ActivityTimerTask extends BukkitRunnable {
 
-    private PlayerData data = new PlayerData(Assassin.p);
-    private AssassinMode assassin = new AssassinMode(Assassin.p);
+    private PlayerData data = new PlayerData();
+    private AssassinMode assassin = new AssassinMode();
 
     private static HashSet<String> warned = new HashSet<String>();
 

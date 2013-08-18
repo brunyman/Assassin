@@ -6,17 +6,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class ChatCommand implements CommandExecutor {
-    Assassin plugin;
 
-    public ChatCommand(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

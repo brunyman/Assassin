@@ -5,17 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
 
 public class SpawnMaskCommand implements CommandExecutor {
-    Assassin plugin;
 
-    public SpawnMaskCommand(Assassin instance) {
-        plugin = instance;
-    }
-
-    private AssassinMode assassin = new AssassinMode(plugin);
+    private AssassinMode assassin = new AssassinMode();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

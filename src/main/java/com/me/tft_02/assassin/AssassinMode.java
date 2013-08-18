@@ -16,19 +16,14 @@ import org.bukkit.material.MaterialData;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
+import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 import org.kitteh.tag.TagAPI;
 
 public class AssassinMode {
 
-    Assassin plugin;
-
-    public AssassinMode(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData();
 
     /**
      * Applies all the Assassin traits,
@@ -42,8 +37,7 @@ public class AssassinMode {
         new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 20); // Start 1 seconds later.
 
         player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
-        int number = data.getAssassinNumber(player);
-        player.setPlayerListName(ChatColor.DARK_RED + "ASSASSIN [" + number + "]");
+        player.setPlayerListName(ChatColor.DARK_RED + "ASSASSIN [" + data.getAssassinNumber(player) + "]");
         TagAPI.refreshPlayer(player);
     }
 
@@ -58,17 +52,14 @@ public class AssassinMode {
         applyTraits(player);
         Location location = player.getLocation();
         data.addLocation(player, location);
-        Location loc = player.getLocation();
-        loc.setY(player.getWorld().getMaxHeight() + 30D);
-        player.getWorld().strikeLightningEffect(loc);
+        location.setY(player.getWorld().getMaxHeight() + 30D);
+        player.getWorld().strikeLightningEffect(location);
 
-        if (Config.getInstance().getWarnOnActivate()) {
-            double messageDistance = Config.getInstance().getMessageDistance();
+        double messageDistance = Config.getInstance().getMessageDistance();
+        if (Config.getInstance().getWarnOnActivate() && messageDistance > 0) {
             for (Player players : player.getWorld().getPlayers()) {
-                if (messageDistance > 0) {
-                    if (players != player && players.getLocation().distance(player.getLocation()) < messageDistance) {
-                        players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT A MASK ON!");
-                    }
+                if (players != player && Misc.isNear(players.getLocation(), location, messageDistance)) {
+                    players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT A MASK ON!");
                 }
             }
         }
@@ -146,7 +137,7 @@ public class AssassinMode {
      *
      * @param player Player who will get a mask.
      */
-    public void applyMask(Player player) {
+    protected void applyMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack assassinMask = getMaskPlain();
 
@@ -193,7 +184,7 @@ public class AssassinMode {
      *
      * @param player Player who will lose a mask.
      */
-    public void removeMask(Player player) {
+    protected void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
         if (itemHead.getTypeId() != 0) {
@@ -257,7 +248,7 @@ public class AssassinMode {
         return itemStack;
     }
 
-    public ItemStack getMaskPlain() {
+    protected ItemStack getMaskPlain() {
         return getMask(1, true);
     }
 }

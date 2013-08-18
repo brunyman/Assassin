@@ -13,14 +13,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.PlayerData;
 
 public class EntityListener implements Listener {
 
-    private PlayerData data = new PlayerData(Assassin.p);
+    private PlayerData data = new PlayerData();
 
     /**
      * Monitor EntityDamageByEntity events.

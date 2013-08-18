@@ -9,11 +9,6 @@ import org.bukkit.entity.Player;
 import com.me.tft_02.assassin.Assassin;
 
 public class ReloadCommand implements CommandExecutor {
-    Assassin plugin;
-
-    public ReloadCommand(Assassin instance) {
-        plugin = instance;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

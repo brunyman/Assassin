@@ -4,15 +4,7 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 
-import com.me.tft_02.assassin.Assassin;
-
 public class MessageScrambler {
-
-    Assassin plugin;
-
-    public MessageScrambler(Assassin instance) {
-        plugin = instance;
-    }
 
     private final Random random = new Random();
 

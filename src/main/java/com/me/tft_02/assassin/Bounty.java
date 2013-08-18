@@ -9,13 +9,7 @@ import org.kitteh.tag.TagAPI;
 
 public class Bounty {
 
-    Assassin plugin;
-
-    public Bounty(Assassin instance) {
-        plugin = instance;
-    }
-
-    private PlayerData data = new PlayerData(plugin);
+    private PlayerData data = new PlayerData();
 
     public void handleBounties(Player player, Player killer) {
         if (hasBounty(player)) {
@@ -34,7 +28,7 @@ public class Bounty {
         }
     }
 
-    public boolean hasBounty(Player player) {
+    protected boolean hasBounty(Player player) {
         int killCount = data.getKillCount(player);
         return killCount > 0;
     }

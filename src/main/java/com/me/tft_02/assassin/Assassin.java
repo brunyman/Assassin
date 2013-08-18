@@ -29,7 +29,7 @@ import org.mcstats.Metrics;
 public class Assassin extends JavaPlugin {
     public static Assassin p;
 
-    private AssassinMode assassin = new AssassinMode(this);
+    private AssassinMode assassin = new AssassinMode();
 
     public boolean vaultEnabled;
 
@@ -80,7 +80,7 @@ public class Assassin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("assassin").setExecutor(new Commands(this));
+        getCommand("assassin").setExecutor(new Commands());
     }
 
     private void setupTagAPI() {

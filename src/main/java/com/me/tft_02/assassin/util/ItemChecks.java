@@ -4,14 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.me.tft_02.assassin.Assassin;
-
 public class ItemChecks {
-    Assassin plugin;
-
-    public ItemChecks(Assassin instance) {
-        plugin = instance;
-    }
 
     public boolean isMask(ItemStack is) {
         int id = is.getTypeId();
