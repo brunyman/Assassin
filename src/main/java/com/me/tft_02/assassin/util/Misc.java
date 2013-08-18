@@ -72,6 +72,7 @@ public class Misc {
 
         return sortedEntries;
     }
+
     /**
      * Attempts to match any player names with the given name, and returns a list of all possibly matches.
      * <p/>

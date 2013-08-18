@@ -119,7 +119,7 @@ public class PlayerListener implements Listener {
         HumanEntity player = event.getWhoClicked();
         ItemStack itemstack = event.getCurrentItem();
 
-        if (event.getSlotType() == SlotType.ARMOR && itemcheck.isMask(itemstack)){
+        if (event.getSlotType() == SlotType.ARMOR && itemcheck.isMask(itemstack)) {
             assassin.activateHostileMode((Player) player);
         }
     }

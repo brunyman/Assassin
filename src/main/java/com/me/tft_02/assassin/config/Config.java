@@ -3,7 +3,7 @@ package com.me.tft_02.assassin.config;
 import java.util.List;
 
 public class Config extends AutoUpdateConfigLoader {
-    private static  Config instance;
+    private static Config instance;
 
     private Config() {
         super("config.yml");

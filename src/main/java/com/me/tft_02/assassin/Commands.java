@@ -136,8 +136,9 @@ public class Commands implements CommandExecutor {
                     player.sendMessage(dot + ChatColor.GREEN + "/assassin [deactivate] <player>" + ChatColor.GRAY + " Deactivate Assassin mode for <player>");
                 }
             }
-            if (nextPage <= maxPages)
+            if (nextPage <= maxPages) {
                 player.sendMessage(ChatColor.GOLD + "Type /assassin help " + nextPage + " for more");
+            }
         }
     }
 }
