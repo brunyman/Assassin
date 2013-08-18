@@ -2,8 +2,6 @@ package com.me.tft_02.assassin.config;
 
 import java.util.List;
 
-import com.me.tft_02.assassin.Assassin;
-
 public class Config extends AutoUpdateConfigLoader {
     private static  Config instance;
 

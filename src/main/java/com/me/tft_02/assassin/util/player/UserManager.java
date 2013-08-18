@@ -9,7 +9,6 @@ import java.util.Set;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.util.Misc;
 

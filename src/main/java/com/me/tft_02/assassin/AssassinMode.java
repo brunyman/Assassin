@@ -15,11 +15,10 @@ import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
-import com.me.tft_02.assassin.util.player.UserManager;
-import org.kitteh.tag.TagAPI;
-
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
 import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
+import org.kitteh.tag.TagAPI;
 
 public class AssassinMode {
 

@@ -4,9 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.config.Config;
-import org.kitteh.tag.TagAPI;
-
 import com.me.tft_02.assassin.util.PlayerData;
+import org.kitteh.tag.TagAPI;
 
 public class Bounty {
 

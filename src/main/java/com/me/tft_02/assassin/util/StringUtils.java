@@ -1,8 +1,5 @@
 package com.me.tft_02.assassin.util;
 
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-
 public class StringUtils {
 
     /**

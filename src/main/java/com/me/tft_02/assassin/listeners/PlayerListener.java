@@ -5,7 +5,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -35,7 +34,6 @@ import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
-import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
