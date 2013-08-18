@@ -91,7 +91,7 @@ public class PlayerListener implements Listener {
         if (data.isAssassin(player)) {
             assassin.applyMaskForce(player);
 
-            if (!Assassin.p.getConfig().getBoolean("Assassin.potion_effects")) {
+            if (!Config.getInstance().getPotionEffectsEnabled()) {
                 return;
             }
 
@@ -164,7 +164,7 @@ public class PlayerListener implements Listener {
                     return;
                 }
 
-                double activation_cost = Assassin.p.getConfig().getDouble("Assassin.activation_cost");
+                double activation_cost = Config.getInstance().getActivationCost();
                 if (Assassin.p.vaultEnabled && activation_cost > 0) {
                     EconomyResponse r = Assassin.econ.withdrawPlayer(player.getName(), activation_cost);
 
@@ -258,7 +258,7 @@ public class PlayerListener implements Listener {
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage();
-        List<String> blockedCmds = Assassin.p.getConfig().getStringList("Assassin.blocked_commands");
+        List<String> blockedCmds = Config.getInstance().getBlockedCommands();
 
         if (data.isAssassin(player) && blockedCmds.contains(command)) {
             player.sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");

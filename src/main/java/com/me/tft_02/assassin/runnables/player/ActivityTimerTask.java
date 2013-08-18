@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.util.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
@@ -37,10 +38,13 @@ public class ActivityTimerTask extends BukkitRunnable {
     }
 
     private void updateAssassinStatus() {
-        long maxactivetime = Assassin.p.getConfig().getLong("Assassin.active_length");
-        long warntime = Assassin.p.getConfig().getLong("Assassin.warn_time_almost_up");
-
+        long maxactivetime = Config.getInstance().getActiveLength();
+//TODO Loop assassins instead
         for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
+            if (!(data.isAssassin(player) || data.isHostile(player))) {
+                continue;
+            }
+
             long activetime = PlayerData.getActiveTime(player);
 
             if (activetime >= maxactivetime) {
@@ -54,16 +58,17 @@ public class ActivityTimerTask extends BukkitRunnable {
                 Assassin.p.debug(player + " status set to Neutral. Active time reached max.");
             }
             else {
-                if ((data.isAssassin(player) || data.isHostile(player)) && warntime > 0) {
-                    if (activetime + warntime >= maxactivetime) {
-                        if (!hasBeenWarned(player)) {
-                            player.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
-                            warned.add(player.getName());
-                            if (Assassin.p.getConfig().getBoolean("Assassin.particle_effects")) {
-                                player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
-                            }
-                            Assassin.p.debug(player + " has received a warning because his Assassin mode is running out.");
+                long warntime = Config.getInstance().getWarningTimeDeactivate();
+                if (warntime > 0) {
+                    if (activetime + warntime >= maxactivetime && !hasBeenWarned(player)) {
+                        player.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
+                        warned.add(player.getName());
+
+                        if (Config.getInstance().getParticleEffectsEnabled()) {
+                            player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
                         }
+
+                        Assassin.p.debug(player + " has received a warning because his Assassin mode is running out.");
                     }
                     else {
                         warned.remove(player.getName());

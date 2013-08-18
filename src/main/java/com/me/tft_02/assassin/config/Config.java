@@ -24,11 +24,13 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* @formatter:off */
     /* GENERAL SETTINGS */
-    public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking_Enabled", true); }
-    public boolean getUpdateCheckEnabled() { return config.getBoolean("General.Update_Check_Enabled", true); }
-    public boolean getPreferBeta() { return config.getBoolean("General.Update_Prefer_Beta", true); }
-    public boolean getDebugModeEnabled() { return config.getBoolean("General.Debug_Mode_Enabled", false); }
+    public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 15); }
+    public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
+    public boolean getUpdateCheckEnabled() { return config.getBoolean("General.Update_Check", true); }
+    public boolean getPreferBeta() { return config.getBoolean("General.Prefer_Beta", false); }
+    public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
+    public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
 
     /* ASSASSIN SETTINGS */
     public boolean getPreventPVP() { return config.getBoolean("Assassin.Prevent_Neutral_PVP", true); }
@@ -50,7 +52,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getParticleEffectsEnabled() { return config.getBoolean("Assassin.Particle_Effects_Enabled", true); }
     public boolean getPotionEffectsEnabled() { return config.getBoolean("Assassin.Potion_Effects_Enabled", true); }
 
-//    public int getMaxAllowed() { return config.getInt("Assassin.Max_Allowed", 5); }
+    public int getMaxAllowed() { return config.getInt("Assassin.Max_Allowed", 5); }
 
     public int getBountyAmount() { return config.getInt("Assassin.Bounty_Increase_Amount", 10); }
     public String getCurrencyIcon() { return config.getString("Assassin.Bounty_Currency", "$"); }

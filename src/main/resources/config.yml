@@ -4,31 +4,53 @@
 #  http://dev.bukkit.org/server-mods/assassin/
 #  
 General:
-  debug_mode_enabled: false
-  stats_tracking_enabled: true
-  update_check_enabled: true
-  prefer_beta: false
-  config_version: 1.1.1
+    Locale: en_US
+
+    # Amount of time (in minutes) to wait between saves of player information
+    Save_Interval: 10
+
+    # Allow Assassin to report on basic anonymous usage
+    Stats_Tracking: true
+
+    # Allow Assassin to check if a new version is available
+    Update_Check: true
+    Prefer_Beta: false
+
+    # Should Assassin print out debug messages?
+    Verbose_Logging: false
+
+    # Should Assassin over-write configs to update, or make new ones ending in .new?
+    Config_Update_Overwrite: true
+
 Assassin:
-  active_length: 3600
-  teleport_on_deactivate: true
-  cooldown_length: 600
-  messages_distance: 250
-  warn_others_on_activation: true
-  warn_others_when_near: true
-  return_mask: false
-  activation_cost: 0
-  prevent_neutral_pvp: true
-  override_pvp_prevention: false
-  particle_effects: true
-  potion_effects: true
-  warn_time_almost_up: 10
-  blocked_commands:
-  - /spawn
-  - /home
-  - /tp
-  - /tphere
-  - /tpa
-  - /tpahere
-  - /tpall
-  - /tpaall
+    Prevent_Neutral_PVP: true
+    Override_PVP: true
+    Assassin_Mode_Duration: 3600
+    Warn_Time_Almost_Up: 10
+    Teleport_On_Deactivate: true
+    Return_Mask: false
+    Cooldown_Length: 600
+
+    Activation_Cost: 0
+
+    Warn_Others_On_Activation: true
+    Warn_Others_When_Near: true
+    Message_Distance: 250
+
+    Particle_Effects_Enabled: true
+    Potion_Effects_Enabled: true
+
+    Max_Allowed: 5
+
+    Bounty_Increase_Amount: 10
+    Bounty_Currency: "$"
+
+    Blocked_Commands:
+    - /spawn
+    - /home
+    - /tp
+    - /tphere
+    - /tpa
+    - /tpahere
+    - /tpall
+    - /tpaall

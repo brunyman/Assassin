@@ -6,11 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.util.player.UserManager;
 
@@ -25,9 +25,9 @@ public class PlayerData {
     // Persistent data
     public static HashMap<String, String> playerData = new HashMap<String, String>();
     public static HashSet<String> playerCooldown = new HashSet<String>();
-    public static HashMap<String, Long> playerLoginTime = new HashMap<String, Long>();
-    public static HashMap<String, Long> playerLogoutTime = new HashMap<String, Long>();
-    public static HashMap<String, Long> playerActiveTime = new HashMap<String, Long>();
+    public static HashMap<String, Integer> playerLoginTime = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> playerLogoutTime = new HashMap<String, Integer>();
+    public static HashMap<String, Integer> playerActiveTime = new HashMap<String, Integer>();
     public static List<String> assassins = new ArrayList<String>();
     public static HashMap<String, String> playerLocationData = new HashMap<String, String>();
     public static HashMap<String, Integer> killCount = new HashMap<String, Integer>();
@@ -42,44 +42,42 @@ public class PlayerData {
     private final Random random = new Random();
 
     public void addLoginTime(Player player) {
-        long timestamp = System.currentTimeMillis() / 1000L;
-        playerLoginTime.put(player.getName(), timestamp);
+        playerLoginTime.put(player.getName(), Misc.getSystemTime());
     }
 
     public void addLogoutTime(Player player) {
-        long timestamp = System.currentTimeMillis() / 1000L;
-        playerLogoutTime.put(player.getName(), timestamp);
+        playerLogoutTime.put(player.getName(), Misc.getSystemTime());
     }
 
     public void saveActiveTime(Player player) {
-        long loginTime = playerLoginTime.get(player.getName());
-        long logoutTime = playerLogoutTime.get(player.getName());
-        long activeTime = logoutTime - loginTime;
-        long previousTime = 0;
+        int loginTime = playerLoginTime.get(player.getName());
+        int logoutTime = playerLogoutTime.get(player.getName());
+        int activeTime = logoutTime - loginTime;
+        int previousTime = 0;
         if (playerActiveTime.containsKey(player.getName())) {
             previousTime = playerActiveTime.get(player.getName());
         }
-        long timeStamp = previousTime + activeTime;
-        playerActiveTime.put(player.getName(), timeStamp);
+
+        int totalActiveTime = previousTime + activeTime;
+        playerActiveTime.put(player.getName(), totalActiveTime);
     }
 
-    public static Long getActiveTime(Player player) {
-        long activetime = 0;
+    public static int getActiveTime(Player player) {
+        int activetime = 0;
         if (PlayerData.playerActiveTime.containsKey(player.getName())) {
             activetime = PlayerData.playerActiveTime.get(player.getName());
         }
         return activetime;
     }
 
-    public static Long getActiveTimeLeft(Player player) {
-        long activetime = getActiveTime(player);
-        long maxactive = Assassin.p.getConfig().getLong("Assassin.active_length");
+    public static int getActiveTimeLeft(Player player) {
+        int activetime = getActiveTime(player);
+        int maxactive = Config.getInstance().getActiveLength();
         return maxactive - activetime;
     }
 
     public void resetActiveTime(Player player) {
-        long activetime = 0;
-        PlayerData.playerActiveTime.put(player.getName(), activetime);
+        PlayerData.playerActiveTime.put(player.getName(), 0);
     }
 
     public void addCooldownTimer(Player player) {
@@ -104,8 +102,8 @@ public class PlayerData {
             return LocationData.convertFromString(locationdata).getLocation();
         }
         else {
-            System.out.println("No location data found for " + player + "!");
-            System.out.println("Perhaps 'Assassin/data.dat' has been deleted?");
+            Assassin.p.debug("No location data found for " + player + "!");
+            Assassin.p.debug("Perhaps 'Assassin/data.dat' has been deleted?");
             return null;
         }
     }
@@ -179,21 +177,12 @@ public class PlayerData {
 
     public int getAssassinNumber(Player player) {
         String playername = player.getName();
-        int number;
 
-        if (assassinNumber.containsKey(playername)) {
-            if (assassinNumber.get(playername) == null) {
-                number = 0;
-            }
-            else {
-                number = assassinNumber.get(playername);
-            }
-        }
-        else {
+        if (!assassinNumber.containsKey(playername)) {
             assassinNumber.put(playername, generateRandomNumber());
-            number = assassinNumber.get(playername);
         }
-        return number;
+
+        return assassinNumber.get(playername);
     }
 
     public int generateRandomNumber() {
@@ -217,14 +206,10 @@ public class PlayerData {
      * @return true if maximum is reached, false otherwise
      */
     public boolean assassinMaximumReached() {
-        int maxamount = Assassin.p.getConfig().getInt("Assassin.max_allowed");
+        int maxAllowed = Config.getInstance().getMaxAllowed();
         int amount = assassins.size();
-        if (maxamount > 0) {
-            if (maxamount >= amount) {
-                return true;
-            }
-        }
-        return false;
+
+        return (maxAllowed > 0 && maxAllowed >= amount);
     }
 
     public int getKillCount(Player player) {

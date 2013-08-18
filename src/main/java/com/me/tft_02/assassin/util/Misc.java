@@ -20,6 +20,10 @@ public class Misc {
         return (entity == null || entity.hasMetadata("NPC"));
     }
 
+    public static int getSystemTime() {
+        return (int) System.currentTimeMillis() / 1000;
+    }
+
     /**
      * Determine if two locations are near each other.
      *
