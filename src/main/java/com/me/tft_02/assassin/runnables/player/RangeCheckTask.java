@@ -7,7 +7,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.Misc;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class RangeCheckTask extends BukkitRunnable {
 
@@ -26,7 +27,7 @@ public class RangeCheckTask extends BukkitRunnable {
         }
 
         for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
-            if (!data.isAssassin(player)) {
+            if (!data.isAssassin(UserManager.getPlayer(player))) {
                 continue;
             }
 

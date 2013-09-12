@@ -2,7 +2,8 @@ package com.me.tft_02.assassin.api;
 
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public final class AssassinAPI {
 
@@ -18,7 +19,7 @@ public final class AssassinAPI {
      * @return true if player is an Assassin.
      */
     public boolean isAssassin(Player player) {
-        return data.isAssassin(player);
+        return data.isAssassin(UserManager.getPlayer(player));
     }
 
     /**

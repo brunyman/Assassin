@@ -6,7 +6,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ChatCommand implements CommandExecutor {
 
@@ -20,7 +21,7 @@ public class ChatCommand implements CommandExecutor {
             return true;
         }
 
-        if (!data.isAssassin(player)) {
+        if (!data.isAssassin(UserManager.getPlayer(player))) {
             player.sendMessage(ChatColor.RED + "You aren't an assassin.");
             return true;
         }

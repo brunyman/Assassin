@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
 import org.kitteh.tag.TagAPI;
 
 public class RefreshCommand implements CommandExecutor {

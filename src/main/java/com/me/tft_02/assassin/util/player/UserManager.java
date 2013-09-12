@@ -22,6 +22,7 @@ public final class UserManager {
      * Add a new user.
      *
      * @param player The player to create a user record for
+     *
      * @return the player's {@link AssassinPlayer} object
      */
     public static AssassinPlayer addUser(Player player) {
@@ -55,14 +56,14 @@ public final class UserManager {
         players.clear();
     }
 
-//    /**
-//     * Save all users.
-//     */
-    //    public static void saveAll() {
-    //        for (AssassinPlayer assassinPlayer : players.values()) {
-    //            assassinPlayer.getProfile().save();
-    //        }
-    //    }
+    /**
+     * Save all users.
+     */
+    public static void saveAll() {
+        for (AssassinPlayer assassinPlayer : players.values()) {
+            assassinPlayer.getProfile().save();
+        }
+    }
 
     public static Set<String> getPlayerNames() {
         return players.keySet();
@@ -76,6 +77,7 @@ public final class UserManager {
      * Get the AssassinPlayer of a player by a partial name.
      *
      * @param playerName The partial name of the player whose AssassinPlayer to retrieve
+     *
      * @return the player's AssassinPlayer object
      */
     public static AssassinPlayer getPlayer(String playerName) {
@@ -106,6 +108,7 @@ public final class UserManager {
      * Get the AssassinPlayer of a player.
      *
      * @param player The player whose AssassinPlayer to retrieve
+     *
      * @return the player's {@link AssassinPlayer} object
      */
     public static AssassinPlayer getPlayer(OfflinePlayer player) {

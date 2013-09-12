@@ -4,7 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.config.Config;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 import org.kitteh.tag.TagAPI;
 
 public class Bounty {
@@ -20,7 +21,7 @@ public class Bounty {
             player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
         }
         else {
-            if (data.isAssassin(killer)) {
+            if (data.isAssassin(UserManager.getPlayer(killer))) {
                 // Only increase bounty when attacking a different player without bounty
                 data.increaseKillCount(killer);
                 TagAPI.refreshPlayer(killer);

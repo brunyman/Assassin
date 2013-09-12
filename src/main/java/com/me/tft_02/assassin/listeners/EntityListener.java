@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.Misc;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
 
 public class EntityListener implements Listener {
 

@@ -1,10 +1,12 @@
 package com.me.tft_02.assassin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
@@ -12,24 +14,35 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.me.tft_02.assassin.config.Config;
+import com.me.tft_02.assassin.database.DatabaseManager;
+import com.me.tft_02.assassin.database.DatabaseManagerFactory;
 import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
 import com.me.tft_02.assassin.listeners.TagListener;
+import com.me.tft_02.assassin.runnables.UpdateCheckerTask;
 import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
-import com.me.tft_02.assassin.util.Data;
 import com.me.tft_02.assassin.util.LogFilter;
-import com.me.tft_02.assassin.util.UpdateChecker;
 import com.me.tft_02.assassin.util.player.UserManager;
 import net.milkbowl.vault.economy.Economy;
 import org.mcstats.Metrics;
 
 public class Assassin extends JavaPlugin {
+    private static DatabaseManager databaseManager;
+
+    /* File Paths */
+    private static String mainDirectory;
+    private static String flatFileDirectory;
+    private static String usersFile;
+
     public static Assassin p;
 
-    private AssassinMode assassin = new AssassinMode();
+    // Jar Stuff
+    public static File assassin;
+
+    private AssassinMode assassinMode = new AssassinMode();
 
     public boolean vaultEnabled;
 
@@ -49,14 +62,16 @@ public class Assassin extends JavaPlugin {
         setupTagAPI();
         vaultEnabled = setupEconomy();
 
+        setupFilePaths();
+        Config.getInstance();
         checkConfiguration();
+
+        databaseManager = DatabaseManagerFactory.getDatabaseManager();
 
         addCustomRecipes();
 
         registerEvents();
         registerCommands();
-
-        Data.loadData();
 
         for (Player player : getServer().getOnlinePlayers()) {
             UserManager.addUser(player); // In case of reload add all users back into UserManager
@@ -110,26 +125,26 @@ public class Assassin extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if (Config.getInstance().getUpdateCheckEnabled()) {
-            try {
-                updateAvailable = UpdateChecker.updateAvailable();
-            }
-            catch (Exception e) {
-                updateAvailable = false;
-            }
+        if (!Config.getInstance().getUpdateCheckEnabled()) {
+            return;
+        }
 
-            if (updateAvailable) {
-                getLogger().log(Level.INFO, "***********************************************************************************");
-                getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
-                getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
-                getLogger().log(Level.INFO, "***********************************************************************************");
-            }
+        getServer().getScheduler().runTaskAsynchronously(this, new UpdateCheckerTask());
+    }
+
+    public void updateCheckerCallback(boolean updateAvailable) {
+        this.updateAvailable = updateAvailable;
+        if (updateAvailable) {
+            getLogger().log(Level.INFO, "***********************************************************************************");
+            getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
+            getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
+            getLogger().log(Level.INFO, "***********************************************************************************");
         }
     }
 
     private void addCustomRecipes() {
         MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
-        ShapedRecipe AssassinMask = new ShapedRecipe(assassin.getMask(1, false));
+        ShapedRecipe AssassinMask = new ShapedRecipe(assassinMode.getMask(1, false));
         //        AssassinMask.shape(new String[] { "XXX", "X X" });
         AssassinMask.shape("XXX", "X X");
         AssassinMask.setIngredient('X', blackWool);
@@ -159,11 +174,53 @@ public class Assassin extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        Data.saveData();
+        try {
+            UserManager.saveAll();
+        }
+        catch (NullPointerException ignored) {}
+
         getServer().getScheduler().cancelTasks(this);
+        HandlerList.unregisterAll(this);
+
+        debug("Was disabled.");
+    }
+
+    public static DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    @Deprecated
+    public static void setDatabaseManager(DatabaseManager databaseManager) {
+        Assassin.databaseManager = databaseManager;
+    }
+
+    public static String getMainDirectory() {
+        return mainDirectory;
+    }
+
+    public static String getFlatFileDirectory() {
+        return flatFileDirectory;
+    }
+
+    public static String getUsersFilePath() {
+        return usersFile;
+    }
+
+    /**
+     * Setup the various storage file paths
+     */
+    private void setupFilePaths() {
+        assassin = getFile();
+        mainDirectory = getDataFolder().getPath() + File.separator;
+        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+        usersFile = flatFileDirectory + "assassin.users";
     }
 
     private void scheduleTasks() {
+        // Periodic save timer (Saves every 15 minutes by default)
+        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
+        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+
         // Range check timer (Runs every 10 seconds)
         if (Config.getInstance().getWarnWhenNear()) {
             new RangeCheckTask().runTaskTimer(this, 10 * 20, 10 * 20);
@@ -171,9 +228,5 @@ public class Assassin extends JavaPlugin {
 
         // Activity timer task (Runs every two seconds)
         new ActivityTimerTask().runTaskTimer(this, 2 * 20, 2 * 20);
-
-        // Periodic save timer (Saves every 15 minutes by default)
-        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 60 * 20;
-        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
     }
 }

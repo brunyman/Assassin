@@ -8,7 +8,8 @@ import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.util.Misc;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class StatusCommand implements CommandExecutor {
 
@@ -22,11 +23,12 @@ public class StatusCommand implements CommandExecutor {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
+        String status = data.getStatus(player);
 
         player.sendMessage(ChatColor.DARK_GRAY + "==========[ " + ChatColor.YELLOW + "Assassin Info" + ChatColor.DARK_GRAY + " ]===========");
-        player.sendMessage(ChatColor.GOLD + "Your status = " + data.getStatus(player));
-        if (data.isAssassin(player)) {
-            player.sendMessage(ChatColor.GOLD + "Time left in Assassin Mode = " + ChatColor.DARK_RED + Misc.getStringTimeLeft(player));
+        player.sendMessage(ChatColor.GOLD + "Your status = " + ChatColor.AQUA + status);
+        if (data.isAssassin(UserManager.getPlayer(player)) || data.isHostile(UserManager.getPlayer(player))) {
+            player.sendMessage(ChatColor.GOLD + "Time left in " + status + " Mode = " + ChatColor.DARK_RED + Misc.getStringTimeLeft(player));
         }
         player.sendMessage(ChatColor.DARK_GRAY + "------------------------------------");
         player.sendMessage(ChatColor.GOLD + "Current bounty = " + ChatColor.DARK_RED + data.getKillCount(player));

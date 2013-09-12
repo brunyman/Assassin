@@ -22,6 +22,20 @@ General:
     # Should Assassin over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
 
+#
+#  Settings for using a mySQL database
+###
+MySQL:
+    Enabled: false
+    Database:
+        User_Name: UserName
+        User_Password: UserPassword
+        Name: DataBaseName
+        TablePrefix: mcmmo_
+    Server:
+        Port: 3306
+        Address: localhost
+
 Assassin:
     Prevent_Neutral_PVP: true
     Override_PVP: true

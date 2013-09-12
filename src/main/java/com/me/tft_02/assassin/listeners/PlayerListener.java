@@ -1,7 +1,6 @@
 package com.me.tft_02.assassin.listeners;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,12 +31,12 @@ import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
 import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.config.Config;
-import com.me.tft_02.assassin.datatypes.Status;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -61,22 +60,19 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        UserManager.addUser(player);
+        AssassinPlayer assassinPlayer = UserManager.addUser(player);
 
         if (Assassin.p.updateAvailable && player.isOp()) {
             player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.GOLD + "New version available on BukkitDev!");
             player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.AQUA + "http://dev.bukkit.org/server-mods/Assassin/");
-            Assassin.p.getLogger().log(Level.INFO, "New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/");
         }
 
-        if (!data.isAssassin(player) || !data.isHostile(player)) {
-            UserManager.getPlayer(player).setStatus(Status.NORMAL);
-        }
-        else if (data.isAssassin(player)) {
+        if (data.isAssassin(assassinPlayer)) {
             event.setJoinMessage(ChatColor.DARK_RED + "AN ASSASSIN JOINED THE GAME");
             assassin.applyTraits(player);
             assassin.applyMaskForce(player);
         }
+
         if (!data.cooledDown(player)) {
             long cooldowntime = Config.getInstance().getCooldownLength();
             new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
@@ -86,7 +82,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     private void onPlayerRespawn(PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
-        if (data.isAssassin(player)) {
+        if (data.isAssassin(UserManager.getPlayer(player))) {
             assassin.applyMaskForce(player);
 
             if (!Config.getInstance().getPotionEffectsEnabled()) {
@@ -106,13 +102,25 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (data.isAssassin(player)) {
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+
+        if (data.isAssassin(assassinPlayer)) {
             event.setQuitMessage(ChatColor.DARK_RED + "AN ASSASSIN LEFT THE GAME");
             data.addLogoutTime(player);
             data.saveActiveTime(player);
             data.leaveAssassinChat(player);
         }
+
+        assassinPlayer.getProfile().save();
+        UserManager.remove(player.getName());
     }
+
+
 
     @EventHandler
     void onInventoryClick(InventoryClickEvent event) {
@@ -125,9 +133,9 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerInteract events.
+     * Check PlayerInteract events.
      *
-     * @param event The event to watch
+     * @param event The event to check
      */
     @EventHandler(priority = EventPriority.LOW)
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -147,6 +155,8 @@ public class PlayerListener implements Listener {
                     return;
                 }
 
+                event.setCancelled(true);
+
                 if (!player.hasPermission("assassin.assassin")) {
                     player.sendMessage(ChatColor.RED + "You haven't got permission.");
                     return;
@@ -157,7 +167,7 @@ public class PlayerListener implements Listener {
                     return;
                 }
 
-                if (data.isAssassin(player)) {
+                if (data.isAssassin(UserManager.getPlayer(player))) {
                     player.sendMessage(ChatColor.RED + "You already are an Assassin.");
                     return;
                 }
@@ -180,7 +190,6 @@ public class PlayerListener implements Listener {
                 long cooldowntime = Config.getInstance().getCooldownLength();
                 new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
 
-                event.setCancelled(true);
                 return;
             default:
                 break;
@@ -201,7 +210,7 @@ public class PlayerListener implements Listener {
     public void onPlayerDeathLowest(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
-        if (!data.isAssassin(player)) {
+        if (!data.isAssassin(UserManager.getPlayer(player))) {
             return;
         }
 
@@ -220,7 +229,7 @@ public class PlayerListener implements Listener {
         EntityDamageEvent lastDamageCause = player.getLastDamageCause();
         String deathmessage = event.getDeathMessage();
 
-        if (data.isAssassin(player)) {
+        if (data.isAssassin(UserManager.getPlayer(player))) {
             deathmessage = deathmessage.replaceAll(player.getName(), ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
         }
 
@@ -233,7 +242,7 @@ public class PlayerListener implements Listener {
             }
 
             if (damager instanceof Player) {
-                if (data.isAssassin((Player) damager)) {
+                if (data.isAssassin(UserManager.getPlayer((Player) damager))) {
                     String damagername = ((Player) damager).getName();
                     deathmessage = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
                 }
@@ -258,7 +267,7 @@ public class PlayerListener implements Listener {
         String command = event.getMessage();
         List<String> blockedCmds = Config.getInstance().getBlockedCommands();
 
-        if (data.isAssassin(player) && blockedCmds.contains(command)) {
+        if (data.isAssassin(UserManager.getPlayer(player)) && blockedCmds.contains(command)) {
             player.sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
             event.setCancelled(true);
         }

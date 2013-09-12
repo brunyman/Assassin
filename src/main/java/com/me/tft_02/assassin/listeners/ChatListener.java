@@ -9,7 +9,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.MessageScrambler;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ChatListener implements Listener {
 
@@ -28,7 +29,7 @@ public class ChatListener implements Listener {
         if (msg == null) {
             return;
         }
-        if (data.isAssassin(player)) {
+        if (data.isAssassin(UserManager.getPlayer(player))) {
             if (data.getAssassinChatMode(player)) {
                 String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
                 for (Player assassin : data.getOnlineAssassins()) {
@@ -48,7 +49,7 @@ public class ChatListener implements Listener {
                             event.getRecipients().remove(players);
                         }
                         else {
-                            if (!data.isAssassin(players)) {
+                            if (!data.isAssassin(UserManager.getPlayer(players))) {
                                 //Assassins have already received unscrambled message
                                 //But this isn't nessecary here... I think
                                 //								for (Player assassin : data.getOnlineAssassins()) {

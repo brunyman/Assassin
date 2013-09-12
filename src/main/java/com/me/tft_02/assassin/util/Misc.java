@@ -13,8 +13,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.util.player.PlayerData;
 
 public class Misc {
+    public static final int TIME_CONVERSION_FACTOR = 1000;
+    public static final int TICK_CONVERSION_FACTOR = 20;
 
     public static boolean isNPCEntity(Entity entity) {
         return (entity == null || entity.hasMetadata("NPC"));
@@ -30,6 +33,7 @@ public class Misc {
      * @param first       The first location
      * @param second      The second location
      * @param maxDistance The max distance apart
+     *
      * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
@@ -80,6 +84,7 @@ public class Misc {
      * If an exact match is found, the returned list will only contain a single result.
      *
      * @param partialName Name to match
+     *
      * @return List of all possible names
      */
     public static List<String> matchPlayer(String partialName) {
@@ -107,6 +112,7 @@ public class Misc {
      * Get a matched player name if one was found in the database.
      *
      * @param partialName Name to match
+     *
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
@@ -117,4 +123,5 @@ public class Misc {
         }
         return partialName;
     }
+
 }

@@ -6,7 +6,8 @@ Key:
   ! Change
   - Removal
 
-Version 1.1.2 | Tested on CB 1.6.2-R0.1
+Version 1.1.2 | Tested on CB 1.6.2-R1.0
+ + Added database managers, flatfile support
  = Fixed bug with the Update Checker
  ! Huge code cleanup and refactoring
 

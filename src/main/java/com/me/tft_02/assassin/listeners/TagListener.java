@@ -7,7 +7,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.me.tft_02.assassin.Assassin;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 public class TagListener implements Listener {
@@ -18,7 +19,7 @@ public class TagListener implements Listener {
     public void onNameTag(PlayerReceiveNameTagEvent event) {
         Player namedPlayer = event.getNamedPlayer();
 
-        if (data.isAssassin(namedPlayer)) {
+        if (data.isAssassin(UserManager.getPlayer(namedPlayer))) {
             event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + data.getKillCount(namedPlayer));
 
             Assassin.p.debug("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());

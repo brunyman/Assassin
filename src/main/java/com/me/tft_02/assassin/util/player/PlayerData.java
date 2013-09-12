@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.util;
+package com.me.tft_02.assassin.util.player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,12 +12,14 @@ import org.bukkit.entity.Player;
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
-import com.me.tft_02.assassin.util.player.UserManager;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
+import com.me.tft_02.assassin.util.LocationData;
+import com.me.tft_02.assassin.util.Misc;
+import com.me.tft_02.assassin.util.StringUtils;
 
 public class PlayerData {
 
     // Persistent data
-    public static HashMap<String, String> playerData = new HashMap<String, String>();
     public static HashSet<String> playerCooldown = new HashSet<String>();
     public static HashMap<String, Integer> playerLoginTime = new HashMap<String, Integer>();
     public static HashMap<String, Integer> playerLogoutTime = new HashMap<String, Integer>();
@@ -114,20 +116,20 @@ public class PlayerData {
         return !playerNear.contains(player.getName());
     }
 
-    public boolean isAssassin(Player player) {
-        return UserManager.getPlayer(player).getStatus() == Status.ASSASSIN;
+    public boolean isAssassin(AssassinPlayer assassinPlayer) {
+        return assassinPlayer.getProfile().getStatus() == Status.ASSASSIN;
     }
 
-    public boolean isHostile(Player player) {
-        return UserManager.getPlayer(player).getStatus() == Status.HOSTILE;
+    public boolean isHostile(AssassinPlayer assassinPlayer) {
+        return assassinPlayer.getProfile().getStatus() == Status.HOSTILE;
     }
 
-    boolean isNeutral(Player player) {
-        return UserManager.getPlayer(player).getStatus() == Status.NORMAL;
+    boolean isNeutral(AssassinPlayer assassinPlayer) {
+        return assassinPlayer.getProfile().getStatus() == Status.NORMAL;
     }
 
     public String getStatus(Player player) {
-        return StringUtils.getCapitalized(UserManager.getPlayer(player).getStatus().toString());
+        return StringUtils.getCapitalized(UserManager.getPlayer(player).getProfile().getStatus().toString());
     }
 
     /**
@@ -135,9 +137,14 @@ public class PlayerData {
      *
      * @param firstPlayer  The first player
      * @param secondPlayer The second player
+     *
      * @return true if they are both Neutral, false otherwise
      */
     public boolean bothNeutral(Player firstPlayer, Player secondPlayer) {
+        return bothNeutral(UserManager.getPlayer(firstPlayer), UserManager.getPlayer(secondPlayer));
+    }
+
+    public boolean bothNeutral(AssassinPlayer firstPlayer, AssassinPlayer secondPlayer) {
         return isNeutral(firstPlayer) && isNeutral(secondPlayer);
     }
 

@@ -17,7 +17,7 @@ import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
 import com.me.tft_02.assassin.util.Misc;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 import org.kitteh.tag.TagAPI;
 
@@ -47,7 +47,7 @@ public class AssassinMode {
      * @param player Player who's mode will be changed.
      */
     public void activateAssassin(Player player) {
-        UserManager.getPlayer(player).setStatus(Status.ASSASSIN);
+        UserManager.getPlayer(player).getProfile().setStatus(Status.ASSASSIN);
 
         applyTraits(player);
         Location location = player.getLocation();
@@ -79,7 +79,7 @@ public class AssassinMode {
      */
     public void activateHostileMode(Player player) {
         data.leaveAssassinChat(player);
-        UserManager.getPlayer(player).setStatus(Status.HOSTILE);
+        UserManager.getPlayer(player).getProfile().setStatus(Status.HOSTILE);
         player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
         resetName(player);
@@ -110,7 +110,7 @@ public class AssassinMode {
      */
     public void deactivateAssassin(Player player) {
         data.leaveAssassinChat(player);
-        UserManager.getPlayer(player).setStatus(Status.NORMAL);
+        UserManager.getPlayer(player).getProfile().setStatus(Status.NORMAL);
         player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
         resetName(player);

@@ -8,7 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.AssassinMode;
-import com.me.tft_02.assassin.util.PlayerData;
+import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class DeactivateCommand implements CommandExecutor {
 
@@ -25,7 +26,7 @@ public class DeactivateCommand implements CommandExecutor {
 
         if (args.length == 2) {
             Player target = Bukkit.getServer().getPlayer(args[1]);
-            if (data.isAssassin(target)) {
+            if (data.isAssassin(UserManager.getPlayer(target))) {
                 assassin.deactivateAssassin(target);
                 data.resetActiveTime(target);
                 return true;
@@ -36,7 +37,7 @@ public class DeactivateCommand implements CommandExecutor {
             }
         }
         else {
-            if (data.isAssassin(player)) {
+            if (data.isAssassin(UserManager.getPlayer(player))) {
                 assassin.deactivateAssassin(player);
                 data.resetActiveTime(player);
                 return true;

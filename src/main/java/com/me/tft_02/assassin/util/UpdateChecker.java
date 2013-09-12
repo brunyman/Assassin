@@ -11,8 +11,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class UpdateChecker {
-    private UpdateChecker() {
-    }
+    private UpdateChecker() {}
 
     public static boolean updateAvailable() throws Exception {
         String checkType = Config.getInstance().getPreferBeta() ? "latest" : "release";
