@@ -92,8 +92,8 @@ public class PlayerListener implements Listener {
             Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.p, new Runnable() {
                 @Override
                 public void run() {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 5, 1));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 30, 1));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Misc.TICK_CONVERSION_FACTOR * 5, 1));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Misc.TICK_CONVERSION_FACTOR * 30, 1));
                 }
             }, 5);
         }

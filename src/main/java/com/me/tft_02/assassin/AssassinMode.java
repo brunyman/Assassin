@@ -34,7 +34,7 @@ public class AssassinMode {
     public void applyTraits(final Player player) {
         data.addLoginTime(player);
 
-        new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 20); // Start 1 seconds later.
+        new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 1 * Misc.TICK_CONVERSION_FACTOR); // Start 1 seconds later.
 
         player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
         player.setPlayerListName(ChatColor.DARK_RED + "ASSASSIN [" + data.getAssassinNumber(player) + "]");

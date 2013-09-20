@@ -26,6 +26,7 @@ import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
 import com.me.tft_02.assassin.util.LogFilter;
+import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.UserManager;
 import net.milkbowl.vault.economy.Economy;
 import org.mcstats.Metrics;
@@ -224,10 +225,10 @@ public class Assassin extends JavaPlugin {
 
         // Range check timer (Runs every 10 seconds)
         if (Config.getInstance().getWarnWhenNear()) {
-            new RangeCheckTask().runTaskTimer(this, 10 * 20, 10 * 20);
+            new RangeCheckTask().runTaskTimer(this, 10 * Misc.TICK_CONVERSION_FACTOR, 10 * Misc.TICK_CONVERSION_FACTOR);
         }
 
         // Activity timer task (Runs every two seconds)
-        new ActivityTimerTask().runTaskTimer(this, 2 * 20, 2 * 20);
+        new ActivityTimerTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
     }
 }
