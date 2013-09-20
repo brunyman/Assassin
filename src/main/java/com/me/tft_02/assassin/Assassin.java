@@ -13,6 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.me.tft_02.assassin.commands.AssassinCommand;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.database.DatabaseManager;
 import com.me.tft_02.assassin.database.DatabaseManagerFactory;
@@ -95,7 +96,7 @@ public class Assassin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getCommand("assassin").setExecutor(new Commands());
+        getCommand("assassin").setExecutor(new AssassinCommand());
     }
 
     private void setupTagAPI() {
