@@ -17,6 +17,7 @@ public class ReloadCommand implements CommandExecutor {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
+
         Assassin.p.reloadConfig();
         player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.GRAY + "Config reloaded");
         return true;

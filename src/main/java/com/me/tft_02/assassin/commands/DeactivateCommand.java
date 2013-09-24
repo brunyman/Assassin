@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
@@ -24,28 +25,23 @@ public class DeactivateCommand implements CommandExecutor {
             return true;
         }
 
+        Player target = player;
         if (args.length == 2) {
-            Player target = Bukkit.getServer().getPlayer(args[1]);
-            if (data.isAssassin(UserManager.getPlayer(target))) {
-                assassin.deactivateAssassin(target);
-                data.resetActiveTime(target);
-                return true;
-            }
-            else {
-                player.sendMessage(ChatColor.RED + "Not an Assassin.");
-                return true;
-            }
+            target = Bukkit.getServer().getPlayer(args[1]);
+        }
+
+        if (CommandUtils.isOffline(sender, target)) {
+            return true;
+        }
+
+        if (data.isAssassin(UserManager.getPlayer(target))) {
+            assassin.deactivateAssassin(target);
+            data.resetActiveTime(target);
+            return true;
         }
         else {
-            if (data.isAssassin(UserManager.getPlayer(player))) {
-                assassin.deactivateAssassin(player);
-                data.resetActiveTime(player);
-                return true;
-            }
-            else {
-                player.sendMessage(ChatColor.RED + "You aren't an assassin.");
-                return true;
-            }
+            player.sendMessage(ChatColor.RED + target.getName() + " is not an Assassin.");
+            return true;
         }
     }
 }

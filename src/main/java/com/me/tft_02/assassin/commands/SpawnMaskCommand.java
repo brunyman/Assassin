@@ -19,13 +19,14 @@ public class SpawnMaskCommand implements CommandExecutor {
             return true;
         }
 
+        int amount = 1;
+
         if (args.length == 2) {
-            assassin.spawnMask(player, Integer.parseInt(args[1]));
-            return true;
+            amount = Integer.parseInt(args[1]);
         }
-        else {
-            assassin.spawnMask(player, 1);
-            return true;
-        }
+
+        assassin.spawnMask(player, amount);
+        player.sendMessage("Spawned one mask");
+        return true;
     }
 }
