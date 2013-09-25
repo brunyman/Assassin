@@ -2,12 +2,16 @@ package com.me.tft_02.assassin.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.me.tft_02.assassin.util.CommandUtils;
+import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
+
 import org.kitteh.tag.TagAPI;
 
 public class RefreshCommand implements CommandExecutor {
@@ -16,30 +20,29 @@ public class RefreshCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandUtils.noConsoleUsage(sender)) {
+            return true;
+        }
+
         Player player = (Player) sender;
-        if (!player.hasPermission("assassin.commands.refresh")) {
+
+        if (!Permissions.refresh(player)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
 
+        OfflinePlayer target = player;
         if (args.length == 2) {
-            Player target = Bukkit.getServer().getPlayer(args[1]);
-            if (target == null) {
-                sender.sendMessage(ChatColor.GOLD + args[1] + ChatColor.RED + " is not online!");
-                return false;
-            }
-            else {
-                TagAPI.refreshPlayer(target);
-                data.removeCooldown(target);
-                player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target.getName());
-                return true;
-            }
+            target = Bukkit.getServer().getOfflinePlayer(args[1]);
         }
-        else {
-            TagAPI.refreshPlayer(player);
-            data.removeCooldown(player);
-            player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + player.getName());
+
+        if (CommandUtils.isOffline(sender, target)) {
             return true;
         }
+
+        TagAPI.refreshPlayer((Player) target);
+        data.removeCooldown((Player) target);
+        player.sendMessage(ChatColor.RED + "Refreshed cooldowns for " + target.getName());
+        return true;
     }
 }

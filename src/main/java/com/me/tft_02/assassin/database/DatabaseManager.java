@@ -33,9 +33,9 @@ public interface DatabaseManager {
     public void saveUser(PlayerProfile profile);
 
     /**
-    * Retrieve leaderboard info.
+    * Retrieve leaderboard status.
     *
-    * @param skillName The skill to retrieve info on
+    * @param skillName The skill to retrieve status on
     * @param pageNumber Which page in the leaderboards to retrieve
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
@@ -43,7 +43,7 @@ public interface DatabaseManager {
     public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage);
 
     /**
-     * Retrieve rank info.
+     * Retrieve rank status.
      *
      * @param playerName The name of the user to retrieve the rankings for
      * @return the requested rank information
