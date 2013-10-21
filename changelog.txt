@@ -9,6 +9,7 @@ Key:
 Version 1.1.2 | Tested on CB 1.6.2-R1.0
  + Added database managers, flatfile support
  = Fixed bug with the Update Checker
+ ! Changed Updater, now uses Gravity's updater v2.0
  ! Huge code cleanup and refactoring
 
 Version 1.1.1 | Tested on CB 1.4.7-R1.0

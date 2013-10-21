@@ -63,7 +63,7 @@ public class PlayerListener implements Listener {
 
         AssassinPlayer assassinPlayer = UserManager.addUser(player);
 
-        if (Assassin.p.updateAvailable && player.isOp()) {
+        if (Assassin.p.isUpdateAvailable() && player.isOp()) {
             player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.GOLD + "New version available on BukkitDev!");
             player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.AQUA + "http://dev.bukkit.org/server-mods/Assassin/");
         }

@@ -22,7 +22,6 @@ import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
 import com.me.tft_02.assassin.listeners.TagListener;
 import com.me.tft_02.assassin.locale.LocaleLoader;
-import com.me.tft_02.assassin.runnables.UpdateCheckerTask;
 import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
 import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
@@ -30,6 +29,7 @@ import com.me.tft_02.assassin.util.LogFilter;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.UserManager;
 
+import net.gravitydevelopment.updater.assassin.Updater;
 import net.milkbowl.vault.economy.Economy;
 import org.mcstats.Metrics;
 
@@ -51,7 +51,7 @@ public class Assassin extends JavaPlugin {
     public boolean vaultEnabled;
 
     // Update Check
-    public boolean updateAvailable;
+    private boolean updateAvailable;
 
     public static Economy econ = null;
 
@@ -133,15 +133,21 @@ public class Assassin extends JavaPlugin {
             return;
         }
 
-        getServer().getScheduler().runTaskAsynchronously(this, new UpdateCheckerTask());
-    }
+        Updater updater = new Updater(this, 47673, assassin, Updater.UpdateType.NO_DOWNLOAD, false);
 
-    public void updateCheckerCallback(boolean updateAvailable) {
-        this.updateAvailable = updateAvailable;
-        if (updateAvailable) {
-            getLogger().info(LocaleLoader.getString("UpdateChecker.Outdated"));
-            getLogger().info(LocaleLoader.getString("UpdateChecker.New_Available"));
+        if (updater.getResult() != Updater.UpdateResult.UPDATE_AVAILABLE) {
+            this.updateAvailable = false;
+            return;
         }
+
+        if (updater.getLatestType().equals("beta") && !Config.getInstance().getPreferBeta()) {
+            this.updateAvailable = false;
+            return;
+        }
+
+        this.updateAvailable = true;
+        getLogger().info(LocaleLoader.getString("UpdateChecker.Outdated"));
+        getLogger().info(LocaleLoader.getString("UpdateChecker.New_Available"));
     }
 
     private void addCustomRecipes() {
@@ -206,6 +212,10 @@ public class Assassin extends JavaPlugin {
 
     public static String getUsersFilePath() {
         return usersFile;
+    }
+
+    public boolean isUpdateAvailable() {
+        return updateAvailable;
     }
 
     /**
