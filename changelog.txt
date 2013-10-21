@@ -6,7 +6,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.1.2 | Tested on CB 1.6.2-R1.0
+Version 1.1.2 | Tested on CB 1.6.4-R0.1
  + Added database managers, flatfile support
  = Fixed bug with the Update Checker
  ! Changed Updater, now uses Gravity's updater v2.0
