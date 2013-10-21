@@ -36,6 +36,7 @@ import com.me.tft_02.assassin.runnables.EndCooldownTimer;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
+import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -120,10 +121,8 @@ public class PlayerListener implements Listener {
         UserManager.remove(player.getName());
     }
 
-
-
     @EventHandler
-    void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         HumanEntity player = event.getWhoClicked();
         ItemStack itemstack = event.getCurrentItem();
 
@@ -157,7 +156,7 @@ public class PlayerListener implements Listener {
 
                 event.setCancelled(true);
 
-                if (!player.hasPermission("assassin.assassin")) {
+                if (!Permissions.maskUse(player)) {
                     player.sendMessage(ChatColor.RED + "You haven't got permission.");
                     return;
                 }

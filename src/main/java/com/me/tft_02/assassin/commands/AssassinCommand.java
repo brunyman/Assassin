@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.locale.LocaleLoader;
+import com.me.tft_02.assassin.util.Permissions;
 
 public class AssassinCommand implements CommandExecutor {
 
@@ -24,7 +25,7 @@ public class AssassinCommand implements CommandExecutor {
             return false;
         }
 
-        if (sender.hasPermission("assassin.assassin")) {
+        if (Permissions.assassin(sender)) {
             return false;
         }
 

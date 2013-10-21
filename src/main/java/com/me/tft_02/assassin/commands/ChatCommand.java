@@ -1,11 +1,11 @@
 package com.me.tft_02.assassin.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
@@ -29,18 +29,22 @@ public class ChatCommand implements CommandExecutor {
         }
 
         if (!data.isAssassin(UserManager.getPlayer(player))) {
-            player.sendMessage(ChatColor.RED + "You aren't an assassin.");
+            player.sendMessage(LocaleLoader.getString("Commands.NotAnAssassin", player.getName()));
             return true;
         }
 
+        toggleAssassinChat(player);
+        return true;
+    }
+
+    private void toggleAssassinChat(Player player) {
         if (!data.getAssassinChatMode(player)) {
             data.enterAssassinChat(player);
-            player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.GREEN + "ON");
+            player.sendMessage(LocaleLoader.getString("Commands.Chat.On"));
         }
         else {
             data.leaveAssassinChat(player);
-            player.sendMessage(ChatColor.GRAY + "Assassin Chat " + ChatColor.RED + "OFF");
+            player.sendMessage(LocaleLoader.getString("Commands.Chat.Off"));
         }
-        return true;
     }
 }

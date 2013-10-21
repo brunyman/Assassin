@@ -21,6 +21,7 @@ import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
 import com.me.tft_02.assassin.listeners.TagListener;
+import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.runnables.UpdateCheckerTask;
 import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;
@@ -28,6 +29,7 @@ import com.me.tft_02.assassin.runnables.player.RangeCheckTask;
 import com.me.tft_02.assassin.util.LogFilter;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.UserManager;
+
 import net.milkbowl.vault.economy.Economy;
 import org.mcstats.Metrics;
 
@@ -137,10 +139,8 @@ public class Assassin extends JavaPlugin {
     public void updateCheckerCallback(boolean updateAvailable) {
         this.updateAvailable = updateAvailable;
         if (updateAvailable) {
-            getLogger().log(Level.INFO, "***********************************************************************************");
-            getLogger().log(Level.INFO, "*                              Assassin is outdated!                              *");
-            getLogger().log(Level.INFO, "* New version available on BukkitDev! http://dev.bukkit.org/server-mods/Assassin/ *");
-            getLogger().log(Level.INFO, "***********************************************************************************");
+            getLogger().info(LocaleLoader.getString("UpdateChecker.Outdated"));
+            getLogger().info(LocaleLoader.getString("UpdateChecker.New_Available"));
         }
     }
 

@@ -1,7 +1,6 @@
 package com.me.tft_02.assassin.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
@@ -47,7 +47,7 @@ public class DeactivateCommand implements CommandExecutor {
             return true;
         }
         else {
-            player.sendMessage(ChatColor.RED + target.getName() + " is not an Assassin.");
+            player.sendMessage(LocaleLoader.getString("Commands.NotAnAssassin", target.getName()));
             return true;
         }
     }

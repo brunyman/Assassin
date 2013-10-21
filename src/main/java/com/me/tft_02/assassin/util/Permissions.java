@@ -4,6 +4,14 @@ import org.bukkit.permissions.Permissible;
 
 public class Permissions {
 
+    public static boolean maskUse(Permissible permissible) {
+        return permissible.hasPermission("assassin.mask.use");
+    }
+
+    public static boolean assassin(Permissible permissible) {
+        return permissible.hasPermission("assassin.commands.assassin");
+    }
+
     public static boolean status(Permissible permissible) {
         return permissible.hasPermission("assassin.commands.status");
     }
