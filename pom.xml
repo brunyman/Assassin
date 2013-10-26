@@ -79,8 +79,8 @@
             <url>http://ci.herocraftonline.com/plugin/repository/everything</url>
         </repository>
         <repository>
-            <id>genesis-repo</id>
-            <url>http://jenkins.genesis-mc.com/plugin/repository/project/Ghosts/</url>
+            <id>md_5-repo</id>
+            <url>http://repo.md-5.net/</url>
         </repository>
         <repository>
             <id>kitteh-repo</id>
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>org.kitteh</groupId>
             <artifactId>tagapi</artifactId>
-            <version>LATEST</version>
+            <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
