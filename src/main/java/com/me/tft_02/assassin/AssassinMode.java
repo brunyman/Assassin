@@ -86,7 +86,7 @@ public class AssassinMode {
 
         removeMask(player);
         player.getWorld().playSound(player.getLocation(), Sound.PISTON_EXTEND, 1.0f, 1.0f);
-        player.getWorld().playSound(player.getLocation(), Sound.BREATH, 1.0f, 1.0f);
+//        player.getWorld().playSound(player.getLocation(), Sound.BREATH, 1.0f, 1.0f);
     }
 
 
