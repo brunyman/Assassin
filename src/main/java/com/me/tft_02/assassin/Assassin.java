@@ -55,6 +55,8 @@ public class Assassin extends JavaPlugin {
     // Update Check
     private boolean updateAvailable;
 
+    private boolean tagApiEnabled;
+
     public static Economy econ = null;
 
     /**
@@ -66,6 +68,11 @@ public class Assassin extends JavaPlugin {
         getLogger().setFilter(new LogFilter(this));
 
         setupTagAPI();
+
+        if (!tagApiEnabled) {
+            return;
+        }
+
         vaultEnabled = setupEconomy();
 
         setupFilePaths();
@@ -110,11 +117,15 @@ public class Assassin extends JavaPlugin {
             getLogger().log(Level.WARNING, "No TagAPI dependency found!");
             getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
             pm.disablePlugin(this);
+            tagApiEnabled = false;
         }
         else if (!pm.isPluginEnabled("TagAPI")) {
             getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
             pm.disablePlugin(this);
+            tagApiEnabled = false;
         }
+
+        tagApiEnabled = true;
     }
 
     private void registerEvents() {
