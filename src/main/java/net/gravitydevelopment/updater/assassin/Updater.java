@@ -345,23 +345,23 @@ public class Updater {
                 if (entry.isDirectory()) {
                     continue;
                 }
-                else {
-                    final BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
-                    int b;
-                    final byte buffer[] = new byte[Updater.BYTE_SIZE];
-                    final FileOutputStream fos = new FileOutputStream(destinationFilePath);
-                    final BufferedOutputStream bos = new BufferedOutputStream(fos, Updater.BYTE_SIZE);
-                    while ((b = bis.read(buffer, 0, Updater.BYTE_SIZE)) != -1) {
-                        bos.write(buffer, 0, b);
-                    }
-                    bos.flush();
-                    bos.close();
-                    bis.close();
-                    final String name = destinationFilePath.getName();
-                    if (name.endsWith(".jar") && this.pluginFile(name)) {
-                        destinationFilePath.renameTo(new File(this.plugin.getDataFolder().getParent(), this.updateFolder + "/" + name));
-                    }
+
+                final BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
+                int b;
+                final byte buffer[] = new byte[Updater.BYTE_SIZE];
+                final FileOutputStream fos = new FileOutputStream(destinationFilePath);
+                final BufferedOutputStream bos = new BufferedOutputStream(fos, Updater.BYTE_SIZE);
+                while ((b = bis.read(buffer, 0, Updater.BYTE_SIZE)) != -1) {
+                    bos.write(buffer, 0, b);
                 }
+                bos.flush();
+                bos.close();
+                bis.close();
+                final String name = destinationFilePath.getName();
+                if (name.endsWith(".jar") && this.pluginFile(name)) {
+                    destinationFilePath.renameTo(new File(this.plugin.getDataFolder().getParent(), this.updateFolder + "/" + name));
+                }
+
                 entry = null;
                 destinationFilePath = null;
             }
@@ -441,7 +441,7 @@ public class Updater {
             }
 
             // Check release vs. beta & dev
-            if (newTokens.length == 0 && oldTokens.length == 2 && oldVersion == newVersion) {
+            if (newTokens.length == 1 && oldTokens.length == 3 && oldVersion == newVersion) {
                 return true;
             }
 
@@ -465,15 +465,14 @@ public class Updater {
                 return false;
             }
 
-            if (oldTokens.length == 2 && !version.contains("beta") && !version.contains("dev")) {
-                plugin.getLogger().warning("Could not get information about this Assassin version; perhaps you are running a custom one?");
+            if (oldTokens.length == 3 && !version.contains("beta") && !version.contains("dev")) {
+                plugin.getLogger().warning("Could not get information about this Duel version; perhaps you are running a custom one?");
                 result = UpdateResult.FAIL_NOVERSION;
                 return false;
             }
 
-            if (oldVersion > newVersion) {
-                return false;
-            }
+            result = UpdateResult.NO_UPDATE;
+            return false;
         }
 
         return true;
