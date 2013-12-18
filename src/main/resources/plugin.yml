@@ -14,7 +14,7 @@ softdepend: [ThisPluginDoesNotExist]
 commands:
    assassin:
       description: Usage /assassin help.
-      permission: assassin.assassin
+      permission: assassin.commands.assassin
       permission-message: You don't have <permission>
 
 permissions:
@@ -32,10 +32,11 @@ permissions:
         default: true
         children:
             assassin.assassin: true
-            assassin.commands.*: true
-    assassin.commands.*:
+            assassin.commands.all: true
+    assassin.commands.all:
         description: Gives access to player commands
         children:
+            assassin.commands.assassin: true
             assassin.commands.status: true
             assassin.commands.chat: true
             assassin.commands.deactivate: true
