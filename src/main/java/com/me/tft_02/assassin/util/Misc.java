@@ -8,9 +8,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.player.PlayerData;
@@ -124,4 +126,13 @@ public class Misc {
         return partialName;
     }
 
+    public static MaterialData getMaterialData(String string) {
+        String[] itemInfo = string.split("[|]");
+
+        Material itemMaterial = Material.matchMaterial(itemInfo[0]);
+        byte blockData = (itemInfo.length == 2) ? Byte.valueOf(itemInfo[1]) : 0;
+        MaterialData itemMaterialData = new MaterialData(itemMaterial, blockData);
+
+        return itemMaterialData;
+    }
 }

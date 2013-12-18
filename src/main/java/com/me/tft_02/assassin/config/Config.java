@@ -2,7 +2,9 @@ package com.me.tft_02.assassin.config;
 
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.material.MaterialData;
 
 public class Config extends AutoUpdateConfigLoader {
     private static Config instance;
@@ -112,5 +114,11 @@ public class Config extends AutoUpdateConfigLoader {
     public int getBountyAmount() { return config.getInt("Assassin.Bounty_Increase_Amount", 10); }
 
     public String getCurrencyIcon() { return config.getString("Assassin.Bounty_Currency", "$"); }
+
+    public String getMaskRecipeItem() { return config.getString("Crafting.Mask.Recipe_Item", "WOOL|15"); }
+    public String getMaskResultItem() { return config.getString("Crafting.Mask.Mask_Item", "WOOL|15"); }
+
+
+
     /* @formatter:on */
 }

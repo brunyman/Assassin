@@ -54,3 +54,7 @@ Assassin:
     - /tpahere
     - /tpall
     - /tpaall
+Crafting:
+    Mask:
+        Recipe_Item: WOOL|15
+        Mask_Item: WOOL|15

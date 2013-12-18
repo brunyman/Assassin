@@ -17,6 +17,7 @@ import com.me.tft_02.assassin.commands.AssassinCommand;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.database.DatabaseManager;
 import com.me.tft_02.assassin.database.DatabaseManagerFactory;
+import com.me.tft_02.assassin.items.Mask;
 import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.InventoryListener;
@@ -153,12 +154,7 @@ public class Assassin extends JavaPlugin {
     }
 
     private void addCustomRecipes() {
-        MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
-        ShapedRecipe AssassinMask = new ShapedRecipe(assassinMode.getMask(1, false));
-        //        AssassinMask.shape(new String[] { "XXX", "X X" });
-        AssassinMask.shape("XXX", "X X");
-        AssassinMask.setIngredient('X', blackWool);
-        getServer().addRecipe(AssassinMask);
+        getServer().addRecipe(Mask.getRecipe());
     }
 
     private void checkConfiguration() {
@@ -226,8 +222,17 @@ public class Assassin extends JavaPlugin {
     private void setupFilePaths() {
         assassin = getFile();
         mainDirectory = getDataFolder().getPath() + File.separator;
-        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+        flatFileDirectory = mainDirectory + "flatfile" + File.separator;
         usersFile = flatFileDirectory + "assassin.users";
+        fixFilePaths();
+    }
+
+    private void fixFilePaths() {
+        File oldFlatfilePath = new File(mainDirectory + "FlatFileStuff" + File.separator);
+
+        if (oldFlatfilePath.exists()) {
+            oldFlatfilePath.renameTo(new File(flatFileDirectory));
+        }
     }
 
     private void scheduleTasks() {

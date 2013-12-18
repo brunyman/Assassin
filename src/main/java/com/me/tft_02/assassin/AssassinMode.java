@@ -1,7 +1,5 @@
 package com.me.tft_02.assassin;
 
-import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -10,19 +8,20 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
+import com.me.tft_02.assassin.items.Mask;
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
+
 import org.kitteh.tag.TagAPI;
 
 public class AssassinMode {
 
+    private Mask mask = new Mask();
     private PlayerData data = new PlayerData();
 
     /**
@@ -139,7 +138,7 @@ public class AssassinMode {
      */
     protected void applyMask(Player player) {
         PlayerInventory inventory = player.getInventory();
-        ItemStack assassinMask = getMaskPlain();
+        ItemStack assassinMask = mask.getMaskPlain();
 
         ItemStack itemHead = inventory.getHelmet();
         int amountInHand = inventory.getItemInHand().getAmount();
@@ -150,7 +149,7 @@ public class AssassinMode {
         else {
             amount = 0;
         }
-        ItemStack assassinMasks = getMask(amount, false);
+        ItemStack assassinMasks = mask.getMask(amount, false);
 
         int emptySlot = inventory.firstEmpty();
         if (itemHead != null) {
@@ -172,7 +171,7 @@ public class AssassinMode {
      */
     public void applyMaskForce(Player player) {
         PlayerInventory inventory = player.getInventory();
-        ItemStack assassinMask = getMaskPlain();
+        ItemStack assassinMask = mask.getMaskPlain();
 
         inventory.setHelmet(assassinMask);
         player.updateInventory();
@@ -224,31 +223,9 @@ public class AssassinMode {
      */
     public void spawnMask(Player player, int amount) {
         PlayerInventory inventory = player.getInventory();
-        ItemStack assassinMask = getMask(amount, false);
+        ItemStack assassinMask = mask.getMask(amount, false);
         int emptySlot = inventory.firstEmpty();
         inventory.setItem(emptySlot, assassinMask);
         player.updateInventory();
-    }
-
-    public ItemStack getMask(int amount, boolean plain) {
-        MaterialData blackWool = new MaterialData(Material.WOOL, (byte) 15);
-        ItemStack itemStack = blackWool.toItemStack(amount);
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
-
-        ArrayList<String> lore = new ArrayList<String>();
-        lore.add(ChatColor.GRAY + "Allows PVP");
-        if (!plain) {
-            lore.add("Hold in your hand and right-click");
-            lore.add("to activate assassin mode.");
-        }
-
-        itemMeta.setLore(lore);
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
-    }
-
-    protected ItemStack getMaskPlain() {
-        return getMask(1, true);
     }
 }
