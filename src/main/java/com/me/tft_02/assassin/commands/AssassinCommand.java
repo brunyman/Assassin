@@ -21,7 +21,7 @@ public class AssassinCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (Permissions.assassin(sender)) {
+        if (!Permissions.assassin(sender)) {
             return false;
         }
 
