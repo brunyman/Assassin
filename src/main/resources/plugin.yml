@@ -1,15 +1,22 @@
 name: Assassin
-author: TfT_02
-main: com.me.tft_02.assassin.Assassin
-description: A whole new concept on PVP!
-dev-url: http://dev.bukkit.org/server-mods/Assassin/
 version: ${project.version}-b${BUILD_NUMBER}
+description: >
+  A whole new concept on PVP! This plugin allows players to craft Assassin
+  masks. When they equip these masks they will become anonymous and are able
+  to attack and kill other players.
+
+author: TfT_02
+website: http://dev.bukkit.org/server-mods/Assassin/
+
+main: com.me.tft_02.assassin.Assassin
 softdepend: [ThisPluginDoesNotExist]
+
 commands:
    assassin:
       description: Usage /assassin help.
       permission: assassin.assassin
       permission-message: You don't have <permission>
+
 permissions:
     assassin.*:
         description: Gives access to all commands
