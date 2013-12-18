@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
+
 import org.kitteh.tag.TagAPI;
 
 public class Bounty {

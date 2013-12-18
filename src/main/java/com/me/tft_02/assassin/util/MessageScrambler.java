@@ -12,6 +12,7 @@ public class MessageScrambler {
      * This will randomly add ChatColor.MAGIC so messages will get scrambled.
      *
      * @param msg Message that will get scrambled
+     *
      * @return Scrambled message
      */
     public String Scrambled(String msg) {

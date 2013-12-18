@@ -29,17 +29,18 @@ public class DatabaseManagerFactory {
     /**
      * Sets the custom DatabaseManager class for mcMMO to use. This should be
      * called prior to mcMMO enabling.
-     * <p>
+     * <p/>
      * The provided class must have an empty constructor, which is the one
      * that will be used.
-     * <p>
+     * <p/>
      * This method is intended for API use, but it should not be considered
      * stable. This method is subject to change and/or removal in future
      * versions.
      *
      * @param clazz the DatabaseManager class to use
+     *
      * @throws IllegalArgumentException if the provided class does not have
-     *             an empty constructor
+     *                                  an empty constructor
      */
     public static void setCustomDatabaseManagerClass(Class<? extends DatabaseManager> clazz) {
         try {

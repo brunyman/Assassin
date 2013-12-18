@@ -21,10 +21,6 @@ public class AssassinCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!command.getName().equalsIgnoreCase("assassin")) {
-            return false;
-        }
-
         if (Permissions.assassin(sender)) {
             return false;
         }
@@ -60,8 +56,9 @@ public class AssassinCommand implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("deactivate")) {
                     return deactivateCommand.onCommand(sender, command, label, args);
                 }
+            default:
+                return false;
         }
-        return false;
     }
 
     private boolean printUsage(CommandSender sender) {

@@ -6,6 +6,7 @@ public class StringUtils {
      * Gets a capitalized version of the target string.
      *
      * @param target String to capitalize
+     *
      * @return the capitalized string
      */
     public static String getCapitalized(String target) {

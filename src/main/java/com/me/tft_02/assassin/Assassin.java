@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,8 +44,6 @@ public class Assassin extends JavaPlugin {
 
     // Jar Stuff
     public static File assassin;
-
-    private AssassinMode assassinMode = new AssassinMode();
 
     public boolean vaultEnabled;
 
@@ -118,11 +113,13 @@ public class Assassin extends JavaPlugin {
             getLogger().log(Level.WARNING, "Download TagAPI from http://dev.bukkit.org/server-mods/tag/");
             pm.disablePlugin(this);
             tagApiEnabled = false;
+            return;
         }
         else if (!pm.isPluginEnabled("TagAPI")) {
             getLogger().log(Level.WARNING, "TagAPI is probably outdated, check the console log.");
             pm.disablePlugin(this);
             tagApiEnabled = false;
+            return;
         }
 
         tagApiEnabled = true;
@@ -194,7 +191,8 @@ public class Assassin extends JavaPlugin {
         try {
             UserManager.saveAll();
         }
-        catch (NullPointerException ignored) {}
+        catch (NullPointerException ignored) {
+        }
 
         getServer().getScheduler().cancelTasks(this);
         HandlerList.unregisterAll(this);

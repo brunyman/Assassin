@@ -21,6 +21,7 @@ public interface DatabaseManager {
      * Remove a user from the database.
      *
      * @param playerName The name of the user to remove
+     *
      * @return true if the user was successfully removed, false otherwise
      */
     public boolean removeUser(String playerName);
@@ -33,19 +34,21 @@ public interface DatabaseManager {
     public void saveUser(PlayerProfile profile);
 
     /**
-    * Retrieve leaderboard status.
-    *
-    * @param skillName The skill to retrieve status on
-    * @param pageNumber Which page in the leaderboards to retrieve
-    * @param statsPerPage The number of stats per page
-    * @return the requested leaderboard information
-    */
+     * Retrieve leaderboard status.
+     *
+     * @param skillName    The skill to retrieve status on
+     * @param pageNumber   Which page in the leaderboards to retrieve
+     * @param statsPerPage The number of stats per page
+     *
+     * @return the requested leaderboard information
+     */
     public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage);
 
     /**
      * Retrieve rank status.
      *
      * @param playerName The name of the user to retrieve the rankings for
+     *
      * @return the requested rank information
      */
     public Map<String, Integer> readRank(String playerName);
@@ -61,10 +64,11 @@ public interface DatabaseManager {
      * Load a player from the database.
      *
      * @param playerName The name of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
+     * @param createNew  Whether to create a new record if the player is not
+     *                   found
+     *
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
+     * and createNew is false
      */
     public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
 

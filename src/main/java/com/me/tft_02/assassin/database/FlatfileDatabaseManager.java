@@ -67,7 +67,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     try {
                         lastPlayed = Long.parseLong(character[11]) * Misc.TIME_CONVERSION_FACTOR;
                     }
-                    catch (NumberFormatException e) {}
+                    catch (NumberFormatException e) {
+                    }
                     if (lastPlayed == 0) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(name);
                         lastPlayed = player.getLastPlayed();

@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
+
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 public class TagListener implements Listener {

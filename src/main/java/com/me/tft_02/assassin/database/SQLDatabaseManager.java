@@ -132,7 +132,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     result.close();
                     return ret;
                 }
-                catch (SQLException e) {}
+                catch (SQLException e) {
+                }
             }
             result.close();
         }
@@ -177,7 +178,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             statement = connection.prepareStatement(
                     "SELECT "
-                    + "WHERE u.user = ?");
+                            + "WHERE u.user = ?");
             List<String> usernames = getStoredUsers();
             ResultSet result = null;
             for (String playerName : usernames) {
@@ -200,28 +201,30 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
         }
 
     }
+
     /**
-    * Check connection status and re-establish if dead or stale.
-    *
-    * If the very first immediate attempt fails, further attempts
-    * will be made in progressively larger intervals up to MAX_WAIT
-    * intervals.
-    *
-    * This allows for MySQL to time out idle connections as needed by
-    * server operator, without affecting Assassin, while still providing
-    * protection against a database outage taking down Bukkit's tick
-    * processing loop due to attempting a database connection each
-    * time Assassin needs the database.
-    *
-    * @return the boolean value for whether or not we are connected
-    */
+     * Check connection status and re-establish if dead or stale.
+     * <p/>
+     * If the very first immediate attempt fails, further attempts
+     * will be made in progressively larger intervals up to MAX_WAIT
+     * intervals.
+     * <p/>
+     * This allows for MySQL to time out idle connections as needed by
+     * server operator, without affecting Assassin, while still providing
+     * protection against a database outage taking down Bukkit's tick
+     * processing loop due to attempting a database connection each
+     * time Assassin needs the database.
+     *
+     * @return the boolean value for whether or not we are connected
+     */
     public boolean checkConnected() {
         boolean isClosed = true;
         boolean isValid = false;
@@ -316,7 +319,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (stmt != null) {
                 try {
                     stmt.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -382,6 +386,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Attempt to write the SQL query.
      *
      * @param sql Query to write.
+     *
      * @return true if the query was successfully written, false otherwise.
      */
     private boolean write(String sql) {
@@ -417,6 +422,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Returns the number of rows affected by either a DELETE or UPDATE query
      *
      * @param sql SQL query to execute
+     *
      * @return the number of rows affected
      */
     private int update(String sql) {
@@ -451,6 +457,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Read SQL query.
      *
      * @param sql SQL query to read
+     *
      * @return the rows in this SQL query
      */
     private HashMap<Integer, ArrayList<String>> read(String sql) {
@@ -496,6 +503,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Get the Integer. Only return first row / first field.
      *
      * @param statement SQL query to execute
+     *
      * @return the value in the first row / first field
      */
     private int readInt(PreparedStatement statement) {
@@ -624,6 +632,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Retrieve the database id for a player
      *
      * @param playerName The name of the user to retrieve the id for
+     *
      * @return the requested id or -1 if not found
      */
     private int readId(String playerName) {

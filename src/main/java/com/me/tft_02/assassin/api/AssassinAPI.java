@@ -16,6 +16,7 @@ public final class AssassinAPI {
      * Check if the player is an Assassin.
      *
      * @param player The player to check
+     *
      * @return true if player is an Assassin.
      */
     public boolean isAssassin(Player player) {
@@ -26,6 +27,7 @@ public final class AssassinAPI {
      * Get the Bounty collected by a player
      *
      * @param player The player to check
+     *
      * @return bounty collected
      */
     public int getBountyCollected(Player player) {
@@ -36,6 +38,7 @@ public final class AssassinAPI {
      * Get the Kill count of a player
      *
      * @param player The player to check
+     *
      * @return kill count
      */
     public int getKillCount(Player player) {
