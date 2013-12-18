@@ -12,7 +12,6 @@ import com.me.tft_02.assassin.util.player.UserManager;
 import org.kitteh.tag.PlayerReceiveNameTagEvent;
 
 public class TagListener implements Listener {
-
     private PlayerData data = new PlayerData();
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

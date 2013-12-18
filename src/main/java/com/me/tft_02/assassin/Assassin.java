@@ -19,6 +19,7 @@ import com.me.tft_02.assassin.database.DatabaseManager;
 import com.me.tft_02.assassin.database.DatabaseManagerFactory;
 import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
+import com.me.tft_02.assassin.listeners.InventoryListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
 import com.me.tft_02.assassin.listeners.TagListener;
 import com.me.tft_02.assassin.locale.LocaleLoader;
@@ -120,6 +121,7 @@ public class Assassin extends JavaPlugin {
 
         pluginManager.registerEvents(new ChatListener(), this);
         pluginManager.registerEvents(new EntityListener(), this);
+        pluginManager.registerEvents(new InventoryListener(), this);
         pluginManager.registerEvents(new PlayerListener(), this);
         pluginManager.registerEvents(new TagListener(), this);
     }

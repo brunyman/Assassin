@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -16,8 +15,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -39,10 +36,10 @@ import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
+
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class PlayerListener implements Listener {
-
     private AssassinMode assassin = new AssassinMode();
     private Bounty bounty = new Bounty();
     private PlayerData data = new PlayerData();
@@ -80,7 +77,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onPlayerRespawn(PlayerRespawnEvent event) {
         final Player player = event.getPlayer();
         if (data.isAssassin(UserManager.getPlayer(player))) {
@@ -119,16 +116,6 @@ public class PlayerListener implements Listener {
 
         assassinPlayer.getProfile().save();
         UserManager.remove(player.getName());
-    }
-
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        HumanEntity player = event.getWhoClicked();
-        ItemStack itemstack = event.getCurrentItem();
-
-        if (event.getSlotType() == SlotType.ARMOR && itemcheck.isMask(itemstack)) {
-            assassin.activateHostileMode((Player) player);
-        }
     }
 
     /**
@@ -260,7 +247,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage();
