@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.player.PlayerData;
 
 public class Misc {
@@ -93,17 +94,17 @@ public class Misc {
         List<String> matchedPlayers = new ArrayList<String>();
 
         for (OfflinePlayer offlinePlayer : Assassin.p.getServer().getOfflinePlayers()) {
-            String iterPlayerName = offlinePlayer.getName();
+            String playerName = offlinePlayer.getName();
 
-            if (partialName.equalsIgnoreCase(iterPlayerName)) {
+            if (partialName.equalsIgnoreCase(playerName)) {
                 // Exact match
                 matchedPlayers.clear();
-                matchedPlayers.add(iterPlayerName);
+                matchedPlayers.add(playerName);
                 break;
             }
-            if (iterPlayerName.toLowerCase().contains(partialName.toLowerCase())) {
+            if (playerName.toLowerCase().contains(partialName.toLowerCase())) {
                 // Partial match
-                matchedPlayers.add(iterPlayerName);
+                matchedPlayers.add(playerName);
             }
         }
 
@@ -118,11 +119,21 @@ public class Misc {
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
-        List<String> matches = matchPlayer(partialName);
+        if (Config.getInstance().getMatchOfflinePlayers()) {
+            List<String> matches = matchPlayer(partialName);
 
-        if (matches.size() == 1) {
-            partialName = matches.get(0);
+            if (matches.size() == 1) {
+                partialName = matches.get(0);
+            }
+
         }
+        else {
+            Player player = Assassin.p.getServer().getPlayer(partialName);
+            if (player != null) {
+                partialName = player.getName();
+            }
+        }
+
         return partialName;
     }
 

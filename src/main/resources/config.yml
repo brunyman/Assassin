@@ -58,3 +58,7 @@ Crafting:
     Mask:
         Recipe_Item: WOOL|15
         Mask_Item: WOOL|15
+
+Commands:
+    Generic:
+        Match_OfflinePlayers: false
