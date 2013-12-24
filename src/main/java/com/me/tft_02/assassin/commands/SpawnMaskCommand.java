@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.AssassinMode;
 import com.me.tft_02.assassin.util.CommandUtils;
+import com.me.tft_02.assassin.util.Permissions;
 
 public class SpawnMaskCommand implements CommandExecutor {
 
@@ -20,7 +21,7 @@ public class SpawnMaskCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("assassin.commands.spawnmask")) {
+        if (!Permissions.mask(player)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

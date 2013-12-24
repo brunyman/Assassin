@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Misc;
+import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
 
 public class LeaderboardCommand implements CommandExecutor {
@@ -23,7 +24,7 @@ public class LeaderboardCommand implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!player.hasPermission("assassin.commands.leaderboard")) {
+        if (!Permissions.leaderboard(player)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

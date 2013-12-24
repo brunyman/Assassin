@@ -35,4 +35,8 @@ public class Permissions {
     public static boolean deactivate(Permissible permissible) {
         return permissible.hasPermission("assassin.commands.deactivate");
     }
+
+    public static boolean leaderboard(Permissible permissible) {
+        return permissible.hasPermission("assassin.commands.leaderboard");
+    }
 }
