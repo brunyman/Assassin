@@ -2,27 +2,24 @@ package com.me.tft_02.assassin.util.player;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
-import com.me.tft_02.assassin.util.Misc;
 
 public final class UserManager {
     private final static Map<String, AssassinPlayer> players = new HashMap<String, AssassinPlayer>();
 
-    private UserManager() {
-    }
+    private UserManager() {}
 
     /**
      * Add a new user.
      *
      * @param player The player to create a user record for
-     *
      * @return the player's {@link AssassinPlayer} object
      */
     public static AssassinPlayer addUser(Player player) {
@@ -74,44 +71,51 @@ public final class UserManager {
     }
 
     /**
-     * Get the AssassinPlayer of a player by a partial name.
+     * Get the AssassinPlayer of a player by name.
      *
-     * @param playerName The partial name of the player whose AssassinPlayer to retrieve
-     *
+     * @param playerName The name of the player whose AssassinPlayer to retrieve
      * @return the player's AssassinPlayer object
      */
     public static AssassinPlayer getPlayer(String playerName) {
-        List<String> matches = Misc.matchPlayer(playerName);
-
-        for (String match : matches) {
-            System.out.println(match);
-        }
-        if (matches.size() == 1) {
-            playerName = matches.get(0);
-        }
-
-        return players.get(playerName);
-    }
-
-    /**
-     * +     * Get the AssassinPlayer of a player by the exact name.
-     * +     *
-     * +     * @param playerName The exact name of the player whose AssassinPlayer to retrieve
-     * +     * @return the player's {@link AssassinPlayer} object
-     * +
-     */
-    public static AssassinPlayer getPlayerExact(String playerName) {
-        return players.get(playerName);
+        return retrieveAssassinPlayer(playerName, false);
     }
 
     /**
      * Get the AssassinPlayer of a player.
      *
      * @param player The player whose AssassinPlayer to retrieve
-     *
-     * @return the player's {@link AssassinPlayer} object
+     * @return the player's AssassinPlayer object
      */
     public static AssassinPlayer getPlayer(OfflinePlayer player) {
-        return players.get(player.getName());
+        return retrieveAssassinPlayer(player.getName(), false);
+    }
+
+    public static AssassinPlayer getPlayer(OfflinePlayer player, boolean offlineValid) {
+        return retrieveAssassinPlayer(player.getName(), offlineValid);
+    }
+
+    public static AssassinPlayer getPlayer(String playerName, boolean offlineValid) {
+        return retrieveAssassinPlayer(playerName, offlineValid);
+    }
+
+    private static AssassinPlayer retrieveAssassinPlayer(String playerName, boolean offlineValid) {
+        AssassinPlayer assassinPlayer = players.get(playerName);
+
+        if (assassinPlayer == null) {
+            Player player = Assassin.p.getServer().getPlayerExact(playerName);
+
+            if (player == null) {
+                if (!offlineValid) {
+                    Assassin.p.getLogger().warning("A valid AssassinPlayer object could not be found for " + playerName + ".");
+                }
+
+                return null;
+            }
+
+            assassinPlayer = new AssassinPlayer(player);
+            players.put(playerName, assassinPlayer);
+        }
+
+        return assassinPlayer;
     }
 }
