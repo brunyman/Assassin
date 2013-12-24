@@ -30,6 +30,7 @@ import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
+import com.me.tft_02.assassin.runnables.player.UpdateInventoryTask;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
@@ -142,6 +143,7 @@ public class PlayerListener implements Listener {
                 }
 
                 event.setCancelled(true);
+                new UpdateInventoryTask(player).runTask(Assassin.p);
 
                 if (!Permissions.maskUse(player)) {
                     player.sendMessage(ChatColor.RED + "You haven't got permission.");

@@ -13,6 +13,7 @@ import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.items.Mask;
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
+import com.me.tft_02.assassin.runnables.player.UpdateInventoryTask;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
@@ -161,7 +162,7 @@ public class AssassinMode {
         }
 
         inventory.setHelmet(assassinMask);
-        player.updateInventory();
+        new UpdateInventoryTask(player).runTask(Assassin.p);
     }
 
     /**
@@ -174,7 +175,7 @@ public class AssassinMode {
         ItemStack assassinMask = mask.getMaskPlain();
 
         inventory.setHelmet(assassinMask);
-        player.updateInventory();
+        new UpdateInventoryTask(player).runTask(Assassin.p);
     }
 
     /**
@@ -213,7 +214,8 @@ public class AssassinMode {
             inventory.setItem(helmetindex, null);
             inventory.setHelmet(helmet);
         }
-        player.updateInventory();
+
+        new UpdateInventoryTask(player).runTask(Assassin.p);
     }
 
     /**
@@ -226,6 +228,6 @@ public class AssassinMode {
         ItemStack assassinMask = mask.getMask(amount, false);
         int emptySlot = inventory.firstEmpty();
         inventory.setItem(emptySlot, assassinMask);
-        player.updateInventory();
+        new UpdateInventoryTask(player).runTask(Assassin.p);
     }
 }
