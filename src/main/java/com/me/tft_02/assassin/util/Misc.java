@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,6 +20,8 @@ import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.player.PlayerData;
 
 public class Misc {
+    private static Random random = new Random();
+
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final int TICK_CONVERSION_FACTOR = 20;
 
@@ -145,5 +148,17 @@ public class Misc {
         MaterialData itemMaterialData = new MaterialData(itemMaterial, blockData);
 
         return itemMaterialData;
+    }
+
+    public static boolean activationSuccessful(int chance) {
+        if (Misc.getRandom().nextInt(100) >= chance) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static Random getRandom() {
+        return random;
     }
 }

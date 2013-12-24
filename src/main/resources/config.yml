@@ -54,6 +54,11 @@ Assassin:
     - /tpahere
     - /tpall
     - /tpaall
+
+Chat:
+    Eavesdrop_Chance: 25
+    Eavesdrop_Distance: 250
+
 Crafting:
     Mask:
         Recipe_Item: WOOL|15

@@ -81,6 +81,11 @@ public class Config extends AutoUpdateConfigLoader {
     public int getBountyAmount() { return config.getInt("Assassin.Bounty_Increase_Amount", 10); }
     public String getCurrencyIcon() { return config.getString("Assassin.Bounty_Currency", "$"); }
 
+    /* CHAT SETTINGS */
+    public int getChatEavesdropChance() { return config.getInt("Chat.Eavesdrop_Chance", 25); }
+    public int getChatEavesdropDistance() { return config.getInt("Chat.Eavesdrop_Distance", 250); }
+
+    /* CRAFTING SETTINGS */
     public String getMaskRecipeItem() { return config.getString("Crafting.Mask.Recipe_Item", "WOOL|15"); }
     public String getMaskResultItem() { return config.getString("Crafting.Mask.Mask_Item", "WOOL|15"); }
 

@@ -8,68 +8,67 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.me.tft_02.assassin.Assassin;
+import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.MessageScrambler;
+import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ChatListener implements Listener {
 
     private PlayerData data = new PlayerData();
-    private MessageScrambler message = new MessageScrambler();
-
-    //	private final Random random = new Random();
+    private MessageScrambler scrambler = new MessageScrambler();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-        int number = data.getAssassinNumber(player);
-        String pName = ChatColor.DARK_RED + "[ASSASSIN " + number + "]: " + ChatColor.RESET;
-        String msg = event.getMessage();
+        String message = event.getMessage();
 
-        if (msg == null) {
+        if (message == null) {
             return;
         }
-        if (data.isAssassin(UserManager.getPlayer(player))) {
-            if (data.getAssassinChatMode(player)) {
-                String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
-                for (Player assassin : data.getOnlineAssassins()) {
-                    assassin.sendMessage(prefix + msg);
-                    event.setCancelled(true);
-                }
 
-                //When in chatting in Assassin chat, other players who are near can hear scrambled chat.
+        Player player = event.getPlayer();
+        int number = data.getAssassinNumber(player);
 
-                //				float diceroll = random.nextInt(100);
-                //				int chance = plugin.getConfig().getInt("Assassin.messages_chance");
-                //				if (chance > 0 && chance < diceroll){
-                double chatDistance = 250;
-                if (chatDistance > 0) {
-                    for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
-                        if (players.getWorld() != player.getWorld() || players.getLocation().distance(player.getLocation()) > chatDistance) {
-                            event.getRecipients().remove(players);
-                        }
-                        else {
-                            if (!data.isAssassin(UserManager.getPlayer(players))) {
-                                //Assassins have already received unscrambled message
-                                //But this isn't nessecary here... I think
-                                //								for (Player assassin : data.getOnlineAssassins()) {
-                                //									event.getRecipients().remove(assassin);
-                                //								}
-                                //Show scrambled chat messages
-                                String scrambled = message.Scrambled(msg);
-                                //								event.setFormat(pName + scrambled);
-                                players.sendMessage(pName + scrambled);
-                                event.setCancelled(true);
-                            }
-                        }
-                    }
+        if (!data.isAssassin(UserManager.getPlayer(player))) {
+            return;
+        }
 
-                }
-                //If an Assassin chats, but not in Assassin chat, show normal message with pName formatting
+        if (!data.getAssassinChatMode(player)) {
+            // When not in Assassin chat, show normal message
+            // with playerName formatting:  event.setFormat(playerName + message);
+            return;
+        }
+
+        String prefix = ChatColor.DARK_RED + "(#" + number + ") " + ChatColor.RESET;
+
+        for (Player assassin : data.getOnlineAssassins()) {
+            assassin.sendMessage(prefix + message);
+        }
+
+        event.setCancelled(true);
+
+        if (!Misc.activationSuccessful(Config.getInstance().getChatEavesdropChance())) {
+            return;
+        }
+
+        // When in chatting in Assassin chat, other players who are near can hear scrambled chat.
+        double chatDistance = Config.getInstance().getChatEavesdropDistance();
+
+        if (chatDistance <= 0) {
+            return;
+        }
+
+        for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
+            if (data.isAssassin(UserManager.getPlayer(players)) || !Misc.isNear(players.getLocation(), player.getLocation(), chatDistance)) {
+                event.getRecipients().remove(players);
             }
-            else {
-                event.setFormat(pName + msg);
-            }
+
+            // Show scrambled chat messages
+            String playerName = ChatColor.DARK_RED + "[ASSASSIN " + number + "]: " + ChatColor.RESET;
+            String scrambled = scrambler.Scrambled(message);
+
+            players.sendMessage(playerName + scrambled);
         }
     }
 }
