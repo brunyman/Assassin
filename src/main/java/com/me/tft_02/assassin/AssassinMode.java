@@ -187,9 +187,10 @@ public class AssassinMode {
     protected void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
-        if (itemHead.getTypeId() != 0) {
+        if (itemHead.getType() != null) {
             inventory.setHelmet(null);
         }
+
         //Gives back the mask if config says so
         if (Config.getInstance().getReturnMask()) {
             spawnMask(player, 1);

@@ -134,7 +134,7 @@ public class PlayerListener implements Listener {
         switch (action) {
             case RIGHT_CLICK_BLOCK:
             case RIGHT_CLICK_AIR:
-                if ((inHand.getTypeId() != 35) || !BlockChecks.abilityBlockCheck(block)) {
+                if (!BlockChecks.abilityBlockCheck(block)) {
                     return;
                 }
 

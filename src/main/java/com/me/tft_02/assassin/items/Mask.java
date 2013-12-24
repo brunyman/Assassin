@@ -3,6 +3,7 @@ package com.me.tft_02.assassin.items;
 import java.util.ArrayList;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
@@ -15,7 +16,7 @@ import com.me.tft_02.assassin.util.Misc;
 public class Mask {
 
     public ItemStack getMask(int amount, boolean plain) {
-        MaterialData maskItem = Misc.getMaterialData(Config.getInstance().getMaskResultItem());
+        MaterialData maskItem = getMaterialData();
         ItemStack itemStack = maskItem.toItemStack(amount);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
@@ -42,5 +43,13 @@ public class Mask {
         AssassinMask.setIngredient('X', Misc.getMaterialData(Config.getInstance().getMaskRecipeItem()));
 
         return AssassinMask;
+    }
+
+    public static MaterialData getMaterialData() {
+        return Misc.getMaterialData(Config.getInstance().getMaskResultItem());
+    }
+
+    public static Material getMaterial() {
+        return getMaterialData().getItemType();
     }
 }

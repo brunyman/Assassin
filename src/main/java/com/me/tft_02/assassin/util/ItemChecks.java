@@ -5,12 +5,14 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.me.tft_02.assassin.items.Mask;
+
 public class ItemChecks {
 
     public boolean isMask(ItemStack is) {
         Material material = is.getType();
 
-        if (material != Material.WOOL) {
+        if (material != Mask.getMaterial()) {
             return false;
         }
 

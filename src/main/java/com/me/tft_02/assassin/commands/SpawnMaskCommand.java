@@ -32,7 +32,7 @@ public class SpawnMaskCommand implements CommandExecutor {
         }
 
         assassin.spawnMask(player, amount);
-        player.sendMessage("Spawned one mask");
+        player.sendMessage("Spawned masks (" + amount + ")");
         return true;
     }
 }
