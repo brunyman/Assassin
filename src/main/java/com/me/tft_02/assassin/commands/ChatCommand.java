@@ -5,15 +5,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Permissions;
-import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ChatCommand implements CommandExecutor {
-
-    private PlayerData data = new PlayerData();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -28,7 +26,7 @@ public class ChatCommand implements CommandExecutor {
             return true;
         }
 
-        if (!data.isAssassin(UserManager.getPlayer(player))) {
+        if (!UserManager.getPlayer(player).isAssassin()) {
             player.sendMessage(LocaleLoader.getString("Commands.NotAnAssassin", player.getName()));
             return true;
         }
@@ -38,13 +36,15 @@ public class ChatCommand implements CommandExecutor {
     }
 
     private void toggleAssassinChat(Player player) {
-        if (!data.getAssassinChatMode(player)) {
-            data.enterAssassinChat(player);
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+
+        if (!assassinPlayer.isAssassinChatEnabled()) {
             player.sendMessage(LocaleLoader.getString("Commands.Chat.On"));
         }
         else {
-            data.leaveAssassinChat(player);
             player.sendMessage(LocaleLoader.getString("Commands.Chat.Off"));
         }
+
+        assassinPlayer.toggleAssassinChat();
     }
 }

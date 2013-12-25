@@ -17,7 +17,7 @@ import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
-import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class Misc {
     private static Random random = new Random();
@@ -27,10 +27,6 @@ public class Misc {
 
     public static boolean isNPCEntity(Entity entity) {
         return (entity == null || entity.hasMetadata("NPC"));
-    }
-
-    public static int getSystemTime() {
-        return (int) System.currentTimeMillis() / 1000;
     }
 
     /**
@@ -52,7 +48,10 @@ public class Misc {
     }
 
     public static String getStringTimeLeft(Player player) {
-        long time = PlayerData.getActiveTimeLeft(player);
+        int activetime = UserManager.getPlayer(player).getProfile().getActiveTime();
+        int maxactive = Config.getInstance().getActiveLength();
+        long time = maxactive - activetime;
+
         int hours = (int) time / 3600;
         int remainder = (int) time - hours * 3600;
         int mins = remainder / 60;

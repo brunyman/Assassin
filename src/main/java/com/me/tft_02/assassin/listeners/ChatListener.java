@@ -9,6 +9,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.util.MessageScrambler;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.PlayerData;
@@ -30,11 +31,12 @@ public class ChatListener implements Listener {
         Player player = event.getPlayer();
         int number = data.getAssassinNumber(player);
 
-        if (!data.isAssassin(UserManager.getPlayer(player))) {
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+        if (!assassinPlayer.isAssassin()) {
             return;
         }
 
-        if (!data.getAssassinChatMode(player)) {
+        if (!assassinPlayer.isAssassinChatEnabled()) {
             // When not in Assassin chat, show normal message
             // with playerName formatting:  event.setFormat(playerName + message);
             return;
@@ -60,7 +62,7 @@ public class ChatListener implements Listener {
         }
 
         for (Player players : Assassin.p.getServer().getOnlinePlayers()) {
-            if (data.isAssassin(UserManager.getPlayer(players)) || !Misc.isNear(players.getLocation(), player.getLocation(), chatDistance)) {
+            if (UserManager.getPlayer(players).isAssassin() || !Misc.isNear(players.getLocation(), player.getLocation(), chatDistance)) {
                 event.getRecipients().remove(players);
             }
 

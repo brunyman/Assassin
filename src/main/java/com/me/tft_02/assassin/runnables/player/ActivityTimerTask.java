@@ -12,12 +12,10 @@ import com.me.tft_02.assassin.AssassinMode;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
-import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ActivityTimerTask extends BukkitRunnable {
 
-    private PlayerData data = new PlayerData();
     private AssassinMode assassin = new AssassinMode();
 
     private static HashSet<String> warned = new HashSet<String>();
@@ -31,52 +29,56 @@ public class ActivityTimerTask extends BukkitRunnable {
     private void updateActiveTime() {
         for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
             AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
-            if (data.isAssassin(assassinPlayer)) {
-                data.addLogoutTime(player);
-                data.saveActiveTime(player);
-                data.addLoginTime(player);
+
+            if (assassinPlayer.isAssassin()) {
+                assassinPlayer.actualizeLogoutTime();
+                assassinPlayer.actualizeActiveTime();
+                assassinPlayer.actualizeLoginTime();
             }
         }
     }
 
     private void updateAssassinStatus() {
         long maxactivetime = Config.getInstance().getActiveLength();
-//TODO Loop assassins instead
+        //TODO Loop assassins instead
+
         for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
             AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
-            if (!(data.isAssassin(assassinPlayer) || data.isHostile(assassinPlayer))) {
+            if (!(assassinPlayer.isAssassin() || assassinPlayer.isHostile())) {
                 continue;
             }
 
-            long activetime = PlayerData.getActiveTime(player);
+            long activetime = assassinPlayer.getProfile().getActiveTime();
 
             if (activetime >= maxactivetime) {
-                if (data.isAssassin(assassinPlayer)) {
+                if (assassinPlayer.isAssassin()) {
                     assassin.deactivateAssassin(player);
                 }
-                else if (data.isHostile(assassinPlayer)) {
+                else if (assassinPlayer.isHostile()) {
                     assassinPlayer.getProfile().setStatus(Status.NORMAL);
                 }
-                data.resetActiveTime(player);
+                assassinPlayer.resetActiveTime();
                 Assassin.p.debug(player + " status set to Neutral. Active time reached max.");
+                break;
+            }
+
+            long warntime = Config.getInstance().getWarningTimeDeactivate();
+            if (warntime <= 0) {
+                break;
+            }
+
+            if (activetime + warntime >= maxactivetime && !hasBeenWarned(player)) {
+                player.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
+                warned.add(player.getName());
+
+                if (Config.getInstance().getParticleEffectsEnabled()) {
+                    player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+                }
+
+                Assassin.p.debug(player + " has received a warning because his Assassin mode is running out.");
             }
             else {
-                long warntime = Config.getInstance().getWarningTimeDeactivate();
-                if (warntime > 0) {
-                    if (activetime + warntime >= maxactivetime && !hasBeenWarned(player)) {
-                        player.sendMessage(ChatColor.GOLD + "ASSASSIN MODE WILL GET DEACTIVATED SHORTLY");
-                        warned.add(player.getName());
-
-                        if (Config.getInstance().getParticleEffectsEnabled()) {
-                            player.getWorld().playEffect(player.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
-                        }
-
-                        Assassin.p.debug(player + " has received a warning because his Assassin mode is running out.");
-                    }
-                    else {
-                        warned.remove(player.getName());
-                    }
-                }
+                warned.remove(player.getName());
             }
         }
     }

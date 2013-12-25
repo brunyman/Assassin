@@ -11,6 +11,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
+import com.me.tft_02.assassin.datatypes.player.PlayerProfile;
 import com.me.tft_02.assassin.items.Mask;
 import com.me.tft_02.assassin.runnables.player.AssassinModeActivateTask;
 import com.me.tft_02.assassin.runnables.player.UpdateInventoryTask;
@@ -32,7 +34,7 @@ public class AssassinMode {
      * @param player Player whom will be given the traits.
      */
     public void applyTraits(final Player player) {
-        data.addLoginTime(player);
+        UserManager.getPlayer(player).actualizeLoginTime();
 
         new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 1 * Misc.TICK_CONVERSION_FACTOR); // Start 1 seconds later.
 
@@ -47,24 +49,29 @@ public class AssassinMode {
      * @param player Player who's mode will be changed.
      */
     public void activateAssassin(Player player) {
-        UserManager.getPlayer(player).getProfile().setStatus(Status.ASSASSIN);
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+        PlayerProfile profile = assassinPlayer.getProfile();
+        Location location = player.getLocation();
+
+        profile.setStatus(Status.ASSASSIN);
+        profile.setLocation(location);
 
         applyTraits(player);
-        Location location = player.getLocation();
-        data.addLocation(player, location);
+
         location.setY(player.getWorld().getMaxHeight() + 30D);
         player.getWorld().strikeLightningEffect(location);
 
         double messageDistance = Config.getInstance().getMessageDistance();
         if (Config.getInstance().getWarnOnActivate() && messageDistance > 0) {
             for (Player players : player.getWorld().getPlayers()) {
-                if (players != player && Misc.isNear(players.getLocation(), location, messageDistance)) {
+                if (players != player && Misc.isNear(players.getLocation(), player.getLocation(), messageDistance)) {
                     players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT A MASK ON!");
                 }
             }
         }
 
         applyMask(player);
+
         data.addCooldownTimer(player);
 
         if (Config.getInstance().getParticleEffectsEnabled()) {
@@ -78,8 +85,10 @@ public class AssassinMode {
      * @param player Player who's mode will be changed.
      */
     public void activateHostileMode(Player player) {
-        data.leaveAssassinChat(player);
-        UserManager.getPlayer(player).getProfile().setStatus(Status.HOSTILE);
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+        assassinPlayer.getProfile().setStatus(Status.HOSTILE);
+        assassinPlayer.disableAssassinChat();
+
         player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
         resetName(player);
@@ -109,8 +118,10 @@ public class AssassinMode {
      * @param player Player who's mode will be changed.
      */
     public void deactivateAssassin(Player player) {
-        data.leaveAssassinChat(player);
-        UserManager.getPlayer(player).getProfile().setStatus(Status.NORMAL);
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+
+        assassinPlayer.disableAssassinChat();
+        assassinPlayer.getProfile().setStatus(Status.NORMAL);
         player.sendMessage(ChatColor.GRAY + "ASSASSIN MODE DEACTIVATED");
 
         resetName(player);
@@ -118,7 +129,7 @@ public class AssassinMode {
         removeMask(player);
 
         if (Config.getInstance().getTeleportOnDeactivate()) {
-            Location previousLocation = data.getLocation(player);
+            Location previousLocation = assassinPlayer.getProfile().getLocation();
             if (previousLocation == null) {
                 player.sendMessage(ChatColor.RED + "Location not found!");
             }
@@ -139,7 +150,6 @@ public class AssassinMode {
      */
     protected void applyMask(Player player) {
         PlayerInventory inventory = player.getInventory();
-        ItemStack assassinMask = mask.getMaskPlain();
 
         ItemStack itemHead = inventory.getHelmet();
         int amountInHand = inventory.getItemInHand().getAmount();
@@ -161,7 +171,7 @@ public class AssassinMode {
             inventory.setItemInHand(assassinMasks);
         }
 
-        inventory.setHelmet(assassinMask);
+        inventory.setHelmet(mask.getMaskPlain());
         new UpdateInventoryTask(player).runTask(Assassin.p);
     }
 
@@ -187,16 +197,16 @@ public class AssassinMode {
     protected void removeMask(Player player) {
         PlayerInventory inventory = player.getInventory();
         ItemStack itemHead = inventory.getHelmet();
-        if (itemHead.getType() != null) {
+        if (itemHead != null) {
             inventory.setHelmet(null);
         }
 
-        //Gives back the mask if config says so
+        // Gives back the mask if config says so
         if (Config.getInstance().getReturnMask()) {
             spawnMask(player, 1);
         }
 
-        //If the player was wearing a helmet, put it back on
+        // If the player was wearing a helmet, put it back on
         int helmetindex = -1;
         if (inventory.contains(Material.DIAMOND_HELMET)) {
             helmetindex = inventory.first(Material.DIAMOND_HELMET);

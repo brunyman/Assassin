@@ -69,6 +69,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getReturnMask() { return config.getBoolean("Assassin.Return_Mask", false); }
     public int getCooldownLength() { return config.getInt("Assassin.Cooldown_Length", 600); }
     public double getActivationCost() { return config.getDouble("Assassin.Activation_Cost", 0); }
+    public boolean getPreventMaskDropOnDeath() { return config.getBoolean("Assassin.Prevent_Mask_Drop_On_Death", true); }
 
     public boolean getWarnOnActivate() { return config.getBoolean("Assassin.Warn_Others_On_Activation", true); }
     public boolean getWarnWhenNear() { return config.getBoolean("Assassin.Warn_Others_When_Near", true); }

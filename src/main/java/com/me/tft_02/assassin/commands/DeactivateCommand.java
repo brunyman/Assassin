@@ -8,16 +8,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Permissions;
-import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 public class DeactivateCommand implements CommandExecutor {
 
     private AssassinMode assassin = new AssassinMode();
-    private PlayerData data = new PlayerData();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -41,9 +40,10 @@ public class DeactivateCommand implements CommandExecutor {
             return true;
         }
 
-        if (data.isAssassin(UserManager.getPlayer(target))) {
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(target);
+        if (assassinPlayer.isAssassin()) {
             assassin.deactivateAssassin((Player) target);
-            data.resetActiveTime((Player) target);
+            assassinPlayer.resetActiveTime();
             return true;
         }
         else {

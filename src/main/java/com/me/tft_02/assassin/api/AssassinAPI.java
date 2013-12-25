@@ -20,7 +20,7 @@ public final class AssassinAPI {
      * @return true if player is an Assassin.
      */
     public boolean isAssassin(Player player) {
-        return data.isAssassin(UserManager.getPlayer(player));
+        return UserManager.getPlayer(player).isAssassin();
     }
 
     /**

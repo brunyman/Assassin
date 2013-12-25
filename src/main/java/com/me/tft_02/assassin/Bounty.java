@@ -22,7 +22,7 @@ public class Bounty {
             player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
         }
         else {
-            if (data.isAssassin(UserManager.getPlayer(killer))) {
+            if (UserManager.getPlayer(killer).isAssassin()) {
                 // Only increase bounty when attacking a different player without bounty
                 data.increaseKillCount(killer);
                 TagAPI.refreshPlayer(killer);

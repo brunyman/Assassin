@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.Bounty;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.Permissions;
@@ -30,11 +31,12 @@ public class StatusCommand implements CommandExecutor {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
-        String status = data.getStatus(player);
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+        String status = assassinPlayer.getStatus();
 
         player.sendMessage(ChatColor.DARK_GRAY + "==========[ " + ChatColor.YELLOW + "Assassin Info" + ChatColor.DARK_GRAY + " ]===========");
         player.sendMessage(ChatColor.GOLD + "Your status = " + ChatColor.AQUA + status);
-        if (data.isAssassin(UserManager.getPlayer(player)) || data.isHostile(UserManager.getPlayer(player))) {
+        if (assassinPlayer.isAssassin() || assassinPlayer.isHostile()) {
             player.sendMessage(ChatColor.GOLD + "Time left in " + status + " Mode = " + ChatColor.DARK_RED + Misc.getStringTimeLeft(player));
         }
         player.sendMessage(ChatColor.DARK_GRAY + "------------------------------------");

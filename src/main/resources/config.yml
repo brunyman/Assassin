@@ -31,6 +31,9 @@ Assassin:
     Return_Mask: false
     Cooldown_Length: 600
 
+    # Assassins cannot drop masks on death
+    Prevent_Mask_Drop_On_Death: true
+
     Activation_Cost: 0
 
     Warn_Others_On_Activation: true
