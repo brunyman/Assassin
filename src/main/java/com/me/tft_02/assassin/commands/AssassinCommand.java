@@ -57,7 +57,7 @@ public class AssassinCommand implements CommandExecutor {
                     return deactivateCommand.onCommand(sender, command, label, args);
                 }
             default:
-                return false;
+                return printUsage(sender);
         }
     }
 

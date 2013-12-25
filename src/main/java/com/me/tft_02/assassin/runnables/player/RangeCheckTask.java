@@ -27,8 +27,8 @@ public class RangeCheckTask extends BukkitRunnable {
         }
 
         for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
-            if (!UserManager.getPlayer(player).isAssassin()) {
-                continue;
+            if (UserManager.getPlayer(player).isAssassin()) {
+                break;
             }
 
             for (Player assassin : data.getOnlineAssassins()) {

@@ -35,6 +35,7 @@ public class AssassinMode {
      */
     public void applyTraits(final Player player) {
         UserManager.getPlayer(player).actualizeLoginTime();
+        data.getAssassins().add(player.getName());
 
         new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 1 * Misc.TICK_CONVERSION_FACTOR); // Start 1 seconds later.
 
@@ -85,6 +86,7 @@ public class AssassinMode {
      * @param player Player who's mode will be changed.
      */
     public void activateHostileMode(Player player) {
+        data.getAssassins().remove(player.getName());
         AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
         assassinPlayer.getProfile().setStatus(Status.HOSTILE);
         assassinPlayer.disableAssassinChat();
@@ -118,6 +120,7 @@ public class AssassinMode {
      * @param player Player who's mode will be changed.
      */
     public void deactivateAssassin(Player player) {
+        data.getAssassins().remove(player.getName());
         AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
 
         assassinPlayer.disableAssassinChat();
