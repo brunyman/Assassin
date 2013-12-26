@@ -6,10 +6,11 @@ Key:
   ! Change
   - Removal
 
-Version 1.1.2 | Tested on CB 1.6.4-R0.1
+Version 1.1.2 | Tested on CB 1.7.2-R0.1
  + Added database managers, flatfile support
  + Added config options to configure the mask item and recipe, also supports mod items!
  = Fixed bug with the Update Checker
+ = Fixed bug where the respawn location when deactivating assassin mode was wrong
  ! Changed Updater, now uses Gravity's updater v2.0
  ! Huge code cleanup and refactoring
 

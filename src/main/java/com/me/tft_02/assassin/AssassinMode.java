@@ -59,8 +59,7 @@ public class AssassinMode {
 
         applyTraits(player);
 
-        location.setY(player.getWorld().getMaxHeight() + 30D);
-        player.getWorld().strikeLightningEffect(location);
+        player.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 1.0f);
 
         double messageDistance = Config.getInstance().getMessageDistance();
         if (Config.getInstance().getWarnOnActivate() && messageDistance > 0) {
