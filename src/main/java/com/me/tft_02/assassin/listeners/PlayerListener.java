@@ -3,8 +3,8 @@ package com.me.tft_02.assassin.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -31,6 +31,7 @@ import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
+import com.me.tft_02.assassin.runnables.player.ApplyPotionsTask;
 import com.me.tft_02.assassin.runnables.player.UpdateInventoryTask;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
@@ -81,21 +82,26 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onPlayerRespawn(PlayerRespawnEvent event) {
-        final Player player = event.getPlayer();
-        if (UserManager.getPlayer(player).isAssassin()) {
+        Player player = event.getPlayer();
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+
+        if (assassinPlayer.isAssassin()) {
             assassin.applyMaskForce(player);
+
+            Location location = assassinPlayer.getProfile().getLocation();
+            if (location != null) {
+                event.setRespawnLocation(location);
+            }
 
             if (!Config.getInstance().getPotionEffectsEnabled()) {
                 return;
             }
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(Assassin.p, new Runnable() {
-                @Override
-                public void run() {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Misc.TICK_CONVERSION_FACTOR * 5, 1));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Misc.TICK_CONVERSION_FACTOR * 30, 1));
-                }
-            }, 5);
+            List<PotionEffect> potionEffects = new ArrayList<PotionEffect>();
+            potionEffects.add(new PotionEffect(PotionEffectType.BLINDNESS, Misc.TICK_CONVERSION_FACTOR * 5, 1));
+            potionEffects.add(new PotionEffect(PotionEffectType.SLOW, Misc.TICK_CONVERSION_FACTOR * 30, 1));
+
+            new ApplyPotionsTask(player, potionEffects).runTaskLater(Assassin.p, 5);
         }
     }
 
