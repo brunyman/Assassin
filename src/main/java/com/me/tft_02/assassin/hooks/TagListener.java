@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.listeners;
+package com.me.tft_02.assassin.hooks;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

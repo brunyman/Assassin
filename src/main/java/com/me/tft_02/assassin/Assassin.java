@@ -19,7 +19,7 @@ import com.me.tft_02.assassin.listeners.ChatListener;
 import com.me.tft_02.assassin.listeners.EntityListener;
 import com.me.tft_02.assassin.listeners.InventoryListener;
 import com.me.tft_02.assassin.listeners.PlayerListener;
-import com.me.tft_02.assassin.listeners.TagListener;
+import com.me.tft_02.assassin.hooks.TagListener;
 import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.runnables.database.SaveTimerTask;
 import com.me.tft_02.assassin.runnables.player.ActivityTimerTask;

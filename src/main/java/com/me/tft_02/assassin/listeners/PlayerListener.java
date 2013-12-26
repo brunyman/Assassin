@@ -88,11 +88,6 @@ public class PlayerListener implements Listener {
         if (assassinPlayer.isAssassin()) {
             assassin.applyMaskForce(player);
 
-            Location location = assassinPlayer.getProfile().getLocation();
-            if (location != null) {
-                event.setRespawnLocation(location);
-            }
-
             if (!Config.getInstance().getPotionEffectsEnabled()) {
                 return;
             }
