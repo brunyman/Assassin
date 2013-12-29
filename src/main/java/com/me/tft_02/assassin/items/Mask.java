@@ -8,16 +8,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 
 import com.me.tft_02.assassin.config.Config;
-import com.me.tft_02.assassin.util.Misc;
 
 public class Mask {
 
-    public ItemStack getMask(int amount, boolean plain) {
-        MaterialData maskItem = getMaterialData();
+    public static ItemStack getMask(int amount, boolean plain) {
+        String resultItem = Config.getInstance().getMaskResultItem();
+        MaterialData maskItem = getMaterialData(resultItem);
+
         ItemStack itemStack = maskItem.toItemStack(amount);
+
+        String[] itemInfo = resultItem.split("[|]");
+        if (maskItem.getItemType() == Material.SKULL_ITEM) {
+            SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+            String owner = (itemInfo.length == 3) ? itemInfo[2] : "Notch";
+            skullMeta.setOwner(owner);
+            itemStack.setItemMeta(skullMeta);
+        }
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.DARK_RED + "Assassin Mask");
 
@@ -33,23 +44,30 @@ public class Mask {
         return itemStack;
     }
 
-    public ItemStack getMaskPlain() {
+    public static ItemStack getMaskPlain() {
         return getMask(1, true);
     }
 
     public static Recipe getRecipe() {
-        ShapedRecipe AssassinMask = new ShapedRecipe(new Mask().getMask(1, false));
+        ShapedRecipe AssassinMask = new ShapedRecipe(getMask(1, false));
         AssassinMask.shape("XXX", "X X");
-        AssassinMask.setIngredient('X', Misc.getMaterialData(Config.getInstance().getMaskRecipeItem()));
+        AssassinMask.setIngredient('X', getMaterialData(Config.getInstance().getMaskRecipeItem()));
 
         return AssassinMask;
     }
 
-    public static MaterialData getMaterialData() {
-        return Misc.getMaterialData(Config.getInstance().getMaskResultItem());
+    public static Material getMaterial() {
+        return getMaskPlain().getType();
     }
 
-    public static Material getMaterial() {
-        return getMaterialData().getItemType();
+    public static MaterialData getMaterialData(String string) {
+        String[] itemInfo = string.split("[|]");
+
+        Material itemMaterial = Material.matchMaterial(itemInfo[0]);
+        byte blockData = (itemInfo.length == 2 || itemInfo.length == 3) ? Byte.valueOf(itemInfo[1]) : 0;
+
+        MaterialData itemMaterialData = new MaterialData(itemMaterial, blockData);
+
+        return itemMaterialData;
     }
 }
