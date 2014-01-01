@@ -18,6 +18,11 @@ public class TagListener implements Listener {
     public void onNameTag(PlayerReceiveNameTagEvent event) {
         Player namedPlayer = event.getNamedPlayer();
         AssassinPlayer assassinPlayer = UserManager.getPlayer(namedPlayer);
+        String tag = event.getTag();
+
+        if (!tag.contains("[ASSASSIN]")) {
+            assassinPlayer.setPreviousTag(tag);
+        }
 
         if (assassinPlayer.isAssassin()) {
             event.setTag(ChatColor.DARK_RED + "[ASSASSIN] " + assassinPlayer.getProfile().getKillAmount());
@@ -25,7 +30,7 @@ public class TagListener implements Listener {
             Assassin.p.debug("Changed player tag to [ASSASSIN] for " + namedPlayer.getName());
         }
         else {
-            event.setTag(ChatColor.RESET + namedPlayer.getDisplayName());
+            event.setTag(assassinPlayer.getPreviousTag());
 
             Assassin.p.debug("Reset player tag for " + namedPlayer.getName());
         }

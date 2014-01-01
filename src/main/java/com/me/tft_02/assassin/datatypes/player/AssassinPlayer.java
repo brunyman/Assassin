@@ -10,6 +10,8 @@ public class AssassinPlayer {
     private Player player;
     private PlayerProfile profile;
 
+    private String previousTag;
+
     private boolean assassinChatMode;
 
     private int loginTime;
@@ -52,6 +54,14 @@ public class AssassinPlayer {
 
     public String getStatus() {
         return StringUtils.getCapitalized(profile.getStatus().toString());
+    }
+
+    public String getPreviousTag() {
+        return previousTag;
+    }
+
+    public void setPreviousTag(String previousTag) {
+        this.previousTag = previousTag;
     }
 
     /*

@@ -10,6 +10,7 @@ Version 1.1.2 | Tested on CB 1.7.2-R0.1
  + Added database managers, flatfile support
  + Added config options to configure the mask item and recipe, also supports mod items!
  + Added support for Skull_Item as masks, set "Mask_Item: SKULL_ITEM|3|PlayerName"
+ = Fixed bug where player tags where reset to the displayname instead of back to the previous tag
  = Fixed bug with the Update Checker
  = Fixed bug where the respawn location when deactivating assassin mode was wrong
  ! Changed API to use static methods
