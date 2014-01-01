@@ -12,6 +12,7 @@ Version 1.1.2 | Tested on CB 1.7.2-R0.1
  + Added support for Skull_Item as masks, set "Mask_Item: SKULL_ITEM|3|PlayerName"
  = Fixed bug with the Update Checker
  = Fixed bug where the respawn location when deactivating assassin mode was wrong
+ ! Changed API to use static methods
  ! Changed Updater, now uses Gravity's updater v2.0
  ! Huge code cleanup and refactoring
 

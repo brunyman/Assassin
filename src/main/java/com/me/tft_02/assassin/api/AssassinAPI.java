@@ -2,15 +2,9 @@ package com.me.tft_02.assassin.api;
 
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 public final class AssassinAPI {
-
-    private AssassinAPI() {
-    }
-
-    private PlayerData data = new PlayerData();
 
     /**
      * Check if the player is an Assassin.
@@ -19,7 +13,7 @@ public final class AssassinAPI {
      *
      * @return true if player is an Assassin.
      */
-    public boolean isAssassin(Player player) {
+    public static boolean isAssassin(Player player) {
         return UserManager.getPlayer(player).isAssassin();
     }
 
@@ -30,8 +24,8 @@ public final class AssassinAPI {
      *
      * @return bounty collected
      */
-    public int getBountyCollected(Player player) {
-        return data.getBountyCollected(player);
+    public static int getBountyCollected(Player player) {
+        return UserManager.getPlayer(player).getProfile().getBountyAmount();
     }
 
     /**
@@ -41,7 +35,7 @@ public final class AssassinAPI {
      *
      * @return kill count
      */
-    public int getKillCount(Player player) {
-        return data.getKillCount(player);
+    public static int getKillCount(Player player) {
+        return UserManager.getPlayer(player).getProfile().getKillAmount();
     }
 }
