@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -30,6 +29,7 @@ import com.me.tft_02.assassin.AssassinMode;
 import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
+import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.runnables.EndCooldownTimer;
 import com.me.tft_02.assassin.runnables.player.ApplyPotionsTask;
 import com.me.tft_02.assassin.runnables.player.UpdateInventoryTask;
@@ -64,12 +64,12 @@ public class PlayerListener implements Listener {
         AssassinPlayer assassinPlayer = UserManager.addUser(player);
 
         if (Assassin.p.isUpdateAvailable() && player.isOp()) {
-            player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.GOLD + "New version available on BukkitDev!");
-            player.sendMessage(ChatColor.DARK_RED + "[Assassin]: " + ChatColor.AQUA + "http://dev.bukkit.org/server-mods/Assassin/");
+            player.sendMessage(LocaleLoader.getString("UpdateChecker.Outdated"));
+            player.sendMessage(LocaleLoader.getString("UpdateChecker.New_Available"));
         }
 
         if (assassinPlayer.isAssassin()) {
-            event.setJoinMessage(ChatColor.DARK_RED + "AN ASSASSIN JOINED THE GAME");
+            event.setJoinMessage(LocaleLoader.getString("Assassin.Join"));
             assassin.applyTraits(player);
             assassin.applyMaskForce(player);
         }
@@ -111,7 +111,7 @@ public class PlayerListener implements Listener {
         AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
 
         if (assassinPlayer.isAssassin()) {
-            event.setQuitMessage(ChatColor.DARK_RED + "AN ASSASSIN LEFT THE GAME");
+            event.setQuitMessage(LocaleLoader.getString("Assassin.Leave"));
             assassinPlayer.actualizeLogoutTime();
             assassinPlayer.actualizeActiveTime();
         }
@@ -213,7 +213,7 @@ public class PlayerListener implements Listener {
         String deathmessage = event.getDeathMessage();
 
         if (UserManager.getPlayer(player).isAssassin()) {
-            deathmessage = deathmessage.replaceAll(player.getName(), ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+            deathmessage = deathmessage.replaceAll(player.getName(), LocaleLoader.getString("Assassin.Name.Tag"));
         }
 
         if (lastDamageCause instanceof EntityDamageByEntityEvent) {
@@ -227,7 +227,7 @@ public class PlayerListener implements Listener {
             if (damager instanceof Player) {
                 if (UserManager.getPlayer((Player) damager).isAssassin()) {
                     String damagername = ((Player) damager).getName();
-                    deathmessage = deathmessage.replaceAll(damagername, ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
+                    deathmessage = deathmessage.replaceAll(damagername, LocaleLoader.getString("Assassin.Name.Tag"));
                 }
             }
         }
@@ -251,7 +251,7 @@ public class PlayerListener implements Listener {
         List<String> blockedCmds = Config.getInstance().getBlockedCommands();
 
         if (UserManager.getPlayer(player).isAssassin() && blockedCmds.contains(command)) {
-            player.sendMessage(ChatColor.RED + "You're not allowed to use " + ChatColor.GOLD + command + ChatColor.RED + " command while an Assassin.");
+            player.sendMessage(LocaleLoader.getString("Commands.CantUseAsAssassin", command));
             event.setCancelled(true);
         }
     }
