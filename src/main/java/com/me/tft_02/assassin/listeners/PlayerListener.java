@@ -26,7 +26,6 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
-import com.me.tft_02.assassin.Bounty;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.locale.LocaleLoader;
@@ -37,6 +36,7 @@ import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.Permissions;
+import com.me.tft_02.assassin.util.player.BountyManager;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
@@ -44,7 +44,6 @@ import net.milkbowl.vault.economy.EconomyResponse;
 
 public class PlayerListener implements Listener {
     private AssassinMode assassin = new AssassinMode();
-    private Bounty bounty = new Bounty();
     private PlayerData data = new PlayerData();
     private ItemChecks itemcheck = new ItemChecks();
 
@@ -240,7 +239,7 @@ public class PlayerListener implements Listener {
         Player killer = event.getEntity().getKiller();
 
         if (killer != null && player != killer) {
-            bounty.handleBounties(player, killer);
+            BountyManager.handleBounties(player, killer);
         }
     }
 

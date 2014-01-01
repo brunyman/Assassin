@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin;
+package com.me.tft_02.assassin.util.player;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -6,13 +6,12 @@ import org.bukkit.entity.Player;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.datatypes.player.PlayerProfile;
-import com.me.tft_02.assassin.util.player.UserManager;
 
 import org.kitteh.tag.TagAPI;
 
-public class Bounty {
+public class BountyManager {
 
-    public void handleBounties(Player player, Player killer) {
+    public static void handleBounties(Player player, Player killer) {
         AssassinPlayer assassinKiller = UserManager.getPlayer(killer);
         PlayerProfile killerProfile = assassinKiller.getProfile();
 
@@ -32,11 +31,11 @@ public class Bounty {
         }
     }
 
-    protected boolean hasBounty(AssassinPlayer assassinPlayer) {
+    private static boolean hasBounty(AssassinPlayer assassinPlayer) {
         return assassinPlayer.getProfile().getKillAmount() > 0;
     }
 
-    public String getBountyCollectedString(Player player) {
+    public static String getBountyCollectedString(Player player) {
         int bounty_collected = UserManager.getPlayer(player).getProfile().getBountyAmount();
         int increase_amount = Config.getInstance().getBountyAmount();
         String currency = Config.getInstance().getCurrencyIcon();
