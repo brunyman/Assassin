@@ -17,8 +17,6 @@ public class PlayerData {
     // Persistent data
     public static HashSet<String> playerCooldown = new HashSet<String>();
     public static List<String> assassins = new ArrayList<String>();
-    public static HashMap<String, Integer> killCount = new HashMap<String, Integer>();
-    public static HashMap<String, Integer> bountyCollected = new HashMap<String, Integer>();
 
     // Non persistent data
     private static HashMap<String, Integer> assassinNumber = new HashMap<String, Integer>();
@@ -118,56 +116,5 @@ public class PlayerData {
         int amount = assassins.size();
 
         return (maxAllowed > 0 && maxAllowed >= amount);
-    }
-
-    public int getKillCount(Player player) {
-        String playerName = player.getName();
-        int kills;
-
-        if (killCount.containsKey(playerName)) {
-            kills = killCount.get(playerName);
-        }
-        else {
-            kills = 0;
-        }
-        return kills;
-    }
-
-    public void increaseKillCount(Player player) {
-        String playerName = player.getName();
-        int kills = getKillCount(player);
-
-        kills = kills + 1;
-        killCount.put(playerName, kills);
-    }
-
-    public void resetKillCount(Player player) {
-        String playerName = player.getName();
-        int kills = getKillCount(player);
-
-        if (kills > 0) {
-            killCount.put(playerName, 0);
-        }
-    }
-
-    public int getBountyCollected(Player player) {
-        String playerName = player.getName();
-        int bounty;
-        if (bountyCollected.containsKey(playerName)) {
-            bounty = bountyCollected.get(playerName);
-        }
-        else {
-            bounty = 0;
-        }
-        return bounty;
-    }
-
-    public void addBountyCollected(Player player, int amount) {
-        String playerName = player.getName();
-        int bounty = getBountyCollected(player);
-
-        bounty = bounty + amount;
-
-        bountyCollected.put(playerName, bounty);
     }
 }

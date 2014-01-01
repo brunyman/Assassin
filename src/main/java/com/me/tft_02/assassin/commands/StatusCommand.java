@@ -40,7 +40,7 @@ public class StatusCommand implements CommandExecutor {
             player.sendMessage(ChatColor.GOLD + "Time left in " + status + " Mode = " + ChatColor.DARK_RED + Misc.getStringTimeLeft(player));
         }
         player.sendMessage(ChatColor.DARK_GRAY + "------------------------------------");
-        player.sendMessage(ChatColor.GOLD + "Current bounty = " + ChatColor.DARK_RED + data.getKillCount(player));
+        player.sendMessage(ChatColor.GOLD + "Current bounty = " + ChatColor.DARK_RED + assassinPlayer.getProfile().getKillAmount());
         player.sendMessage(ChatColor.GOLD + "Bounty collected = " + ChatColor.GREEN + bounty.getBountyCollectedString(player));
         return true;
     }

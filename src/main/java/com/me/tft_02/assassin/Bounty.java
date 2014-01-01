@@ -4,39 +4,40 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.me.tft_02.assassin.config.Config;
-import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
+import com.me.tft_02.assassin.datatypes.player.PlayerProfile;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 import org.kitteh.tag.TagAPI;
 
 public class Bounty {
 
-    private PlayerData data = new PlayerData();
-
     public void handleBounties(Player player, Player killer) {
-        if (hasBounty(player)) {
+        AssassinPlayer assassinKiller = UserManager.getPlayer(killer);
+        PlayerProfile killerProfile = assassinKiller.getProfile();
+
+        if (hasBounty(assassinKiller)) {
             // Collect bounty from target
-            data.addBountyCollected(killer, data.getKillCount(player));
-            data.resetKillCount(player);
-            killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + data.getBountyCollected(killer));
+            PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+            killerProfile.addBountyAmount(playerProfile.getKillAmount());
+            playerProfile.setKillAmount(0);
+
+            killer.sendMessage(ChatColor.GREEN + "You have collected the bounty! Current bounty collected: " + killerProfile.getBountyAmount());
             player.sendMessage(ChatColor.DARK_RED + "Your bounty has been reset!");
         }
-        else {
-            if (UserManager.getPlayer(killer).isAssassin()) {
-                // Only increase bounty when attacking a different player without bounty
-                data.increaseKillCount(killer);
-                TagAPI.refreshPlayer(killer);
-            }
+        else if (assassinKiller.isAssassin()) {
+            // Only increase bounty when attacking a different player without bounty
+            killerProfile.increaseKillAmount();
+            TagAPI.refreshPlayer(killer);
         }
     }
 
-    protected boolean hasBounty(Player player) {
-        int killCount = data.getKillCount(player);
-        return killCount > 0;
+    protected boolean hasBounty(AssassinPlayer assassinPlayer) {
+        return assassinPlayer.getProfile().getKillAmount() > 0;
     }
 
     public String getBountyCollectedString(Player player) {
-        int bounty_collected = data.getBountyCollected(player);
+        int bounty_collected = UserManager.getPlayer(player).getProfile().getBountyAmount();
         int increase_amount = Config.getInstance().getBountyAmount();
         String currency = Config.getInstance().getCurrencyIcon();
 

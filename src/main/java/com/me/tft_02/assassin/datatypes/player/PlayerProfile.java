@@ -19,6 +19,9 @@ public class PlayerProfile {
     private int activeTime;
     private Location location;
 
+    private int killAmount;
+    private int bountyAmount;
+
     private final Map<ScoreType, Integer> scoreStats = new HashMap<ScoreType, Integer>();
 
     public PlayerProfile(String playerName) {
@@ -119,5 +122,29 @@ public class PlayerProfile {
         changed = true;
 
         this.location = location;
+    }
+
+    public int getKillAmount() {
+        return killAmount;
+    }
+
+    public void setKillAmount(int killAmount) {
+        this.killAmount = killAmount;
+    }
+
+    public void increaseKillAmount() {
+        setKillAmount(getKillAmount() + 1);
+    }
+
+    public int getBountyAmount() {
+        return bountyAmount;
+    }
+
+    public void setBountyAmount(int bountyAmount) {
+        this.bountyAmount = bountyAmount;
+    }
+
+    public void addBountyAmount(int bountyAmount) {
+        setBountyAmount(getBountyAmount() + bountyAmount);
     }
 }
