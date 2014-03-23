@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -78,6 +79,19 @@ public class Misc {
         });
 
         return sortedEntries;
+    }
+
+    public static List<String> getOnlinePlayerNames(CommandSender sender) {
+        Player player = sender instanceof Player ? (Player) sender : null;
+        List<String> onlinePlayerNames = new ArrayList<String>();
+
+        for (Player onlinePlayer : Assassin.p.getServer().getOnlinePlayers()) {
+            if (player != null && player.canSee(onlinePlayer)) {
+                onlinePlayerNames.add(onlinePlayer.getName());
+            }
+        }
+
+        return onlinePlayerNames;
     }
 
     /**
