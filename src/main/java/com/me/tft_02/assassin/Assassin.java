@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -54,6 +55,11 @@ public class Assassin extends JavaPlugin {
 
     public static Economy econ = null;
 
+    /* Metadata Values */
+    public final static String playerDataKey = "Assassin: Player Data";
+
+    public static FixedMetadataValue metadataValue;
+
     /**
      * Run things on enable.
      */
@@ -61,6 +67,7 @@ public class Assassin extends JavaPlugin {
     public void onEnable() {
         p = this;
         getLogger().setFilter(new LogFilter(this));
+        metadataValue = new FixedMetadataValue(this, true);
 
         setupTagAPI();
 

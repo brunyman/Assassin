@@ -1,18 +1,17 @@
 package com.me.tft_02.assassin.util.player;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 
 public final class UserManager {
-    private final static Map<String, AssassinPlayer> players = new HashMap<String, AssassinPlayer>();
 
     private UserManager() {}
 
@@ -20,102 +19,98 @@ public final class UserManager {
      * Add a new user.
      *
      * @param player The player to create a user record for
+     *
      * @return the player's {@link AssassinPlayer} object
      */
     public static AssassinPlayer addUser(Player player) {
-        String playerName = player.getName();
-        AssassinPlayer assassinPlayer = players.get(playerName);
+        AssassinPlayer AssassinPlayer = new AssassinPlayer(player);
+        player.setMetadata(Assassin.playerDataKey, new FixedMetadataValue(Assassin.p, AssassinPlayer));
 
-        if (assassinPlayer != null) {
-            assassinPlayer.setPlayer(player); // The player object is different on each reconnection and must be updated
-        }
-        else {
-            assassinPlayer = new AssassinPlayer(player);
-            players.put(playerName, assassinPlayer);
-        }
-
-        return assassinPlayer;
+        return AssassinPlayer;
     }
 
     /**
      * Remove a user.
      *
-     * @param playerName The name of the player to remove
+     * @param player The Player object
      */
-    public static void remove(String playerName) {
-        players.remove(playerName);
+    public static void remove(Player player) {
+        player.removeMetadata(Assassin.playerDataKey, Assassin.p);
     }
 
     /**
      * Clear all users.
      */
     public static void clearAll() {
-        players.clear();
+        for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
+            remove(player);
+        }
     }
 
     /**
      * Save all users.
      */
     public static void saveAll() {
-        for (AssassinPlayer assassinPlayer : players.values()) {
-            assassinPlayer.getProfile().save();
+        Player[] onlinePlayers = Assassin.p.getServer().getOnlinePlayers();
+        Assassin.p.debug("Saving AssassinPlayers... (" + onlinePlayers.length + ")");
+
+        for (Player player : onlinePlayers) {
+            getPlayer(player).getProfile().save();
         }
     }
 
-    public static Set<String> getPlayerNames() {
-        return players.keySet();
-    }
-
     public static Collection<AssassinPlayer> getPlayers() {
-        return players.values();
+        Collection<AssassinPlayer> playerCollection = new ArrayList<AssassinPlayer>();
+
+        for (Player player : Assassin.p.getServer().getOnlinePlayers()) {
+            playerCollection.add(getPlayer(player));
+        }
+
+        return playerCollection;
     }
 
     /**
      * Get the AssassinPlayer of a player by name.
      *
      * @param playerName The name of the player whose AssassinPlayer to retrieve
+     *
      * @return the player's AssassinPlayer object
      */
     public static AssassinPlayer getPlayer(String playerName) {
         return retrieveAssassinPlayer(playerName, false);
     }
 
-    /**
-     * Get the AssassinPlayer of a player.
-     *
-     * @param player The player whose AssassinPlayer to retrieve
-     * @return the player's AssassinPlayer object
-     */
-    public static AssassinPlayer getPlayer(OfflinePlayer player) {
-        return retrieveAssassinPlayer(player.getName(), false);
+    public static AssassinPlayer getOfflinePlayer(OfflinePlayer player) {
+        if (player instanceof Player) {
+            return getPlayer((Player) player);
+        }
+
+        return retrieveAssassinPlayer(player.getName(), true);
     }
 
-    public static AssassinPlayer getPlayer(OfflinePlayer player, boolean offlineValid) {
-        return retrieveAssassinPlayer(player.getName(), offlineValid);
+    public static AssassinPlayer getOfflinePlayer(String playerName) {
+        return retrieveAssassinPlayer(playerName, true);
     }
 
-    public static AssassinPlayer getPlayer(String playerName, boolean offlineValid) {
-        return retrieveAssassinPlayer(playerName, offlineValid);
+    public static AssassinPlayer getPlayer(Player player) {
+        return (AssassinPlayer) player.getMetadata(Assassin.playerDataKey).get(0).value();
     }
 
     private static AssassinPlayer retrieveAssassinPlayer(String playerName, boolean offlineValid) {
-        AssassinPlayer assassinPlayer = players.get(playerName);
+        Player player = Assassin.p.getServer().getPlayerExact(playerName);
 
-        if (assassinPlayer == null) {
-            Player player = Assassin.p.getServer().getPlayerExact(playerName);
-
-            if (player == null) {
-                if (!offlineValid) {
-                    Assassin.p.getLogger().warning("A valid AssassinPlayer object could not be found for " + playerName + ".");
-                }
-
-                return null;
+        if (player == null) {
+            if (!offlineValid) {
+                Assassin.p.getLogger().warning("A valid AssassinPlayer object could not be found for " + playerName + ".");
             }
 
-            assassinPlayer = new AssassinPlayer(player);
-            players.put(playerName, assassinPlayer);
+            return null;
         }
 
-        return assassinPlayer;
+        return getPlayer(player);
+    }
+
+    public static boolean hasPlayerDataKey(Entity entity) {
+        return entity != null && entity.hasMetadata(Assassin.playerDataKey);
     }
 }
