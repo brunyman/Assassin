@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.AssassinMode;
@@ -220,7 +221,11 @@ public class PlayerListener implements Listener {
             Entity damager = entityDamageByEntityEvent.getDamager();
 
             if (damager instanceof Projectile) {
-                damager = ((Projectile) damager).getShooter();
+                ProjectileSource projectileSource = ((Projectile) damager).getShooter();
+
+                if (projectileSource instanceof LivingEntity) {
+                    damager = (LivingEntity) projectileSource;
+                }
             }
 
             if (damager instanceof Player) {

@@ -5,6 +5,7 @@ import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.Misc;
@@ -40,7 +42,11 @@ public class EntityListener implements Listener {
         }
 
         if (attacker instanceof Projectile) {
-            attacker = ((Projectile) attacker).getShooter();
+            ProjectileSource projectileSource = ((Projectile) attacker).getShooter();
+
+            if (projectileSource instanceof LivingEntity) {
+                attacker = (LivingEntity) projectileSource;
+            }
         }
         else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
@@ -84,7 +90,11 @@ public class EntityListener implements Listener {
         }
 
         if (attacker instanceof Projectile) {
-            attacker = ((Projectile) attacker).getShooter();
+            ProjectileSource projectileSource = ((Projectile) attacker).getShooter();
+
+            if (projectileSource instanceof LivingEntity) {
+                attacker = (LivingEntity) projectileSource;
+            }
         }
         else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
@@ -106,10 +116,8 @@ public class EntityListener implements Listener {
                     ((Player) attacker).sendMessage(ChatColor.DARK_RED + "You are not an Assassin.");
                     event.setCancelled(true);
                 }
-                else {
-                    if (event.isCancelled() && Config.getInstance().getOverridePVP()) {
-                        event.setCancelled(false);
-                    }
+                else if (event.isCancelled() && Config.getInstance().getOverridePVP()) {
+                    event.setCancelled(false);
                 }
             }
         }
