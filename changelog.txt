@@ -13,6 +13,7 @@ Version 1.1.2 | Tested on CB 1.7.2-R0.1
  = Fixed bug where player tags where reset to the displayname instead of back to the previous tag
  = Fixed bug with the Update Checker
  = Fixed bug where the respawn location when deactivating assassin mode was wrong
+ ! Updated for TagAPI v3.0
  ! Changed API to use static methods
  ! Changed Updater, now uses Gravity's updater v2.0
  ! Huge code cleanup and refactoring

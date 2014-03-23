@@ -10,12 +10,12 @@ import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.util.player.UserManager;
 
-import org.kitteh.tag.PlayerReceiveNameTagEvent;
+import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 
 public class TagListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onNameTag(PlayerReceiveNameTagEvent event) {
+    public void onAsyncPlayerReceiveNameTag(AsyncPlayerReceiveNameTagEvent event) {
         Player namedPlayer = event.getNamedPlayer();
         AssassinPlayer assassinPlayer = UserManager.getPlayer(namedPlayer);
         String tag = event.getTag();
