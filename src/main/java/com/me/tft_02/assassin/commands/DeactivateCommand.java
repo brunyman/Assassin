@@ -40,9 +40,11 @@ public class DeactivateCommand implements CommandExecutor {
             return true;
         }
 
-        AssassinPlayer assassinPlayer = UserManager.getPlayer(target);
+        Player targetPlayer = (Player) target;
+        AssassinPlayer assassinPlayer = UserManager.getPlayer(targetPlayer);
+
         if (assassinPlayer.isAssassin()) {
-            assassin.deactivateAssassin((Player) target);
+            assassin.deactivateAssassin(targetPlayer);
             assassinPlayer.resetActiveTime();
             return true;
         }

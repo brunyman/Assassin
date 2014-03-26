@@ -11,6 +11,7 @@ import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.util.CommandUtils;
 import com.me.tft_02.assassin.util.Permissions;
 import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 import org.kitteh.tag.TagAPI;
 
@@ -40,8 +41,9 @@ public class RefreshCommand implements CommandExecutor {
             return true;
         }
 
-        TagAPI.refreshPlayer((Player) target);
-        data.removeCooldown((Player) target);
+        Player targetPlayer = (Player) target;
+        TagAPI.refreshPlayer(targetPlayer);
+        UserManager.getPlayer(targetPlayer).setCooledDown(true);
         player.sendMessage(LocaleLoader.getString("Commands.Refresh.Success", target.getName()));
         return true;
     }

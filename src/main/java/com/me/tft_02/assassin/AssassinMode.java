@@ -72,7 +72,7 @@ public class AssassinMode {
 
         applyMask(player);
 
-        data.addCooldownTimer(player);
+        assassinPlayer.setCooledDown(false);
 
         if (Config.getInstance().getParticleEffectsEnabled()) {
             player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1);

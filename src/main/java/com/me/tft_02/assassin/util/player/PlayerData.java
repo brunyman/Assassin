@@ -15,39 +15,13 @@ import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 public class PlayerData {
 
     // Persistent data
-    public static HashSet<String> playerCooldown = new HashSet<String>();
     public static List<String> assassins = new ArrayList<String>();
 
     // Non persistent data
     private static HashMap<String, Integer> assassinNumber = new HashMap<String, Integer>();
     private static HashSet<Integer> takenNumbers = new HashSet<Integer>();
-    private static HashSet<String> playerNear = new HashSet<String>();
 
     private final Random random = new Random();
-
-    public void addCooldownTimer(Player player) {
-        playerCooldown.add(player.getName());
-    }
-
-    public void removeCooldown(Player player) {
-        playerCooldown.remove(player.getName());
-    }
-
-    public boolean cooledDown(Player player) {
-        return !playerCooldown.contains(player.getName());
-    }
-
-    public void addNearSent(Player player) {
-        playerNear.add(player.getName());
-    }
-
-    public void removeNearSent(Player player) {
-        playerNear.remove(player.getName());
-    }
-
-    public boolean firstTimeNear(Player player) {
-        return !playerNear.contains(player.getName());
-    }
 
     /**
      * Check if two players are both Neutral.

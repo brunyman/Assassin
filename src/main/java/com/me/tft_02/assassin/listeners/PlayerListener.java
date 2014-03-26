@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -74,7 +75,7 @@ public class PlayerListener implements Listener {
             assassin.applyMaskForce(player);
         }
 
-        if (!data.cooledDown(player)) {
+        if (!assassinPlayer.isCooledDown()) {
             long cooldowntime = Config.getInstance().getCooldownLength();
             new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
         }
@@ -117,7 +118,7 @@ public class PlayerListener implements Listener {
         }
 
         assassinPlayer.getProfile().save();
-        UserManager.remove(player.getName());
+        UserManager.remove(player);
     }
 
     /**
@@ -151,12 +152,14 @@ public class PlayerListener implements Listener {
                     return;
                 }
 
-                if (!data.cooledDown(player)) {
+                AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
+
+                if (!assassinPlayer.isCooledDown()) {
                     player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
                     return;
                 }
 
-                if (UserManager.getPlayer(player).isAssassin()) {
+                if (assassinPlayer.isAssassin()) {
                     player.sendMessage(ChatColor.RED + "You already are an Assassin.");
                     return;
                 }

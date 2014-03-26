@@ -2,7 +2,7 @@ package com.me.tft_02.assassin.runnables;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.me.tft_02.assassin.util.player.PlayerData;
+import com.me.tft_02.assassin.util.player.UserManager;
 
 public class EndCooldownTimer extends BukkitRunnable {
     private final String playerName;
@@ -13,10 +13,6 @@ public class EndCooldownTimer extends BukkitRunnable {
 
     @Override
     public void run() {
-        updateCooldownList();
-    }
-
-    private void updateCooldownList() {
-        PlayerData.playerCooldown.remove(playerName);
+        UserManager.getPlayer(playerName).setCooledDown(true);
     }
 }
