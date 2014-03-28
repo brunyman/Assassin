@@ -79,11 +79,7 @@ public class Misc {
     }
 
     public static boolean activationSuccessful(int chance) {
-        if (Misc.getRandom().nextInt(100) >= chance) {
-            return false;
-        }
-
-        return true;
+        return (Misc.getRandom().nextInt(100) < chance);
     }
 
     public static Random getRandom() {
