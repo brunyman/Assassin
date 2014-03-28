@@ -82,6 +82,18 @@ public class Misc {
         return (Misc.getRandom().nextInt(100) < chance);
     }
 
+    /**
+     * Check if the cooldown has expired.
+     *
+     * @param deactivatedTimeStamp Time of deactivation in seconds
+     * @param cooldown The length of the cooldown in seconds
+     *
+     * @return true if the cooldown is expired
+     */
+    public static boolean cooldownExpired(long deactivatedTimeStamp, int cooldown) {
+        return System.currentTimeMillis() >= (deactivatedTimeStamp + cooldown) * Misc.TIME_CONVERSION_FACTOR;
+    }
+
     public static Random getRandom() {
         return random;
     }
