@@ -51,17 +51,21 @@ public class Misc {
         int hours = (int) time / 3600;
         int remainder = (int) time - hours * 3600;
         int mins = remainder / 60;
-        remainder = remainder - mins * 60;
-        int secs = remainder;
-        if (mins == 0 && hours == 0) {
-            return secs + "s";
+        int secs = remainder - mins * 60;
+
+        StringBuilder prettyTime = new StringBuilder();
+
+        if (hours > 0) {
+            prettyTime.append(hours + "h ");
         }
-        if (hours == 0) {
-            return mins + "m " + secs + "s";
+
+        if (mins > 0 || hours > 0) {
+            prettyTime.append(mins + "m ");
         }
-        else {
-            return hours + "h " + mins + "m " + secs + "s";
-        }
+
+        prettyTime.append(secs + "s");
+
+        return prettyTime.toString();
     }
 
     public static <K, V extends Comparable<? super V>> List<Entry<K, V>> entriesSortedByValues(Map<K, V> map) {
