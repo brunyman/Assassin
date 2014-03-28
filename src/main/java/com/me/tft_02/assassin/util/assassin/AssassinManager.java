@@ -38,7 +38,7 @@ public class AssassinManager {
         UserManager.getPlayer(player).actualizeLoginTime();
         data.getAssassins().add(player.getName());
 
-        new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 1 * Misc.TICK_CONVERSION_FACTOR); // Start 1 seconds later.
+        new AssassinModeActivateTask(player).runTaskLater(Assassin.p, 1 * Misc.TICK_CONVERSION_FACTOR);
 
         player.setDisplayName(ChatColor.DARK_RED + "[ASSASSIN]" + ChatColor.RESET);
         player.setPlayerListName(ChatColor.DARK_RED + "ASSASSIN [" + data.getAssassinNumber(player) + "]");
@@ -51,6 +51,7 @@ public class AssassinManager {
      * @param player Player who's mode will be changed.
      */
     public void activateAssassin(Player player) {
+        Assassin.p.debug("Activating AssassinMode for " + player.getName());
         AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
         PlayerProfile profile = assassinPlayer.getProfile();
         Location location = player.getLocation();
@@ -62,21 +63,26 @@ public class AssassinManager {
 
         player.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 1.0f);
 
-        double messageDistance = Config.getInstance().getMessageDistance();
-        if (Config.getInstance().getWarnOnActivate() && messageDistance > 0) {
-            for (Player players : player.getWorld().getPlayers()) {
-                if (players != player && Misc.isNear(players.getLocation(), player.getLocation(), messageDistance)) {
-                    players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT A MASK ON!");
-                }
-            }
-        }
+        sendWarningMessage(player);
 
         applyMask(player);
 
-        assassinPlayer.setCooledDown(false);
+        assassinPlayer.updateLastMaskUse();
 
         if (Config.getInstance().getParticleEffectsEnabled()) {
             player.getWorld().playEffect(player.getLocation(), Effect.SMOKE, 1);
+        }
+    }
+
+    private void sendWarningMessage(Player player) {
+        if (!Config.getInstance().getWarnOnActivate() || Config.getInstance().getMessageDistance() <= 0) {
+            return;
+        }
+
+        for (Player players : player.getWorld().getPlayers()) {
+            if (players != player && Misc.isNear(players.getLocation(), player.getLocation(), Config.getInstance().getMessageDistance())) {
+                players.sendMessage(ChatColor.DARK_RED + "SOMEONE JUST PUT A MASK ON!");
+            }
         }
     }
 
@@ -97,9 +103,8 @@ public class AssassinManager {
 
         removeMask(player);
         player.getWorld().playSound(player.getLocation(), Sound.PISTON_EXTEND, 1.0f, 1.0f);
-//        player.getWorld().playSound(player.getLocation(), Sound.BREATH, 1.0f, 1.0f);
+        player.getWorld().playSound(player.getLocation(), Sound.FIREWORK_TWINKLE, 1.0f, 1.0f);
     }
-
 
     /**
      * Reset a players display name and TagAPI nameplate.
@@ -152,42 +157,31 @@ public class AssassinManager {
      * @param player Player who will get a mask.
      */
     protected void applyMask(Player player) {
+        applyMask(player, false);
+    }
+
+    public void applyMask(Player player, boolean force) {
         PlayerInventory inventory = player.getInventory();
 
-        ItemStack itemHead = inventory.getHelmet();
-        int amountInHand = inventory.getItemInHand().getAmount();
-        int amount;
-        if (amountInHand > 1) {
-            amount = amountInHand - 1;
-        }
-        else {
-            amount = 0;
-        }
-        ItemStack assassinMasks = mask.getMask(amount, false);
+        if (!force) {
+            ItemStack itemHead = inventory.getHelmet();
+            int amountInHand = inventory.getItemInHand().getAmount();
+            int newMaskAmount = 0;
 
-        int emptySlot = inventory.firstEmpty();
-        if (itemHead != null) {
-            inventory.setItem(emptySlot, itemHead);
-            inventory.setItemInHand(assassinMasks);
-        }
-        else {
-            inventory.setItemInHand(assassinMasks);
+            if (amountInHand > 1) {
+                newMaskAmount = amountInHand - 1;
+            }
+
+            if (itemHead != null) {
+                inventory.setItem(inventory.firstEmpty(), itemHead.clone());
+            }
+
+            if (newMaskAmount > 0) {
+                inventory.setItemInHand(mask.getMask(newMaskAmount, false));
+            }
         }
 
         inventory.setHelmet(mask.getMaskPlain());
-        new UpdateInventoryTask(player).runTask(Assassin.p);
-    }
-
-    /**
-     * Applies a mask on the players head with force.
-     *
-     * @param player Player who will get a mask.
-     */
-    public void applyMaskForce(Player player) {
-        PlayerInventory inventory = player.getInventory();
-        ItemStack assassinMask = mask.getMaskPlain();
-
-        inventory.setHelmet(assassinMask);
         new UpdateInventoryTask(player).runTask(Assassin.p);
     }
 

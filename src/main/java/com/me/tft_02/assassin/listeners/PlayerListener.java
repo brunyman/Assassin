@@ -27,26 +27,23 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.me.tft_02.assassin.Assassin;
-import com.me.tft_02.assassin.util.assassin.AssassinManager;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.locale.LocaleLoader;
-import com.me.tft_02.assassin.runnables.EndCooldownTimer;
 import com.me.tft_02.assassin.runnables.player.ApplyPotionsTask;
 import com.me.tft_02.assassin.runnables.player.UpdateInventoryTask;
 import com.me.tft_02.assassin.util.BlockChecks;
 import com.me.tft_02.assassin.util.ItemChecks;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.Permissions;
+import com.me.tft_02.assassin.util.assassin.AssassinManager;
 import com.me.tft_02.assassin.util.player.BountyManager;
-import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;
 
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class PlayerListener implements Listener {
     private AssassinManager assassin = new AssassinManager();
-    private PlayerData data = new PlayerData();
     private ItemChecks itemcheck = new ItemChecks();
 
     /**
@@ -72,12 +69,7 @@ public class PlayerListener implements Listener {
         if (assassinPlayer.isAssassin()) {
             event.setJoinMessage(LocaleLoader.getString("Assassin.Join"));
             assassin.applyTraits(player);
-            assassin.applyMaskForce(player);
-        }
-
-        if (!assassinPlayer.isCooledDown()) {
-            long cooldowntime = Config.getInstance().getCooldownLength();
-            new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
+            assassin.applyMask(player, true);
         }
     }
 
@@ -86,19 +78,21 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
 
-        if (assassinPlayer.isAssassin()) {
-            assassin.applyMaskForce(player);
-
-            if (!Config.getInstance().getPotionEffectsEnabled()) {
-                return;
-            }
-
-            List<PotionEffect> potionEffects = new ArrayList<PotionEffect>();
-            potionEffects.add(new PotionEffect(PotionEffectType.BLINDNESS, Misc.TICK_CONVERSION_FACTOR * 5, 1));
-            potionEffects.add(new PotionEffect(PotionEffectType.SLOW, Misc.TICK_CONVERSION_FACTOR * 30, 1));
-
-            new ApplyPotionsTask(player, potionEffects).runTaskLater(Assassin.p, 5);
+        if (!assassinPlayer.isAssassin()) {
+            return;
         }
+
+        assassin.applyMask(player, true);
+
+        if (!Config.getInstance().getPotionEffectsEnabled()) {
+            return;
+        }
+
+        List<PotionEffect> potionEffects = new ArrayList<PotionEffect>();
+        potionEffects.add(new PotionEffect(PotionEffectType.BLINDNESS, Misc.TICK_CONVERSION_FACTOR * 5, 1));
+        potionEffects.add(new PotionEffect(PotionEffectType.SLOW, Misc.TICK_CONVERSION_FACTOR * 30, 1));
+
+        new ApplyPotionsTask(player, potionEffects).runTaskLater(Assassin.p, 5);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -154,7 +148,7 @@ public class PlayerListener implements Listener {
 
                 AssassinPlayer assassinPlayer = UserManager.getPlayer(player);
 
-                if (!assassinPlayer.isCooledDown()) {
+                if (!Misc.cooldownExpired(assassinPlayer.getLastMaskUse(), Config.getInstance().getCooldownLength())) {
                     player.sendMessage(ChatColor.RED + "You need to wait before you can use that again...");
                     return;
                 }
@@ -177,10 +171,7 @@ public class PlayerListener implements Listener {
                     }
                 }
 
-                Assassin.p.debug("Activating AssassinMode for " + player.getName());
                 assassin.activateAssassin(player);
-                long cooldowntime = Config.getInstance().getCooldownLength();
-                new EndCooldownTimer(player.getName()).runTaskLater(Assassin.p, cooldowntime);
 
                 return;
             default:

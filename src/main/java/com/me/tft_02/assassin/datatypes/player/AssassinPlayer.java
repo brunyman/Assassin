@@ -14,7 +14,7 @@ public class AssassinPlayer {
 
     private boolean assassinChatMode;
 
-    private boolean cooledDown;
+    private long lastMaskUse;
     private boolean nearSent;
 
     private int loginTime;
@@ -123,12 +123,16 @@ public class AssassinPlayer {
         profile.setActiveTime(0);
     }
 
-    public boolean isCooledDown() {
-        return cooledDown;
+    public long getLastMaskUse() {
+        return lastMaskUse;
     }
 
-    public void setCooledDown(boolean cooledDown) {
-        this.cooledDown = cooledDown;
+    public void setLastMaskUse(long lastMaskUse) {
+        this.lastMaskUse = lastMaskUse;
+    }
+
+    public void updateLastMaskUse() {
+        setLastMaskUse((int) System.currentTimeMillis() / 1000);
     }
 
     public void setNearSent(boolean nearSent) {
