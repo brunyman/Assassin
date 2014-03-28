@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.me.tft_02.assassin.Assassin;
-import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.util.assassin.AssassinManager;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
@@ -16,7 +16,7 @@ import com.me.tft_02.assassin.util.player.UserManager;
 
 public class ActivityTimerTask extends BukkitRunnable {
 
-    private AssassinMode assassin = new AssassinMode();
+    private AssassinManager assassin = new AssassinManager();
 
     private static HashSet<String> warned = new HashSet<String>();
 

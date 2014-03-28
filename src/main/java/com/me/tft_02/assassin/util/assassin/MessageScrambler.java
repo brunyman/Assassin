@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin.util;
+package com.me.tft_02.assassin.util.assassin;
 
 import java.util.Random;
 

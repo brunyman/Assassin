@@ -27,7 +27,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.me.tft_02.assassin.Assassin;
-import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.util.assassin.AssassinManager;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.locale.LocaleLoader;
@@ -45,7 +45,7 @@ import com.me.tft_02.assassin.util.player.UserManager;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public class PlayerListener implements Listener {
-    private AssassinMode assassin = new AssassinMode();
+    private AssassinManager assassin = new AssassinManager();
     private PlayerData data = new PlayerData();
     private ItemChecks itemcheck = new ItemChecks();
 

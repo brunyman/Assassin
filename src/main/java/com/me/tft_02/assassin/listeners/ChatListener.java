@@ -10,7 +10,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
-import com.me.tft_02.assassin.util.MessageScrambler;
+import com.me.tft_02.assassin.util.assassin.MessageScrambler;
 import com.me.tft_02.assassin.util.Misc;
 import com.me.tft_02.assassin.util.player.PlayerData;
 import com.me.tft_02.assassin.util.player.UserManager;

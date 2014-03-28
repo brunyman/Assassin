@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.AssassinMode;
+import com.me.tft_02.assassin.util.assassin.AssassinManager;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 import com.me.tft_02.assassin.locale.LocaleLoader;
 import com.me.tft_02.assassin.util.CommandUtils;
@@ -16,7 +16,7 @@ import com.me.tft_02.assassin.util.player.UserManager;
 
 public class DeactivateCommand implements CommandExecutor {
 
-    private AssassinMode assassin = new AssassinMode();
+    private AssassinManager assassin = new AssassinManager();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

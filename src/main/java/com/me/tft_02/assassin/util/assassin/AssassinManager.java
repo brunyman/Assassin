@@ -1,4 +1,4 @@
-package com.me.tft_02.assassin;
+package com.me.tft_02.assassin.util.assassin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.Status;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
@@ -22,7 +23,7 @@ import com.me.tft_02.assassin.util.player.UserManager;
 
 import org.kitteh.tag.TagAPI;
 
-public class AssassinMode {
+public class AssassinManager {
 
     private Mask mask = new Mask();
     private PlayerData data = new PlayerData();
