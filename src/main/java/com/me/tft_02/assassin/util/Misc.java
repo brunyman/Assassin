@@ -9,12 +9,9 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.util.player.UserManager;
 
@@ -79,76 +76,6 @@ public class Misc {
         });
 
         return sortedEntries;
-    }
-
-    public static List<String> getOnlinePlayerNames(CommandSender sender) {
-        Player player = sender instanceof Player ? (Player) sender : null;
-        List<String> onlinePlayerNames = new ArrayList<String>();
-
-        for (Player onlinePlayer : Assassin.p.getServer().getOnlinePlayers()) {
-            if (player != null && player.canSee(onlinePlayer)) {
-                onlinePlayerNames.add(onlinePlayer.getName());
-            }
-        }
-
-        return onlinePlayerNames;
-    }
-
-    /**
-     * Attempts to match any player names with the given name, and returns a list of all possibly matches.
-     * <p/>
-     * This list is not sorted in any particular order.
-     * If an exact match is found, the returned list will only contain a single result.
-     *
-     * @param partialName Name to match
-     *
-     * @return List of all possible names
-     */
-    public static List<String> matchPlayer(String partialName) {
-        List<String> matchedPlayers = new ArrayList<String>();
-
-        for (OfflinePlayer offlinePlayer : Assassin.p.getServer().getOfflinePlayers()) {
-            String playerName = offlinePlayer.getName();
-
-            if (partialName.equalsIgnoreCase(playerName)) {
-                // Exact match
-                matchedPlayers.clear();
-                matchedPlayers.add(playerName);
-                break;
-            }
-            if (playerName.toLowerCase().contains(partialName.toLowerCase())) {
-                // Partial match
-                matchedPlayers.add(playerName);
-            }
-        }
-
-        return matchedPlayers;
-    }
-
-    /**
-     * Get a matched player name if one was found in the database.
-     *
-     * @param partialName Name to match
-     *
-     * @return Matched name or {@code partialName} if no match was found
-     */
-    public static String getMatchedPlayerName(String partialName) {
-        if (Config.getInstance().getMatchOfflinePlayers()) {
-            List<String> matches = matchPlayer(partialName);
-
-            if (matches.size() == 1) {
-                partialName = matches.get(0);
-            }
-
-        }
-        else {
-            Player player = Assassin.p.getServer().getPlayer(partialName);
-            if (player != null) {
-                partialName = player.getName();
-            }
-        }
-
-        return partialName;
     }
 
     public static boolean activationSuccessful(int chance) {
