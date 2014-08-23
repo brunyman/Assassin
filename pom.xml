@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.me.tft_02.assassin</groupId>
     <artifactId>Assassin</artifactId>
-    <version>1.1.2-dev</version>
+    <version>1.1.2-SNAPSHOT</version>
     <name>Assassin</name>
     <url>https://github.com/TfT-02/Assassin</url>
     <issueManagement>
@@ -135,6 +135,16 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>md_5-releases</id>
+            <url>http://repo.md-5.net/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>md_5-snapshots</id>
+            <url>http://repo.md-5.net/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
