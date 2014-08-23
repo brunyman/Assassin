@@ -12,6 +12,8 @@ import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.config.Config;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 
+import com.google.common.collect.ImmutableList;
+
 public class PlayerData {
 
     // Persistent data
@@ -44,7 +46,7 @@ public class PlayerData {
     }
 
     public List<Player> getOnlineAssassins() {
-        Player[] onlinePlayers = Assassin.p.getServer().getOnlinePlayers();
+        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(Assassin.p.getServer().getOnlinePlayers());
         List<Player> onlineAssassins = new ArrayList<Player>();
 
         for (Player onlinePlayer : onlinePlayers) {

@@ -16,6 +16,7 @@ Version 1.1.2 | Tested on CB 1.7.2-R0.1
  ! Updated for TagAPI v3.0
  ! Changed API to use static methods
  ! Changed Updater, now uses Gravity's updater v2.0
+ ! Updated for new .getOnlinePlayers()
  ! Huge code cleanup and refactoring
 
 Version 1.1.1 | Tested on CB 1.4.7-R1.0

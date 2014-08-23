@@ -11,6 +11,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.me.tft_02.assassin.Assassin;
 import com.me.tft_02.assassin.datatypes.player.AssassinPlayer;
 
+import com.google.common.collect.ImmutableList;
+
 public final class UserManager {
 
     private UserManager() {}
@@ -51,8 +53,8 @@ public final class UserManager {
      * Save all users.
      */
     public static void saveAll() {
-        Player[] onlinePlayers = Assassin.p.getServer().getOnlinePlayers();
-        Assassin.p.debug("Saving AssassinPlayers... (" + onlinePlayers.length + ")");
+        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(Assassin.p.getServer().getOnlinePlayers());
+        Assassin.p.debug("Saving AssassinPlayers... (" + onlinePlayers.size() + ")");
 
         for (Player player : onlinePlayers) {
             getPlayer(player).getProfile().save();
